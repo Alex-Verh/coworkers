@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %} {% load django_vite %} {% vite_hmr_client %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Django with TypeScript Project</title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  {% vite_asset 'ts/main.ts' %}
+</html>
