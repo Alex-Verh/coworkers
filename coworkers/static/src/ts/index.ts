@@ -1,11 +1,10 @@
-import 'vite/modulepreload-polyfill';
-import '../css/style.css'
-import typescriptLogo from '../../public/icons/typescript.svg'
-import viteLogo from '../../public/icons//vite.svg'
-import djangoLogo from '../../public/icons/django.svg'
-import { setupCounter } from './counter.ts'
+import "vite/modulepreload-polyfill";
+import "../css/index.css";
+import typescriptLogo from "../../public/icons/typescript.svg";
+import viteLogo from "../../public/icons//vite.svg";
+import djangoLogo from "../../public/icons/django.svg";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <a href="https://www.djangoproject.com/" target="_blank">
       <img src="${djangoLogo}" class="logo" alt="Django logo" />
@@ -24,6 +23,15 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       Click on the logos to learn more. Sasha dura pidor koziol mudila
     </p>
   </div>
-`
+`;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+function setupCounter(element: HTMLButtonElement) {
+  let counter = 0;
+  const setCounter = (count: number) => {
+    counter = count;
+    element.innerHTML = `Like (${counter})`;
+  };
+  element.addEventListener("click", () => setCounter(counter + 1));
+  setCounter(0);
+}
+setupCounter(document.querySelector<HTMLButtonElement>("#counter")!);

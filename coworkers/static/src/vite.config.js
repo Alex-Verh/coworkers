@@ -8,7 +8,8 @@ export default defineConfig({
     outDir: resolve("../public"),
     rollupOptions: {
       input: {
-        main: "./ts/main.ts",
+        main: "./ts/index.ts",
+        profile: "./ts/profile.ts",
       },
     },
   },

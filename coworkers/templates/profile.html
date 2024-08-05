@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %} {% load django_vite %} {% vite_hmr_client %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ user.first_name }} {{ user.second_name }}'s Profile</title>
+  </head>
+  <body>
+    <div class="profile-container">
+      <div class="profile-header">
+        <img
+          src="{% static user.profile_picture.url %}"
+          alt="{{
+        user.first_name }}"
+          class="profile-image"
+        />
+        <h1>{{ user.first_name }} {{ user.second_name }}</h1>
+        <p class="bio">Bio</p>
+      </div>
+      <div class="profile-details">
+        <h2>Details</h2>
+        <p><strong>Email:</strong> {{ user.email_address }}</p>
+        <p><strong>Birth date:</strong> {{ user.birth_date|date:"F j, Y" }}</p>
+        <p><strong>Location:</strong> {{ user.location }}</p>
+      </div>
+      <div class="profile-footer">
+        <a href="#" class="btn">Edit Profile</a>
+      </div>
+    </div>
+    {% vite_asset 'ts/profile.ts' %}
+  </body>
+</html>

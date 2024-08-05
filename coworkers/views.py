@@ -1,7 +1,17 @@
 from django.shortcuts import render
+from django.views import generic
 
-# Create your views here.
+from .models import CustomUser
 
 
-def index(request):
-    return render(request, "index.html")
+class IndexView(generic.ListView):
+    template_name = "index.html"
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return CustomUser.objects.all()[:20]
+
+
+class ProfileView(generic.DetailView):
+    model = CustomUser
+    template_name = "profile.html"

@@ -8,6 +8,11 @@
   </head>
   <body>
     <div id="app"></div>
+    <ul>
+      {% for user in object_list %}
+      <li>{{ user.first_name }}</li>
+      {% endfor %}
+    </ul>
   </body>
-  {% vite_asset 'ts/main.ts' %}
+  {% vite_asset 'ts/index.ts' %}
 </html>

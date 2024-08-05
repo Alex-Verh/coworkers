@@ -1,11 +1,17 @@
 {
-  "ts/main.ts": {
-    "file": "assets/main-DLzPaQVq.js",
+  "ts/index.ts": {
+    "file": "assets/main-D0Wsj-wZ.js",
     "name": "main",
-    "src": "ts/main.ts",
+    "src": "ts/index.ts",
     "isEntry": true,
     "css": [
       "assets/main-Cz4zGhbH.css"
     ]
+  },
+  "ts/profile.ts": {
+    "file": "assets/profile-DnV3JzQb.js",
+    "name": "profile",
+    "src": "ts/profile.ts",
+    "isEntry": true
   }
 }
