@@ -20,7 +20,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <button id="counter" type="button"></button>
     </div>
     <p class="read-the-docs">
-      Click on the logos to learn more. Sasha dura pidor koziol mudila
+      Denchik bomjixa obossanaya. Evo ebali musora.
     </p>
   </div>
 `;
