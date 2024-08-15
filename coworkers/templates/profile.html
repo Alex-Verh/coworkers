@@ -4,29 +4,119 @@
     {% load static %} {% load django_vite %} {% vite_hmr_client %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ user.first_name }} {{ user.second_name }}'s Profile</title>
+    <title>COWORKER - Profile</title>
   </head>
   <body>
-    <div class="profile-container">
-      <div class="profile-header">
-        <img
-          src="{% static user.profile_picture.url %}"
-          alt="{{
-        user.first_name }}"
-          class="profile-image"
-        />
-        <h1>{{ user.first_name }} {{ user.second_name }}</h1>
-        <p class="bio">Bio</p>
+    <div class="container-fluid">
+      <header class="row header">
+        <div class="col-md-2 logo">Coworker</div>
+        <div class="col-md-8 name">Mr. Lorfansson</div>
+        <div class="col-md-2">
+          <div class="button">Find Worker</div>
+        </div>
+      </header>
+      <div class="container">
+        <main class="profile">
+        <div class="row g-5">
+
+          <div class="col-md-4">
+            <img src="https://placehold.co/315x315" alt="Profile Image" class="profile-image">
+          </div>
+
+          <div class="col-md-6">
+            <div class="personal-info">
+              <h1 class="personal-name">Mr. Lorfansson</h1>
+              <p class="personal-age">Born in <span>28 February 1965 (59 </span> years)</p>
+              <p class="personal-location">Based in <span>Amsterdam, The Netherlands</span></p>
+              <p class="personal-raking">Ranking based on profile settings. <span>LVL3</span></p>
+              <div class="personal-buttons d-flex justify-content-between">
+                <div class="button">Send Email</div>
+                <div class="button">See Portfolio</div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="d-flex justify-content-around profile-links">
+            <hr class="line">
+
+                <span class="profile-link">Personal Data</span>
+
+                <span class="profile-link profile-link_active">Work Timeline</span>
+
+                <span class="profile-link">Education</span>
+
+                <span class="profile-link">Personal Attributes</span>
+          </div>
+
+          <div class="col-md-6">
+            <div class="personal-field">
+              <div class="personal-label">Full Name</div>
+              <div class="personal-value"><strong>David van Lorfansson</strong></div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="personal-field">
+              <div class="personal-label">Nationality</div>
+              <div class="personal-value"><strong>Dutch, Russian</strong></div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="personal-field">
+              <div class="personal-label">Languages</div>
+              <div class="personal-list">
+                <div class="personal-value"><strong>Dutch</strong> - Native or bilingual proficiency</div>
+                <div class="personal-value"><strong>Russian</strong> - Native or bilingual proficiency</div>
+                <div class="personal-value"><strong>German</strong> - Professional working proficiency</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="personal-field">
+              <div class="personal-label">Salary Expectations</div>
+              <div class="personal-value"><strong>120k</strong> - <strong>180k</strong> Euro/year</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="personal-field">
+              <div class="personal-label">Current Location</div>
+              <div class="personal-value"><strong>Amsterdam, The Netherlands</strong></div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="personal-field">
+              <div class="personal-label">Contact Details</div>
+              <div class="personal-list">
+                <div class="personal-value"><strong>German</strong> - Professional working proficiency</div>
+                <div class="personal-value"><strong>LinkedIn</strong> - https://www.linkedin.com/in/lorfansson-1651605227/</div>
+                <div class="personal-value"><strong>XING</strong> - https://www.xing.com/</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </main>
       </div>
-      <div class="profile-details">
-        <h2>Details</h2>
-        <p><strong>Email:</strong> {{ user.email_address }}</p>
-        <p><strong>Birth date:</strong> {{ user.birth_date|date:"F j, Y" }}</p>
-        <p><strong>Location:</strong> {{ user.location }}</p>
-      </div>
-      <div class="profile-footer">
-        <a href="#" class="btn">Edit Profile</a>
-      </div>
+
+      <footer class="footer">
+        <h2>Contact Us</h2>
+        <div class="logos">
+          <img src="https://linkedin.com/" alt="LinkedIn" class="logo">
+          <img src="https://github.com/" alt="Github" class="logo">
+          <img src="https://www.instagram.com/" alt="Instagram" class="logo">
+          <img src="https://www.facebook.com/" alt="Facebook" class="logo">
+          <img src="https://x.com/" alt="Twitter" class="logo">
+        </div>
+        <div class="terms">Terms and Conditions</div>
+        <br>
+        <span>Have a question?</span>
+        <div class="message">Send Message</div>
+      </footer>
     </div>
     {% vite_asset 'ts/profile.ts' %}
   </body>
