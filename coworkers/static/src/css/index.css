@@ -134,3 +134,19 @@
 .profile_information {
   border-right: 1px solid #757575;
 }
+
+
+/* Scroll */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #7B7878; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #622A2A;
+}
