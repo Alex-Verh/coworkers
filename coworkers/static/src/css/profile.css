@@ -1,15 +1,12 @@
 @import "../public/fonts/fonts.css";
 
-body {
-    background-color: #F8F8F8;
-}
 
 .container-fluid {
     padding: 0 !important;
 }
 
 .header {
-    margin: 20px 0 50px 0 !important;
+    margin: 10px 0 50px 0 !important;
     font-family: JosefinSlab, sans-serif;
     font-size: 24px;
 }
@@ -35,7 +32,7 @@ body {
     width: 235px;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    font-size: 24px;
+    font-size: 20px;
     font-family: JosefinSlab, sans-serif;
     cursor: pointer;
 }

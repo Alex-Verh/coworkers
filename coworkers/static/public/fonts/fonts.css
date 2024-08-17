@@ -1,5 +1,15 @@
 @font-face {
     font-family: 'Jost';
+    src: local('Jost-LightItalic'), local('Jost-LightItalic'),
+    url('Jost-LightItalic.woff2') format('woff2'),
+    url('Jost-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Jost';
     src: local('Jost-Light'), local('Jost-Light'),
     url('Jost-Light.woff2') format('woff2'),
     url('Jost-Light.woff') format('woff');
