@@ -163,7 +163,7 @@
 
 .pmodal {
   background: #F8F8F8;
-  width: 1000px;
+  width: 800px;
   position: fixed;
   z-index: 9999;
   padding: 20px 50px 50px 50px;
@@ -180,12 +180,44 @@
   cursor: pointer;
 }
 
-.pmodal_save {
+.pmodal_save, .pmodal_remove {
   color: #A74848;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   cursor: pointer;
+}
+
+.pmodal_remove, .pmodal_level, .pmodal_hint {
+  font-size: 16px;
+}
+
+.pmodal_hint {
+  margin-top: 10px !important;
+}
+
+.pmodal_level {
+  font-weight: 400;
+}
+
+.pmodal_level_active {
+  color: #003C09;
+  text-decoration: underline;
+}
+
+.pmodal_save {
   margin-top: 50px;
+}
+
+.search_result {
+  margin-top: 20px;
+  height: 180px;
+  overflow: scroll;
+  overflow-x: hidden;
+  padding: 0 10px;
+}
+
+.search_result::-webkit-scrollbar {
+  width: 3px;
 }
 
 .pmodal_title {
@@ -197,11 +229,33 @@
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.22);
   outline: none;
   border: none;
-  width: 80%;
-  padding: 8px 15px;
+  padding: 10px 15px 5px 15px;
+  width: 100%;
+  font-size: 28px;
 }
 
 .textarea {
   resize: none;
-  
+  font-size: 24px;
+}
+
+.textarea::placeholder {
+  font-size: 28px;
+}
+
+.nationality {
+  cursor: pointer;
+}
+
+.language {
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.nationality_active, .pmodal_hint {
+  color: #622A2A;
+}
+
+.checkbox {
+  font-size: 16px;
 }
