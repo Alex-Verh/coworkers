@@ -2,13 +2,12 @@ from django.contrib import admin
 
 from .models import (
     CustomUser,
-    EducationExperience,
+    Experience,
     Language,
     Nationality,
     Rank,
     Trait,
     WorkerTrait,
-    WorkExperience,
 )
 
 # Register your models here.
@@ -19,8 +18,7 @@ admin.site.register(
         Language,
         Trait,
         CustomUser,
-        EducationExperience,
-        WorkExperience,
+        Experience,
         WorkerTrait,
     )
 )

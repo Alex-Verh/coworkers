@@ -5,6 +5,8 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
+from datetime import datetime
 
 
 class CustomUserManager(BaseUserManager):
@@ -78,10 +80,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         upload_to="profile_pictures/", null=True, blank=True
     )
     location = models.CharField(max_length=255, null=True, blank=True)
-    salary_expectation = models.DecimalField(
+    salary_minimum = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    salary_maximum = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
     linkedin_link = models.URLField(null=True, blank=True)
+    xing_link = models.URLField(null=True, blank=True)
     personal_link = models.URLField(null=True, blank=True)
     portfolio_link = models.URLField(null=True, blank=True)
     rank = models.ForeignKey(Rank, on_delete=models.CASCADE, null=True, blank=True)
@@ -101,28 +107,33 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return f"{self.first_name} {self.last_name}"
 
 
-class EducationExperience(models.Model):
-    education_id = models.AutoField(primary_key=True)
+class Experience(models.Model):
+    EXPERIENCE_TYPE = [
+        ('Education', 'Education'),
+        ('Work', 'Work'),
+    ]
+    CURRENT_YEAR = datetime.now().year
+
+
+    experience_id = models.AutoField(primary_key=True)
     institution_name = models.CharField(max_length=255)
-    study_name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
     description = models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField()
-    certificate = models.CharField(max_length=255)
+
+    start_year = models.IntegerField(
+        validators=[
+            MinValueValidator(1900),
+            MaxValueValidator(CURRENT_YEAR)
+        ]
+    )
+    end_year = models.IntegerField(
+        validators=[
+            MinValueValidator(1900),
+            MaxValueValidator(CURRENT_YEAR)
+        ], null=True, blank=True
+    )
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.study_name
-
-
-class WorkExperience(models.Model):
-    work_id = models.AutoField(primary_key=True)
-    company_name = models.CharField(max_length=255)
-    job_position = models.CharField(max_length=255)
-    description = models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField()
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    type = models.CharField(max_length=50, choices=EXPERIENCE_TYPE)
 
     def __str__(self):
         return self.job_position
