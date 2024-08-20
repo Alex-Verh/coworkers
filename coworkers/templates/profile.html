@@ -10,7 +10,7 @@
     <div class="container-fluid">
       <header class="row header">
         <div class="col-md-2 d-flex justify-content-center align-items-center logo">Coworker</div>
-        <div class="col-md-8 d-flex align-items-center justify-content-center name">Mr. Lorfansson</div>
+        <div class="col-md-8 d-flex align-items-center justify-content-center name">Mr. {{ user.last_name }}</div>
         <div class="col-md-2 d-flex align-items-center">
           <div class="button">Find Worker</div>
         </div>
@@ -25,9 +25,9 @@
 
           <div class="col-md-6">
             <div class="personal-info">
-              <h1 class="personal-name">Mr. Lorfansson</h1>
-              <p class="personal-age">Born in <span>28 February 1965 (59 </span> years)</p>
-              <p class="personal-location">Based in <span>Amsterdam, The Netherlands</span></p>
+              <h1 class="personal-name">Mr. {{ user.last_name }}</h1>
+              <p class="personal-age">Born in <span>{{ user.birth_date | date:"j F Y" }} ({{ user.age }} </span> years)</p>
+              <p class="personal-location">Based in <span>{{ user.location }}</span></p>
               <p class="personal-raking">Ranking based on profile settings. <span>LVL3</span></p>
               <div class="personal-buttons d-flex justify-content-between">
                 <div class="button">Send Email</div>
@@ -147,51 +147,28 @@
 
 
 
-          <!-- <div class="col-md-12">
+          <div class="col-md-12">
             <div class="timeline">
-              <div class="experience">
-                <div class="experience_time">2019 - Present</div>
-                <div class="experience_position">Senior Data Scientist</div>
-                <div class="experience_location">Ganziah CO Company</div>
-                <div class="experience_description">Working on web scraping and analysis of big chucks of data by applying mechanical engineering techniques related to the appliance of the things related to the what could be helpful of management of groups of web development engineers which is complaining about the stuffing of the company.  Working on web scraping and analysis of big chucks of data by applying mechanical engineering techniques related to the appliance of the things related to the what could be helpful of management of groups of web development engineers which is complaining about the stuffing of the company. </div>
-              </div>
 
-              <div class="experience">
-                <div class="experience_time">2019 - Present</div>
-                <div class="experience_position">Senior Data Scientist</div>
-                <div class="experience_location">Ganziah CO Company</div>
-                <div class="experience_description">Working on web scraping and analysis of big chucks of data by applying mechanical engineering techniques related to the appliance of the things related to the what could be helpful of management of groups of web development engineers which is complaining about the stuffing of the company. </div>
-              </div>
-
-              <div class="experience">
-                <div class="experience_time">2019 - Present</div>
-                <div class="experience_position">Senior Data Scientist</div>
-                <div class="experience_location">Ganziah CO Company</div>
-                <div class="experience_description">Working on web scraping and analysis of big chucks of data by applying mechanical engineering techniques related to the appliance of the things related to the what could be helpful of management of groups of web development engineers which is complaining about the stuffing of the company. </div>
-              </div>
-
-              <div class="experience">
-                <div class="experience_time">2019 - Present</div>
-                <div class="experience_position">Senior Data Scientist</div>
-                <div class="experience_location">Ganziah CO Company</div>
-                <div class="experience_description">Working on web scraping and analysis of big chucks of data by applying mechanical engineering techniques related to the appliance of the things related to the what could be helpful of management of groups of web development engineers which is complaining about the stuffing of the company. </div>
-              </div>
-
-              <div class="experience">
-                <div class="experience_time">2019 - Present</div>
-                <div class="experience_position">Senior Data Scientist</div>
-                <div class="experience_location">Ganziah CO Company</div>
-                <div class="experience_description">Working on web scraping and analysis of big chucks of data by applying mechanical engineering techniques related to the appliance of the things related to the what could be helpful of management of groups of web development engineers which is complaining about the stuffing of the company. </div>
-              </div>
-
-              <div class="experience">
-                <div class="experience_time">2019 - Present</div>
-                <div class="experience_position">Senior Data Scientist</div>
-                <div class="experience_location">Ganziah CO Company</div>
-                <div class="experience_description">Working on web scraping and analysis of big chucks of data by applying mechanical engineering techniques related to the appliance of the things related to the what could be helpful of management of groups of web development engineers which is complaining about the stuffing of the company. </div>
-              </div>
-            </div>
-          </div> -->
+              {% if experiences %}
+                {% for experience in experiences %}
+                  <div class="experience">
+                    <div class="experience_time">
+                        {% if experience.end_year %}
+                            {{ experience.start_year }} - {{ experience.end_year }}
+                        {% else %}
+                            {{ experience.start_year }} - Present
+                        {% endif %}
+                    </div>
+                    <div class="experience_position">{{ experience.position }}</div>
+                    <div class="experience_location">{{ experience.institution_name }}</div>
+                    <div class="experience_description">{{ experience.description }}</div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                  <p>No experience available.</p>
+              {% endif %}
+          </div>
 
 
 
@@ -202,11 +179,11 @@
 
 
 
-
+<!-- 
           <div class="col-md-6">
             <div class="personal-field">
               <div class="personal-label">Full Name</div>
-              <div class="personal-value"><strong>David van Lorfansson</strong></div>
+              <div class="personal-value"><strong>{{ user.first_name }} {{ user.last_name }} </strong></div>
             </div>
           </div>
 
@@ -231,14 +208,14 @@
           <div class="col-md-6">
             <div class="personal-field">
               <div class="personal-label">Salary Expectations</div>
-              <div class="personal-value"><strong>120k</strong> - <strong>180k</strong> Euro/year</div>
+              <div class="personal-value"><strong>{{  formatted_salary_minimum }}</strong> - <strong>{{ formatted_salary_maximum }}</strong> Euro/year</div>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="personal-field">
               <div class="personal-label">Current Location</div>
-              <div class="personal-value"><strong>Amsterdam, The Netherlands</strong></div>
+              <div class="personal-value"><strong> {{user.location}} </strong></div>
             </div>
           </div>
 
@@ -246,13 +223,29 @@
             <div class="personal-field">
               <div class="personal-label">Contact Details</div>
               <div class="personal-list">
-                <div class="personal-value"><strong>LinkedIn</strong> - https://www.linkedin.com/in/lorfansson-1651605227/</div>
-                <div class="personal-value"><strong>XING</strong> - https://www.xing.com/</div>
+                {% if user.linkedin_link %}
+                  <div class="personal-value"><strong>LinkedIn</strong> - {{ user.linkedin_link }}</div>
+                {% endif %}
+                {% if user.xing_link %}
+                  <div class="personal-value"><strong>XING</strong> - {{ user.xing_link }}</div>
+                {% endif %}
+                {% if user.personal_link %}
+                  <div class="personal-value"><strong>XING</strong> - {{ user.personal_link }}</div>
+                {% endif %}
+
+                {% if not user.linkedin_link and not user.xing_link and not user.personal_link %}
+                  <div class="personal-value">No contact details provided.</div>
+                {% endif %}
               </div>
             </div>
           </div>
 
-        </div>
+        </div> -->
+
+
+
+
+
         </main>
       </div>
 

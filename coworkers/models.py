@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-from datetime import datetime
+from datetime import datetime, date
 
 
 class CustomUserManager(BaseUserManager):
@@ -105,6 +105,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+    @property
+    def age(self):
+        today = date.today()
+        return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
+    
+    def formatted_salary(self, salary):
+        if salary >= 1000:
+            return f"{int(salary // 1000)}k"
+        return f"{salary:.0f}" if salary.is_integer() else f"{salary:.2f}"
 
 
 class Experience(models.Model):
@@ -132,11 +142,11 @@ class Experience(models.Model):
             MaxValueValidator(CURRENT_YEAR)
         ], null=True, blank=True
     )
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, related_name='experiences', on_delete=models.CASCADE)
     type = models.CharField(max_length=50, choices=EXPERIENCE_TYPE)
 
     def __str__(self):
-        return self.job_position
+        return self.position
 
 
 class WorkerTrait(models.Model):
