@@ -7,9 +7,11 @@ from .models import CustomUser
 class IndexView(generic.ListView):
     template_name = "index.html"
 
+    context_object_name = 'users'
+
     def get_queryset(self):
         """Return the last five published questions."""
-        return CustomUser.objects.all()[:20]
+        return CustomUser.objects.all()[:6]
 
 
 class ProfileView(generic.DetailView):

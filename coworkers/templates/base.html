@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %} {% load django_vite %} {% vite_hmr_client %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COWORKER - {% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <header class="row header">
+        <div class="col-md-2 d-flex justify-content-center align-items-center logo">Coworker</div>
+        <div class="col-md-8 d-flex justify-content-center align-items-center name">Mr. Lorfansson</div>
+        <div class="col-md-2 d-flex align-items-center">
+          <div class="button">Find Worker</div>
+        </div>
+      </header>
+
+      <main class="container">
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="footer">
+        <h2>Contact Us</h2>
+        <div class="logos">
+          <img src="https://linkedin.com/" alt="LinkedIn" class="logo">
+          <img src="https://github.com/" alt="Github" class="logo">
+          <img src="https://www.instagram.com/" alt="Instagram" class="logo">
+          <img src="https://www.facebook.com/" alt="Facebook" class="logo">
+          <img src="https://x.com/" alt="Twitter" class="logo">
+        </div>
+        <div class="terms">Terms and Conditions</div>
+        <br>
+        <span>Have a question?</span>
+        <div class="message">Send Message</div>
+      </footer>
+    </div>
+    {% block typescript %}{% endblock %}
+  </body>
+</html>

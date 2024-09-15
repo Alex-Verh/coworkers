@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    {% load static %} {% load django_vite %} {% vite_hmr_client %}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COWORKER - Profile</title>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <header class="row header">
-        <div class="col-md-2 d-flex justify-content-center align-items-center logo">Coworker</div>
-        <div class="col-md-8 d-flex justify-content-center align-items-center name">Mr. Lorfansson</div>
-        <div class="col-md-2 d-flex align-items-center">
-          <div class="button">Find Worker</div>
-        </div>
-      </header>
-
       <!-- <div class="overlay d-flex justify-content-center align-items-center">
         <div class="pmodal">
           <img src="../static/public/icons/close.svg" alt="Close" class="pmodal_close">
@@ -186,177 +168,119 @@
         </div>
       </div>  -->
 
-      <main class="container">
-        <div class="quote">“The best workers are here”</div>
+{% extends "base.html" %}
 
-        <section class="row g-5">
+{% load django_vite %} 
 
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="quote">“The best workers are here”</div>
+
+    <section class="row g-5">
+      {% if users %}
+
+        {% for user in users %}
           <div class="col-md-6">
             <div class="profile_application d-flex align-items-center">
               <img src="https://placehold.co/85x85" alt="Profile Image" class="profile_image">
               <div class="profile_info">
-                <div class="profile_name">Mr. Jacobsen</div>
-                <div class="profile_position">Certified Software Developer</div>
-                <div class="profile_experience">5 year experience</div>
+                <div class="profile_name">{{ user.first_name }} {{ user.last_name }}</div>
+                <div class="profile_position">{{ user.position }}</div>
+                <div class="profile_experience">{{ user.experience }} year experience</div>
               </div>
             </div>
           </div>
+        {% endfor %}
 
+      {% endif %}
+
+    </section>
+
+    <div class="quote">“Did not find one, yet?”</div>
+
+    <div class="searchbar">
+      <div class="row g-3">
           <div class="col-md-6">
-            <div class="profile_application d-flex align-items-center">
-              <img src="https://placehold.co/85x85" alt="Profile Image" class="profile_image">
-              <div class="profile_info">
-                <div class="profile_name">Mr. Jacobsen</div>
-                <div class="profile_position">Certified Software Developer</div>
-                <div class="profile_experience">5 year experience</div>
-              </div>
-            </div>
+              <input type="text" name="find_worker" placeholder="Search workers by job name" class="searchbar_field" />
           </div>
-
-          <div class="col-md-6">
-            <div class="profile_application d-flex align-items-center">
-              <img src="https://placehold.co/85x85" alt="Profile Image" class="profile_image">
-              <div class="profile_info">
-                <div class="profile_name">Mr. Jacobsen</div>
-                <div class="profile_position">Certified Software Developer</div>
-                <div class="profile_experience">5 year experience</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="profile_application d-flex align-items-center">
-              <img src="https://placehold.co/85x85" alt="Profile Image" class="profile_image">
-              <div class="profile_info">
-                <div class="profile_name">Mr. Jacobsen</div>
-                <div class="profile_position">Certified Software Developer</div>
-                <div class="profile_experience">5 year experience</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="profile_application d-flex align-items-center">
-              <img src="https://placehold.co/85x85" alt="Profile Image" class="profile_image">
-              <div class="profile_info">
-                <div class="profile_name">Mr. Jacobsen</div>
-                <div class="profile_position">Certified Software Developer</div>
-                <div class="profile_experience">5 year experience</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="profile_application d-flex align-items-center">
-              <img src="https://placehold.co/85x85" alt="Profile Image" class="profile_image">
-              <div class="profile_info">
-                <div class="profile_name">Mr. Jacobsen</div>
-                <div class="profile_position">Certified Software Developer</div>
-                <div class="profile_experience">5 year experience</div>
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-        <div class="quote">“Did not find one, yet?”</div>
-
-        <div class="searchbar">
-          <div class="row g-3">
-              <div class="col-md-6">
-                  <input type="text" name="find_worker" placeholder="Search workers by job name" class="searchbar_field" />
-              </div>
-              <div class="col-md-3">
-                  <div class="searchbar_filter">Experience</div>
-              </div>
-              <div class="col-md-3">
-                  <div class="searchbar_filter">Platform Rank</div>
-              </div>
-              <div class="col-md-4">
-                  <div class="searchbar_filter">Location</div>
-              </div>
-              <div class="col-md-4">
-                  <div class="searchbar_filter">Language</div>
-              </div>
-              <div class="col-md-4">
-                  <div class="searchbar_filter">Salary Expectation</div>
-              </div>
-          </div>
-      </div>
-
-      <div class="search_profile">
-        <div class="row align-items-center">
           <div class="col-md-3">
-            <div class="profile_information">
-              <div class="profile_name">Mr. Jacobsen</div>
-              <div class="profile_position">Certified Software Developer</div>
-              <div class="profile_experience">5 year experience</div>
-            </div>
-        </div>
-          <div class="col-md-9">
-            <div class="profile_description">
-              Mrs. Jengars has completed her bachelor’s degree (BSc Management, Society & Technology) in 2019. 
-              In 2020, Mrs. Jengars has finished her master’s degree (Law and Society MSc) in Leiden University, the Netherlands. 
-              Currently, working for an year in Brantersburg School. 
-            </div>
+              <div class="searchbar_filter">Experience</div>
           </div>
-        </div>
-      </div>
-
-      <div class="search_profile">
-        <div class="row align-items-center">
           <div class="col-md-3">
-            <div class="profile_information">
-              <div class="profile_name">Mr. Jacobsen</div>
-              <div class="profile_position">Certified Software Developer</div>
-              <div class="profile_experience">5 year experience</div>
-            </div>
-        </div>
-          <div class="col-md-9">
-            <div class="profile_description">
-              Currently, she is in a search of a job. 
-            </div>
+              <div class="searchbar_filter">Platform Rank</div>
           </div>
-        </div>
+          <div class="col-md-4">
+              <div class="searchbar_filter">Location</div>
+          </div>
+          <div class="col-md-4">
+              <div class="searchbar_filter">Language</div>
+          </div>
+          <div class="col-md-4">
+              <div class="searchbar_filter">Salary Expectation</div>
+          </div>
       </div>
+  </div>
 
-      <div class="search_profile">
-        <div class="row align-items-center">
-          <div class="col-md-3">
-            <div class="profile_information">
-              <div class="profile_name">Mr. Jacobsen</div>
-              <div class="profile_position">Certified Software Developer</div>
-              <div class="profile_experience">5 year experience</div>
-            </div>
-          </div>
-          <div class="col-md-9">
-            <div class="profile_description">
-              Mrs. Jengars has completed her bachelor’s degree (BSc Management, Society & Technology) in 2019. 
-              Mr. Jacobsen has completed his bachelor’s degree (BSc Management, Society & Technology) in 2019. In 2020, Mr. Jacobsen has finished his master’s degree (Law and Society MSc) in Leiden University, the Netherlands. Currently, she is in a search of a job. 
-            </div>
-          </div>
+  <div class="search_profile">
+    <div class="row align-items-center">
+      <div class="col-md-3">
+        <div class="profile_information">
+          <div class="profile_name">Mr. Jacobsen</div>
+          <div class="profile_position">Certified Software Developer</div>
+          <div class="profile_experience">5 year experience</div>
         </div>
-      </div>
-
-      <div class="button searchbar_btn">Show More</div>
-
-      </main>
-
-      <footer class="footer">
-        <h2>Contact Us</h2>
-        <div class="logos">
-          <img src="https://linkedin.com/" alt="LinkedIn" class="logo">
-          <img src="https://github.com/" alt="Github" class="logo">
-          <img src="https://www.instagram.com/" alt="Instagram" class="logo">
-          <img src="https://www.facebook.com/" alt="Facebook" class="logo">
-          <img src="https://x.com/" alt="Twitter" class="logo">
-        </div>
-        <div class="terms">Terms and Conditions</div>
-        <br>
-        <span>Have a question?</span>
-        <div class="message">Send Message</div>
-      </footer>
     </div>
-    {% vite_asset 'ts/index.ts' %}
-  </body>
-</html>
+      <div class="col-md-9">
+        <div class="profile_description">
+          Mrs. Jengars has completed her bachelor’s degree (BSc Management, Society & Technology) in 2019. 
+          In 2020, Mrs. Jengars has finished her master’s degree (Law and Society MSc) in Leiden University, the Netherlands. 
+          Currently, working for an year in Brantersburg School. 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search_profile">
+    <div class="row align-items-center">
+      <div class="col-md-3">
+        <div class="profile_information">
+          <div class="profile_name">Mr. Jacobsen</div>
+          <div class="profile_position">Certified Software Developer</div>
+          <div class="profile_experience">5 year experience</div>
+        </div>
+    </div>
+      <div class="col-md-9">
+        <div class="profile_description">
+          Currently, she is in a search of a job. 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search_profile">
+    <div class="row align-items-center">
+      <div class="col-md-3">
+        <div class="profile_information">
+          <div class="profile_name">Mr. Jacobsen</div>
+          <div class="profile_position">Certified Software Developer</div>
+          <div class="profile_experience">5 year experience</div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="profile_description">
+          Mrs. Jengars has completed her bachelor’s degree (BSc Management, Society & Technology) in 2019. 
+          Mr. Jacobsen has completed his bachelor’s degree (BSc Management, Society & Technology) in 2019. In 2020, Mr. Jacobsen has finished his master’s degree (Law and Society MSc) in Leiden University, the Netherlands. Currently, she is in a search of a job. 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="button searchbar_btn">Show More</div>
+
+{% endblock %}
+
+{% block typescript %}
+  {% vite_asset 'ts/index.ts' %}
+{% endblock %}

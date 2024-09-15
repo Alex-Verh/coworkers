@@ -111,6 +111,33 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         today = date.today()
         return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
     
+    @property
+    def position(self):
+        work_experiences = self.experiences.filter(type='Work').order_by('start_year')
+
+        if not work_experiences.exists():
+            return "Job Seeker"
+
+        latest_experience = work_experiences.last()
+        lastest_position = latest_experience.position
+
+        return lastest_position
+
+    @property
+    def experience(self):
+        work_experiences = self.experiences.filter(type='Work').order_by('start_year')
+        
+        if not work_experiences.exists():
+            return 0
+
+        first_experience = work_experiences.first()
+        latest_experience = work_experiences.last()
+
+        end_year = latest_experience.end_year or date.today().year
+
+        total_experience = end_year - first_experience.start_year
+        return total_experience
+    
     def formatted_salary(self, salary):
         if salary >= 1000:
             return f"{int(salary // 1000)}k"

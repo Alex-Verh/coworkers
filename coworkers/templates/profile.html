@@ -1,22 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    {% load static %} {% load django_vite %} {% vite_hmr_client %}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COWORKER - Profile</title>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <header class="row header">
-        <div class="col-md-2 d-flex justify-content-center align-items-center logo">Coworker</div>
-        <div class="col-md-8 d-flex align-items-center justify-content-center name">Mr. {{ user.last_name }}</div>
-        <div class="col-md-2 d-flex align-items-center">
-          <div class="button">Find Worker</div>
-        </div>
-      </header>
-      <div class="container">
-        <main class="profile">
+{% extends "base.html" %}
+
+{% load django_vite %} 
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+      <main class="profile">
         <div class="row g-5">
 
           <div class="col-md-4">
@@ -49,221 +38,16 @@
                 <span class="profile-link">Personal Attributes</span>
           </div>
 
+          {% include "components/profile_attributes.html" %}
+          {% include "components/profile_data.html" %}
+          {% include "components/profile_experience.html" %}
 
 
+      </main>
 
+{% endblock %}
 
-
-
-
-
-
-          <!-- <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Openness</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="openness">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Flexibility</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="flexibility">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Adaptability</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="adaptability">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Creativeness</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="creativeness">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Humbleness</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="humbleness">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Punctuality</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="punctuality">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Curiosity</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="curiosity">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Ethics</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="ethics">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Organization</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="organization">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Analycticalness</div>
-              <input class="personal-slider" type="range" min="1" max="100" value="1" id="analycticalness">
-              <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-            </div>
-          </div> -->
-
-
-
-
-
-
-
-
-
-
-          <div class="col-md-12">
-            <div class="timeline">
-
-              {% if experiences %}
-                {% for experience in experiences %}
-                  <div class="experience">
-                    <div class="experience_time">
-                        {% if experience.end_year %}
-                            {{ experience.start_year }} - {{ experience.end_year }}
-                        {% else %}
-                            {{ experience.start_year }} - Present
-                        {% endif %}
-                    </div>
-                    <div class="experience_position">{{ experience.position }}</div>
-                    <div class="experience_location">{{ experience.institution_name }}</div>
-                    <div class="experience_description">{{ experience.description }}</div>
-                  </div>
-                {% endfor %}
-              {% else %}
-                  <p>No experience available.</p>
-              {% endif %}
-          </div>
-
-
-
-
-
-
-
-
-
-
-<!-- 
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Full Name</div>
-              <div class="personal-value"><strong>{{ user.first_name }} {{ user.last_name }} </strong></div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Nationality</div>
-              <div class="personal-value"><strong>Dutch, Russian</strong></div>
-            </div>
-          </div>
-
-          <div class="col-md-12">
-            <div class="personal-field">
-              <div class="personal-label">Languages</div>
-              <div class="personal-list">
-                <div class="personal-value"><strong>Dutch</strong> - Native or bilingual proficiency</div>
-                <div class="personal-value"><strong>Russian</strong> - Native or bilingual proficiency</div>
-                <div class="personal-value"><strong>German</strong> - Professional working proficiency</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Salary Expectations</div>
-              <div class="personal-value"><strong>{{  formatted_salary_minimum }}</strong> - <strong>{{ formatted_salary_maximum }}</strong> Euro/year</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="personal-field">
-              <div class="personal-label">Current Location</div>
-              <div class="personal-value"><strong> {{user.location}} </strong></div>
-            </div>
-          </div>
-
-          <div class="col-md-12">
-            <div class="personal-field">
-              <div class="personal-label">Contact Details</div>
-              <div class="personal-list">
-                {% if user.linkedin_link %}
-                  <div class="personal-value"><strong>LinkedIn</strong> - {{ user.linkedin_link }}</div>
-                {% endif %}
-                {% if user.xing_link %}
-                  <div class="personal-value"><strong>XING</strong> - {{ user.xing_link }}</div>
-                {% endif %}
-                {% if user.personal_link %}
-                  <div class="personal-value"><strong>XING</strong> - {{ user.personal_link }}</div>
-                {% endif %}
-
-                {% if not user.linkedin_link and not user.xing_link and not user.personal_link %}
-                  <div class="personal-value">No contact details provided.</div>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-
-        </div> -->
-
-
-
-
-
-        </main>
-      </div>
-
-      <footer class="footer">
-        <h2>Contact Us</h2>
-        <div class="logos">
-          <img src="https://linkedin.com/" alt="LinkedIn" class="logo">
-          <img src="https://github.com/" alt="Github" class="logo">
-          <img src="https://www.instagram.com/" alt="Instagram" class="logo">
-          <img src="https://www.facebook.com/" alt="Facebook" class="logo">
-          <img src="https://x.com/" alt="Twitter" class="logo">
-        </div>
-        <div class="terms">Terms and Conditions</div>
-        <br>
-        <span>Have a question?</span>
-        <div class="message">Send Message</div>
-      </footer>
-    </div>
-    {% vite_asset 'ts/profile.ts' %}
-  </body>
-</html>
+{% block typescript %}
+  {% vite_asset 'ts/profile.ts' %}
+{% endblock %}
+        

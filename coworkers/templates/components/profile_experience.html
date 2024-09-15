@@ -1,0 +1,22 @@
+<div class="col-md-12">
+    <div class="timeline">
+      {% if experiences %}
+        {% for experience in experiences %}
+          <div class="experience">
+            <div class="experience_time">
+                {% if experience.end_year %}
+                    {{ experience.start_year }} - {{ experience.end_year }}
+                {% else %}
+                    {{ experience.start_year }} - Present
+                {% endif %}
+            </div>
+            <div class="experience_position">{{ experience.position }}</div>
+            <div class="experience_location">{{ experience.institution_name }}</div>
+            <div class="experience_description">{{ experience.description }}</div>
+          </div>
+        {% endfor %}
+        {% else %}
+            <p>No experience available.</p>
+        {% endif %}
+</div>
+

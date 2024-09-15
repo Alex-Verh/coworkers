@@ -1,0 +1,61 @@
+<div class="col-md-6">
+    <div class="personal-field">
+        <div class="personal-label">Full Name</div>
+        <div class="personal-value"><strong>{{ user.first_name }} {{ user.last_name }} </strong></div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+    <div class="personal-field">
+        <div class="personal-label">Nationality</div>
+        <div class="personal-value"><strong>Dutch, Russian</strong></div>
+    </div>
+    </div>
+
+    <div class="col-md-12">
+    <div class="personal-field">
+        <div class="personal-label">Languages</div>
+        <div class="personal-list">
+        <div class="personal-value"><strong>Dutch</strong> - Native or bilingual proficiency</div>
+        <div class="personal-value"><strong>Russian</strong> - Native or bilingual proficiency</div>
+        <div class="personal-value"><strong>German</strong> - Professional working proficiency</div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+    <div class="personal-field">
+        <div class="personal-label">Salary Expectations</div>
+        <div class="personal-value"><strong>{{  formatted_salary_minimum }}</strong> - <strong>{{ formatted_salary_maximum }}</strong> Euro/year</div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+    <div class="personal-field">
+        <div class="personal-label">Current Location</div>
+        <div class="personal-value"><strong> {{user.location}} </strong></div>
+    </div>
+    </div>
+
+    <div class="col-md-12">
+    <div class="personal-field">
+        <div class="personal-label">Contact Details</div>
+        <div class="personal-list">
+        {% if user.linkedin_link %}
+            <div class="personal-value"><strong>LinkedIn</strong> - {{ user.linkedin_link }}</div>
+        {% endif %}
+        {% if user.xing_link %}
+            <div class="personal-value"><strong>XING</strong> - {{ user.xing_link }}</div>
+        {% endif %}
+        {% if user.personal_link %}
+            <div class="personal-value"><strong>XING</strong> - {{ user.personal_link }}</div>
+        {% endif %}
+
+        {% if not user.linkedin_link and not user.xing_link and not user.personal_link %}
+            <div class="personal-value">No contact details provided.</div>
+        {% endif %}
+        </div>
+    </div>
+    </div>
+
+</div>
