@@ -8,6 +8,7 @@ django = "*"
 psycopg2 = "*"
 pillow = "*"
 django-vite = "*"
+faker = "*"
 
 [dev-packages]
 

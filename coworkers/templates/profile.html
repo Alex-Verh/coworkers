@@ -38,10 +38,10 @@
                 <span class="profile-link">Personal Attributes</span>
           </div>
 
-          {% include "components/profile_attributes.html" %}
-          {% include "components/profile_data.html" %}
-          {% include "components/profile_experience.html" %}
-
+          <!-- {% include "components/profile_data.html" %}
+          {% include "components/profile_experience.html" with experience_type="Work" %} -->
+          {% include "components/profile_experience.html" with experience_type="Education" %}
+          <!-- {% include "components/profile_attributes.html" %} -->
 
       </main>
 
