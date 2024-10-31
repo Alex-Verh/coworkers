@@ -68,62 +68,6 @@
   border-right: 1px solid #757575;
 }
 
-.overlay {
-  position: fixed;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.3);
-  width: 100%;
-  height:100%;
-  z-index: 9998;
-}
-
-.pmodal {
-  background: #F8F8F8;
-  width: 800px;
-  position: fixed;
-  z-index: 9999;
-  padding: 20px 50px 50px 50px;
-  font-family: JosefinSlab, sans-serif;
-  font-weight: 300;
-  font-size: 32px;
-  text-align: center;
-}
-
-.pmodal_close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-}
-
-.pmodal_save, .pmodal_remove {
-  color: #A74848;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  cursor: pointer;
-}
-
-.pmodal_remove, .pmodal_level, .pmodal_hint {
-  font-size: 16px;
-}
-
-.pmodal_hint {
-  margin-top: 10px !important;
-}
-
-.pmodal_level {
-  font-weight: 400;
-}
-
-.pmodal_level_active {
-  color: #003C09;
-  text-decoration: underline;
-}
-
-.pmodal_save {
-  margin-top: 50px;
-}
 
 .search_result {
   margin-top: 20px;
@@ -135,11 +79,6 @@
 
 .search_result::-webkit-scrollbar {
   width: 3px;
-}
-
-.pmodal_title {
-  color: #622A2A;
-  margin-bottom: 50px;
 }
 
 .nationality {
