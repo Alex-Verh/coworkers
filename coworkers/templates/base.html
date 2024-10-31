@@ -10,27 +10,26 @@
     <div class="container-fluid">
       <header class="row header">
         <div class="col-md-2 d-flex justify-content-center align-items-center logo">Coworker</div>
-        <div class="col-md-8 d-flex justify-content-center align-items-center name">Mr. Lorfansson</div>
+        <div class="col-md-8 d-flex justify-content-center align-items-center name"><a href="#">Mr. Lorfansson</a></div>
         <div class="col-md-2 d-flex align-items-center">
-          <div class="button">Find Worker</div>
+          <div class="button">Create Account</div>
         </div>
       </header>
 
-      <main class="container">
+      <main class="container main">
         {% block content %}{% endblock %}
       </main>
 
       <footer class="footer">
         <h2>Contact Us</h2>
         <div class="logos">
-          <img src="https://linkedin.com/" alt="LinkedIn" class="logo">
-          <img src="https://github.com/" alt="Github" class="logo">
-          <img src="https://www.instagram.com/" alt="Instagram" class="logo">
-          <img src="https://www.facebook.com/" alt="Facebook" class="logo">
-          <img src="https://x.com/" alt="Twitter" class="logo">
+          <a href="https://linkedin.com/"><img src="{% static 'public/icons/linkedin.png' %}" alt="LinkedIn" class="logo"></a>
+          <a href="https://github.com/"><img src="{% static 'public/icons/github.png' %}" alt="Github" class="logo"></a>
+          <a href="https://www.instagram.com/"><img src="{% static 'public/icons/instagram.png' %}" alt="Instagram" class="logo"></a>
+          <a href="https://www.facebook.com/"><img src="{% static 'public/icons/facebook.png' %}" alt="Facebook" class="logo"></a>
+          <a href="https://x.com/"><img src="{% static 'public/icons/twitter.png' %}" alt="Twitter" class="logo"></a>
         </div>
         <div class="terms">Terms and Conditions</div>
-        <br>
         <span>Have a question?</span>
         <div class="message">Send Message</div>
       </footer>

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% load django_vite %} 
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<main class="register">
+    <div class="row g-5">
+
+      <div class="col-md-5">
+        <img src="https://placehold.co/415x415" alt="Profile Image" class="profile-image">
+      </div>
+
+      <div class="col-md-7">
+        <div class="personal-field">
+            <div class="personal-label">Full Name*</div>
+            <input type="text" id="full_name" name="full_name" class="input personal-value">
+        </div>
+
+        <div class="personal-field">
+            <div class="personal-label">Email Address*</div>
+            <input type="text" id="email_address" name="email_address" class="input personal-value">
+        </div>
+
+        <div class="personal-field">
+            <div class="personal-label">Personal Password*</div>
+            <input type="text" id="email_address" name="email_address" class="input personal-value">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="personal-field">
+            <div class="personal-label">Current Location, Country*</div>
+            <input type="text" id="location_country" name="location_country" class="input personal-value">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="personal-field">
+            <div class="personal-label">Current Location, City*</div>
+            <input type="text" id="location_city" name="location_city" class="input personal-value">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="personal-field">
+            <div class="personal-label">Birth Day*</div>
+            <input type="text" id="birth_day" name="birth_day" class="input personal-value">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="personal-field">
+            <div class="personal-label">Birth Month*</div>
+            <input type="text" id="birth_month" name="birth_month" class="input personal-value">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="personal-field">
+            <div class="personal-label">Birth Year*</div>
+            <input type="text" id="birth_year" name="birth_year" class="input personal-value">
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="personal-field">
+            <div class="personal-label">How did you find about us?</div>
+            <textarea id="findus" name="findus" class="textarea" rows="5"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="button register_btn">Create Account</div>
+
+{% endblock %}
+
+{% block typescript %}
+  {% vite_asset 'ts/register.ts' %}
+{% endblock %}
