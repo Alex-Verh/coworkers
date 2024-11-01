@@ -4,6 +4,13 @@ a {
     color: #622A2A !important;
 }
 
+button {
+    padding: 0;
+    border: none;
+    background: none;
+    display: block;
+}
+
 .container-fluid, body {
     padding: 0 !important;
     display: flex;

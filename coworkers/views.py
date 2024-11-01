@@ -1,6 +1,10 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from .models import CustomUser
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.urls import reverse_lazy
+from .forms import CustomUserCreationForm
 
 
 class IndexView(generic.ListView):
@@ -33,8 +37,14 @@ class ProfileView(generic.DetailView):
         return context
 
 
-class RegisterView(generic.ListView):
+class RegisterView(generic.FormView):
     template_name = "register.html"
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy('profile')
 
-    def get_queryset(self):
-        return 
+    def form_valid(self, form):
+        user = form.save()
+        username = form.cleaned_data.get('username')
+        messages.success(self.request, f'Account has been created. Good luck, {username}!')
+        return super().form_valid(form)
+

@@ -11,15 +11,14 @@ from datetime import datetime, date
 
 class CustomUserManager(BaseUserManager):
     def create_user(
-        self, email_address, first_name, last_name, password=None, **extra_fields
+        self, email_address, full_name, password=None, **extra_fields
     ):
         if not email_address:
             raise ValueError("The Email field must be set")
         email_address = self.normalize_email(email_address)
         user = self.model(
             email_address=email_address,
-            first_name=first_name,
-            last_name=last_name,
+            full_name=full_name,
             **extra_fields,
         )
         user.set_password(password)
@@ -27,13 +26,13 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(
-        self, email_address, first_name, last_name, password=None, **extra_fields
+        self, email_address, full_name, password=None, **extra_fields
     ):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
         return self.create_user(
-            email_address, first_name, last_name, password, **extra_fields
+            email_address, full_name, password, **extra_fields
         )
 
 
@@ -73,8 +72,7 @@ class Trait(models.Model):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email_address = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=200)
     birth_date = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(
         upload_to="profile_pictures/", null=True, blank=True
@@ -101,7 +99,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email_address"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ["full_name", "birth_date", "location"]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
