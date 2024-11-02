@@ -105,6 +105,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# AUTHENTICATION_BACKENDS = [
+#     'coworkers.backends.EmailBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
+
+LOGIN_REDIRECT_URL = '/profile/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

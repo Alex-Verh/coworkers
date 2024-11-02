@@ -1,9 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 from .models import CustomUser
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -51,7 +51,11 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
-
     class Meta:
         model = CustomUser
         fields = ("full_name", "email", "password", "full_name", "location_country", "location_city", "birth_day", "birth_month", "birth_year", "findus")
+
+
+# class CustomAuthenticationForm(AuthenticationForm):
+#     username = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input logininput', 'id': 'email_address'}))
+#     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input logininput', 'id': 'password'}))

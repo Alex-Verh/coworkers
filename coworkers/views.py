@@ -1,10 +1,12 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from .models import CustomUser
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.contrib.auth.views import LoginView
+# from .forms import CustomAuthenticationForm
 
 
 class IndexView(generic.ListView):
@@ -16,7 +18,7 @@ class IndexView(generic.ListView):
         """Return the last five published questions."""
         return CustomUser.objects.all()[:6]
 
-class ProfileView(generic.DetailView):
+class ProfileView(LoginRequiredMixin, generic.DetailView):
     model = CustomUser
     template_name = "profile.html"
     context_object_name = 'user'
@@ -43,8 +45,13 @@ class RegisterView(generic.FormView):
     success_url = reverse_lazy('profile')
 
     def form_valid(self, form):
-        user = form.save()
-        username = form.cleaned_data.get('username')
-        messages.success(self.request, f'Account has been created. Good luck, {username}!')
+        form.save()
+        user_name = form.cleaned_data.get('full_name')
+        messages.success(self.request, f'Account has been created. Good luck, {user_name}!')
         return super().form_valid(form)
 
+
+# class LoginView(LoginView):
+#     authentication_form = CustomAuthenticationForm
+#     template_name = 'login.html'
+#     redirect_authenticated_user = True 

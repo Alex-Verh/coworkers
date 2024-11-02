@@ -1,0 +1,21 @@
+@import "../public/fonts/fonts.css";
+
+
+.login {
+    padding: 50px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    padding-top: 60px !important;
+    font-family: Jost, sans-serif;
+    font-size: 20px;
+    margin: 0 auto 25px auto;
+    width: 450px;
+}
+
+.personal-label {
+    margin-top: 40px;
+}
+
+.login_btn {
+    margin: 70px auto;
+}
+  

@@ -10,10 +10,17 @@
     <div class="container-fluid">
       <header class="row header">
         <div class="col-md-2 d-flex justify-content-center align-items-center logo">Coworker</div>
-        <div class="col-md-8 d-flex justify-content-center align-items-center name"><a href="#">Mr. Lorfansson</a></div>
-        <div class="col-md-2 d-flex align-items-center">
-          <div class="button">Create Account</div>
-        </div>
+        {% if user.is_authenticated %}
+          <div class="col-md-8 d-flex justify-content-center align-items-center name"><a href="{% url 'my_profile' %}">{{user.full_name}}</a></div>
+          <div class="col-md-2 d-flex align-items-center">
+            <a href="{% url 'logout' %}"><div class="button">Log Out</div></a>
+          </div>
+        {% else %}
+          <div class="col-md-8 d-flex justify-content-center align-items-center name"><a href="{% url 'login' %}">Log into Existing Account</a></div>
+          <div class="col-md-2 d-flex align-items-center">
+            <a href="{% url 'register' %}"><div class="button">Create Account</div></a>
+          </div>
+        {% endif %}
       </header>
 
       <main class="container main">
