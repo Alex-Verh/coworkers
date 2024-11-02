@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load django_vite %} 
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+<main class="logout">
+<div class="logout_msgs">
+    <p class="logout_msg">You have logged out from your account.</p> 
+    <p class="logout_msg">See you soon!</p>
+</div>
+
+<a href="{% url 'login'%}"><button type="submit" class="button logout_btn">Login Back</button></a>
+   
+</main>
+{% endblock %}
+
+{% block typescript %}
+  {% vite_asset 'ts/logout.ts' %}
+{% endblock %}

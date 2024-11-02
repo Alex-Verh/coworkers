@@ -10,6 +10,9 @@ export default defineConfig({
       input: {
         main: "./ts/index.ts",
         profile: "./ts/profile.ts",
+        login: "./ts/login.ts",
+        register: "./ts/register.ts",
+        logout: "./ts/logout.ts",
       },
     },
   },
