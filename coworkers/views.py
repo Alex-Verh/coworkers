@@ -5,8 +5,6 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.contrib.auth.views import LoginView
-# from .forms import CustomAuthenticationForm
 
 
 class IndexView(generic.ListView):
@@ -42,16 +40,19 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 class RegisterView(generic.FormView):
     template_name = "register.html"
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('login')
+    
 
     def form_valid(self, form):
-        form.save()
+        user = form.save(commit=False)
+
+        country = form.cleaned_data.get('location_country')
+        city = form.cleaned_data.get('location_city')
+
+        user.location = f"{city}, {country}" if city and country else city or country
+        user.save()
+
         user_name = form.cleaned_data.get('full_name')
         messages.success(self.request, f'Account has been created. Good luck, {user_name}!')
         return super().form_valid(form)
 
-
-# class LoginView(LoginView):
-#     authentication_form = CustomAuthenticationForm
-#     template_name = 'login.html'
-#     redirect_authenticated_user = True 

@@ -11,13 +11,13 @@ from datetime import datetime, date
 
 class CustomUserManager(BaseUserManager):
     def create_user(
-        self, email_address, full_name, password=None, **extra_fields
+        self, email, full_name, password=None, **extra_fields
     ):
-        if not email_address:
+        if not email:
             raise ValueError("The Email field must be set")
-        email_address = self.normalize_email(email_address)
+        email = self.normalize_email(email)
         user = self.model(
-            email_address=email_address,
+            email=email,
             full_name=full_name,
             **extra_fields,
         )
@@ -26,13 +26,13 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(
-        self, email_address, full_name, password=None, **extra_fields
+        self, email, full_name, password=None, **extra_fields
     ):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
         return self.create_user(
-            email_address, full_name, password, **extra_fields
+            email, full_name, password, **extra_fields
         )
 
 
@@ -71,7 +71,7 @@ class Trait(models.Model):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email_address = models.EmailField(unique=True)
+    email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=200)
     birth_date = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(
@@ -98,14 +98,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = "email_address"
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["full_name", "birth_date", "location"]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.full_name}"
     
     @property
     def age(self):
+        if self.birth_date is None:
+            return "N/A"
         today = date.today()
         return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
     
@@ -137,7 +139,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return total_experience
     
     def formatted_salary(self, salary):
-        if salary >= 1000:
+        if salary is None:
+            return "N/A"
+        elif salary >= 1000:
             return f"{int(salary // 1000)}k"
         return f"{salary:.0f}" if salary.is_integer() else f"{salary:.2f}"
 

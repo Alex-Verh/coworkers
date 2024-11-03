@@ -105,12 +105,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTHENTICATION_BACKENDS = [
-#     'coworkers.backends.EmailBackend',
-#     'django.contrib.auth.backends.ModelBackend',
-# ]
+AUTHENTICATION_BACKENDS = [
+    'coworkers.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
-LOGIN_REDIRECT_URL = '/profile/'
+
+LOGIN_REDIRECT_URL = '/profile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -143,4 +144,20 @@ DJANGO_VITE = {
         "dev_mode": True,
         "manifest_path": BASE_DIR / "coworkers/static/public/manifest.json",
     }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'coworkers': {  
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
 }

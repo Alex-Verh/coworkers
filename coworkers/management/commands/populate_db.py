@@ -47,9 +47,8 @@ class Command(BaseCommand):
             # Generate Users
             for _ in range(20):
                 user = CustomUser.objects.create_user(
-                    email_address=fake.email(),
-                    first_name=fake.first_name(),
-                    last_name=fake.last_name(),
+                    email=fake.email(),
+                    full_name=fake.first_name() + " " + fake.last_name(),
                     password="password123",
                     birth_date=fake.date_of_birth(minimum_age=20, maximum_age=60),
                     profile_picture=None,

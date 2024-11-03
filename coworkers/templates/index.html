@@ -16,7 +16,7 @@
             <div class="profile_application d-flex align-items-center">
               <img src="https://placehold.co/85x85" alt="Profile Image" class="profile_image">
               <div class="profile_info">
-                <div class="profile_name">{{ user.first_name }} {{ user.last_name }}</div>
+                <div class="profile_name">{{ user.full_name }}</div>
                 <div class="profile_position">{{ user.position }}</div>
                 <div class="profile_experience">{{ user.experience }} year experience</div>
               </div>
@@ -58,7 +58,7 @@
       <div class="row align-items-center">
         <div class="col-md-3">
           <div class="profile_information">
-            <div class="profile_name">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="profile_name">{{ user.full_name }}</div>
             <div class="profile_position">{{ user.position }}</div>
             <div class="profile_experience">{{ user.experience }} year experience</div>
           </div>
