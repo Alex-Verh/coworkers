@@ -28,20 +28,23 @@
           
           <div class="d-flex justify-content-around profile-links">
             <hr class="line">
-
-                <span class="profile-link">Personal Data</span>
-
-                <span class="profile-link profile-link_active">Work Timeline</span>
-
-                <span class="profile-link">Education</span>
-
-                <span class="profile-link">Personal Attributes</span>
+            <a href="?section=personal-data" class="profile-link {% if section == 'personal-data' %}profile-link_active{% endif %}">Personal Data</a>
+            <a href="?section=work-timeline" class="profile-link {% if section == 'work-timeline' %}profile-link_active{% endif %}">Work Timeline</a>
+            <a href="?section=education" class="profile-link {% if section == 'education' %}profile-link_active{% endif %}">Education</a>
+            <a href="?section=personal-attributes" class="profile-link {% if section == 'personal-attributes' %}profile-link_active{% endif %}">Personal Attributes</a>
           </div>
-
-          <!-- {% include "components/profile_data.html" %}
-          {% include "components/profile_experience.html" with experience_type="Work" %} -->
-          {% include "components/profile_experience.html" with experience_type="Education" %}
-          <!-- {% include "components/profile_attributes.html" %} -->
+          
+          
+          {% if section == "personal-data" %}
+            {% include "components/profile_data.html" %}
+          {% elif section == "work-timeline" %}
+            {% include "components/profile_experience.html" with experience_type="Work" %}
+          {% elif section == "education" %}
+            {% include "components/profile_experience.html" with experience_type="Education" %}
+          {% elif section == "personal-attributes" %}
+            {% include "components/profile_attributes.html" %}
+          {% endif %}
+        
         </div>
       </main>
 

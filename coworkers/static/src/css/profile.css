@@ -28,8 +28,8 @@
 }
 
 .profile-link_active {
-    text-decoration: underline;
-    color: #622A2A;
+    text-decoration: underline !important;
+    color: #622A2A !important;
 }
 
 .line {

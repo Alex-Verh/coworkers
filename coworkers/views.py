@@ -31,9 +31,14 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.get_object()
+
+        section = self.request.GET.get("section", "personal-data")
+
         context['formatted_salary_minimum'] = user.formatted_salary(user.salary_minimum)
         context['formatted_salary_maximum'] = user.formatted_salary(user.salary_maximum)
         context['experiences'] = user.experiences.all()
+        context['section'] = section
+
         return context
 
 
