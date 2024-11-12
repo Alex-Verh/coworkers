@@ -3,41 +3,65 @@
         <div class="personal-label">Full Name</div>
         <div class="personal-value"><strong>{{ user.full_name }} </strong></div>
     </div>
-    </div>
+</div>
 
-    <div class="col-md-6">
+<div class="col-md-6">
     <div class="personal-field">
         <div class="personal-label">Nationality</div>
-        <div class="personal-value"><strong>Dutch, Russian</strong></div>
+            {% if nationalities %}
+            <div class="personal-value">
+            <strong>
+                {% for nationality in nationalities %}
+                {{ nationality.nationality}}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </strong>
+            </div>
+            {% else %}
+            <div class="personal-value">No nationality has been indicated, yet.</div>
+            {% endif %}
     </div>
-    </div>
+</div>
 
-    <div class="col-md-12">
+<div class="col-md-12">
     <div class="personal-field">
         <div class="personal-label">Languages</div>
         <div class="personal-list">
-        <div class="personal-value"><strong>Dutch</strong> - Native or bilingual proficiency</div>
-        <div class="personal-value"><strong>Russian</strong> - Native or bilingual proficiency</div>
-        <div class="personal-value"><strong>German</strong> - Professional working proficiency</div>
+        {% if languages %}
+            {% for language in languages %}
+            <div class="personal-value"><strong>{{language.language}}</strong> -         
+                {% if language.language_knowledge == 'Native' %}
+                    Native or bilingual proficiency
+                {% elif language.language_knowledge == 'Professional' %}
+                    Professional working proficiency
+                {% elif language.language_knowledge == 'Beginner' %}
+                    Beginner basic knowledge
+                {% else %}
+                    Unknown knowledge level
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="personal-value">No language knowledge has been indicated, yet.</div>
+        {% endif %}
         </div>
     </div>
-    </div>
+</div>
 
-    <div class="col-md-6">
+<div class="col-md-6">
     <div class="personal-field">
         <div class="personal-label">Salary Expectations</div>
         <div class="personal-value"><strong>{{  formatted_salary_minimum }}</strong> - <strong>{{ formatted_salary_maximum }}</strong> Euro/year</div>
     </div>
-    </div>
+</div>
 
-    <div class="col-md-6">
+<div class="col-md-6">
     <div class="personal-field">
         <div class="personal-label">Current Location</div>
         <div class="personal-value"><strong> {{user.location}} </strong></div>
     </div>
-    </div>
+</div>
 
-    <div class="col-md-12">
+<div class="col-md-12">
     <div class="personal-field">
         <div class="personal-label">Contact Details</div>
         <div class="personal-list">
@@ -56,6 +80,6 @@
         {% endif %}
         </div>
     </div>
-    </div>
+</div>
 
 </div>

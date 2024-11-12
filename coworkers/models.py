@@ -122,7 +122,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         lastest_position = latest_experience.position
 
         return lastest_position
-
+    
     @property
     def experience(self):
         work_experiences = self.experiences.filter(type='Work').order_by('start_year')
@@ -177,6 +177,35 @@ class Experience(models.Model):
     def __str__(self):
         return self.position
 
+
+class WorkerLanguage(models.Model):
+    KNOWLEDGE_CHOICES = [
+        ('Beginner', 'Beginner'),
+        ('Professional', 'Professional'),
+        ('Native', 'Native'),
+    ]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    language_knowledge = models.CharField(max_length=50, choices=KNOWLEDGE_CHOICES)
+
+    class Meta:
+        unique_together = ("user", "language")
+
+    def __str__(self):
+        return f"{self.user} - {self.language} - {self.language_knowledge}"
+    
+
+class WorkerNationality(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("user", "nationality")
+
+    def __str__(self):
+        return f"{self.user} - {self.nationality}"
+    
 
 class WorkerTrait(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

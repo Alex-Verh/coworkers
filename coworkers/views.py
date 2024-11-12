@@ -1,6 +1,6 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import CustomUser
+from .models import CustomUser, WorkerLanguage, WorkerNationality
 from django.contrib import messages
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm
@@ -34,9 +34,14 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 
         section = self.request.GET.get("section", "personal-data")
 
+        user_languages = WorkerLanguage.objects.filter(user=user).select_related('language')
+        user_nationalities = WorkerNationality.objects.filter(user=user).select_related('nationality')
+
         context['formatted_salary_minimum'] = user.formatted_salary(user.salary_minimum)
         context['formatted_salary_maximum'] = user.formatted_salary(user.salary_maximum)
         context['experiences'] = user.experiences.all()
+        context['languages'] = user_languages
+        context['nationalities'] = user_nationalities
         context['section'] = section
 
         return context
