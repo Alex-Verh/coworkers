@@ -12,7 +12,7 @@
             <div class="personal-value">
             <strong>
                 {% for nationality in nationalities %}
-                {{ nationality.nationality}}{% if not forloop.last %}, {% endif %}
+                {{nationality.nationality}}{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </strong>
             </div>
@@ -57,7 +57,13 @@
 <div class="col-md-6">
     <div class="personal-field">
         <div class="personal-label">Current Location</div>
-        <div class="personal-value"><strong> {{user.location}} </strong></div>
+        <div class="personal-value"> 
+            {% if user.location %}
+            <strong>{{user.location}}</strong>
+            {% else %} 
+            Not indicated.
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -72,9 +78,8 @@
             <div class="personal-value"><strong>XING</strong> - {{ user.xing_link }}</div>
         {% endif %}
         {% if user.personal_link %}
-            <div class="personal-value"><strong>XING</strong> - {{ user.personal_link }}</div>
+            <div class="personal-value"><strong>Personal URL</strong> - {{ user.personal_link }}</div>
         {% endif %}
-
         {% if not user.linkedin_link and not user.xing_link and not user.personal_link %}
             <div class="personal-value">No contact details provided.</div>
         {% endif %}

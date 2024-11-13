@@ -1,79 +1,11 @@
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Openness</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="openness">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
 
+{% for trait in traits %}
 <div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Flexibility</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="flexibility">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
+    <div class="personal-field">
+        <div class="personal-label">{{trait.trait_name}}</div>
+        <input class="personal-slider" type="range" min="1" max="100" value="{{trait.user_score}}" id="{{trait.trait_name}}">
+        <div class="slider-info d-flex align-items-center justify-content-center">i</div>
+        <div class="slider-description none">{{trait.trait_description}}</div>
+    </div>
 </div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Adaptability</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="adaptability">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Creativeness</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="creativeness">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Humbleness</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="humbleness">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Punctuality</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="punctuality">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Curiosity</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="curiosity">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Ethics</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="ethics">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Organization</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="organization">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="personal-field">
-    <div class="personal-label">Analycticalness</div>
-    <input class="personal-slider" type="range" min="1" max="100" value="1" id="analycticalness">
-    <div class="slider-info d-flex align-items-center justify-content-center">i</div>
-</div>
-</div>
+{% endfor %}

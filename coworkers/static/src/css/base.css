@@ -12,6 +12,10 @@ button {
     display: block;
 }
 
+.none {
+    display: none;
+}
+
 .container-fluid, body {
     padding: 0 !important;
     display: flex;

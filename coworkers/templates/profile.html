@@ -14,13 +14,25 @@
 
           <div class="col-md-6">
             <div class="personal-info">
-              <h1 class="personal-name">Mr. {{ user.last_name }}</h1>
-              <p class="personal-age">Born in <span>{{ user.birth_date | date:"j F Y" }} ({{ user.age }} </span> years)</p>
-              <p class="personal-location">Based in <span>{{ user.location }}</span></p>
+              <h1 class="personal-name">{{ user.full_name }}</h1>
+              <p class="personal-age">Born in <span>
+                {% if user.birth_date %}
+                {{ user.birth_date | date:"j F Y" }} ({{ user.age }} </span> years).
+                {% else %}
+                N/A. </span> 
+                {% endif %}
+              </p>
+              <p class="personal-location">Based in <span>
+                {% if user.location %}
+                <strong>{{user.location}}.</strong>
+                {% else %} 
+                N/A.
+                {% endif %}
+              </span></p>
               <p class="personal-raking">Ranking based on profile settings. <span>LVL3</span></p>
               <div class="personal-buttons d-flex justify-content-between">
-                <div class="button">Send Email</div>
-                <div class="button">See Portfolio</div>
+                <button class="button">Send Email</button>
+                <button class="button">See Portfolio</button>
               </div>
             </div>
           </div>

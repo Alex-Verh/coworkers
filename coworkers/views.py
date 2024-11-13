@@ -1,6 +1,8 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import CustomUser, WorkerLanguage, WorkerNationality
+from .models import CustomUser, WorkerLanguage, WorkerNationality, Trait, WorkerTrait
+from django.db.models import OuterRef, Subquery, IntegerField, Value
+from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm
@@ -37,11 +39,21 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         user_languages = WorkerLanguage.objects.filter(user=user).select_related('language')
         user_nationalities = WorkerNationality.objects.filter(user=user).select_related('nationality')
 
+        user_trait_measure  = WorkerTrait.objects.filter(
+        user=user,
+        trait=OuterRef('pk')
+        ).values('trait_measure')[:1]
+
+        personal_attributes = Trait.objects.annotate(
+            user_score=Coalesce(Subquery(user_trait_measure, output_field=IntegerField()), Value(1))
+        )
+
         context['formatted_salary_minimum'] = user.formatted_salary(user.salary_minimum)
         context['formatted_salary_maximum'] = user.formatted_salary(user.salary_maximum)
         context['experiences'] = user.experiences.all()
         context['languages'] = user_languages
         context['nationalities'] = user_nationalities
+        context['traits'] = personal_attributes
         context['section'] = section
 
         return context
