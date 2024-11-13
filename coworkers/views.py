@@ -37,6 +37,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         section = self.request.GET.get("section", "personal-data")
 
         user_languages = WorkerLanguage.objects.filter(user=user).select_related('language')
+       
         user_nationalities = WorkerNationality.objects.filter(user=user).select_related('nationality')
 
         user_trait_measure  = WorkerTrait.objects.filter(
@@ -48,6 +49,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
             user_score=Coalesce(Subquery(user_trait_measure, output_field=IntegerField()), Value(1))
         )
 
+        context['is_own_profile'] = (user == self.request.user)
         context['formatted_salary_minimum'] = user.formatted_salary(user.salary_minimum)
         context['formatted_salary_maximum'] = user.formatted_salary(user.salary_maximum)
         context['experiences'] = user.experiences.all()

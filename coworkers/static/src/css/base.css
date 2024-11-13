@@ -50,7 +50,7 @@ button {
     text-decoration: underline;
 }
 
-.button {
+.button, .button_disabled {
     background-color: #622A2A;
     color: #fff;
     padding: 9px 0;
@@ -66,6 +66,13 @@ button {
     transition: .3s all;
     user-select: none;
 }
+
+.button_disabled {
+    background-color: #4b3434;
+    cursor: default !important; 
+    box-shadow: none     !important;
+}
+
 
 .button:hover {
     background-color: #743b3b;

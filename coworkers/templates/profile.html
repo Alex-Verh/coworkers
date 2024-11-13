@@ -29,10 +29,24 @@
                 N/A.
                 {% endif %}
               </span></p>
-              <p class="personal-raking">Ranking based on profile settings. <span>LVL3</span></p>
+              <p class="personal-age">
+                {% if user.experience %}
+                {{user.experience}} years of experience in total.
+                {% else %}
+                No experience has been indicated.
+                {% endif %}
+              </p>
               <div class="personal-buttons d-flex justify-content-between">
+                {% if is_own_profile %}
+                <button class="button">Change Email</button>
+                {% else %}
                 <button class="button">Send Email</button>
-                <button class="button">See Portfolio</button>
+                {% endif %}
+                {% if is_own_profile %}
+                <button class="button">Upload Portfolio</button>
+                {% else %}
+                <button class="button_disabled">See Portfolio</button>
+                {% endif %}
               </div>
             </div>
           </div>

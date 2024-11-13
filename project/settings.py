@@ -112,6 +112,7 @@ AUTHENTICATION_BACKENDS = [
 
 
 LOGIN_REDIRECT_URL = '/profile'
+LOGIN_URL = '/login'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
