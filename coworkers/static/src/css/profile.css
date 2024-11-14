@@ -65,6 +65,28 @@
     font-size: 16px;
 }
 
+.experience_add {
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.12), 1px 2px 4px rgba(0, 0, 0, 0.24);
+    min-height: 140px;
+    margin: 40px 50px;
+    transition: 0.1s all ease-in-out;
+    cursor: pointer;
+    user-select: none;
+}
+
+.experience_add:hover {
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.22), 1px 2px 4px rgba(0, 0, 0, 0.34);
+
+}
+
+.experience_add:active {
+    box-shadow: none;
+}
+
+.experience_add:active img {
+    margin-top: -5px;
+}
+
 .personal-slider {
     width: 100%;
     -webkit-appearance: none;

@@ -178,6 +178,13 @@ button {
     font-size: 24px;
 }
 
+.personal-edit {
+    position: absolute;
+    top:8px;
+    right: 8px;
+    cursor: pointer;
+}
+
 .overlay {
     position: fixed;
     left: 0;

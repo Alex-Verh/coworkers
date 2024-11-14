@@ -1,14 +1,21 @@
+{% load static %}
+
 <div class="col-md-12">
     <div class="timeline">
+      {% if is_own_profile %}
+      <div class="experience_add d-flex justify-content-center align-items-center">
+        <img src="{% static 'public/icons/add.png' %}" alt="Add">
+      </div>
+      {% endif %}
       {% if experiences %}
         {% for experience in experiences %}
           {% if experience.type == experience_type %}
             <div class="experience">
               <div class="experience_time">
                   {% if experience.end_year %}
-                      {{ experience.start_year }} - {{ experience.end_year }}
+                  {{ experience.start_year }} - {{ experience.end_year }}
                   {% else %}
-                      {{ experience.start_year }} - Present
+                  {{ experience.start_year }} - Present
                   {% endif %}
               </div>
               <div class="experience_position">{{ experience.position }}</div>
@@ -18,7 +25,7 @@
           {% endif %}
         {% endfor %}
         {% else %}
-            <p>No experience available.</p>
+            <p>No experience has been indicated.</p>
         {% endif %}
 </div>
 
