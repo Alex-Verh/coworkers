@@ -7,16 +7,47 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 
 
 class IndexView(generic.ListView):
     template_name = "index.html"
-
     context_object_name = 'users'
+    paginate_by = 3
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        return CustomUser.objects.all()[:6]
+        return CustomUser.objects.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users_section'] = CustomUser.objects.all()[:6]  # first section
+        context['users_paginated'] = CustomUser.objects.all()  # second section
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            page_number = request.GET.get('page', 1)
+            paginator = Paginator(CustomUser.objects.all(), 3)
+            page_obj = paginator.get_page(page_number)
+
+            users_data = [
+                {
+                    "id": user.id,
+                    "full_name": user.full_name,
+                    "position": user.position,
+                    "experience": user.experience,
+                }
+                for user in page_obj
+            ]
+
+            return JsonResponse({
+                "users": users_data,
+                "has_next": page_obj.has_next()
+            })
+
+        return super().get(request, *args, **kwargs)
+    
 
 class ProfileView(LoginRequiredMixin, generic.DetailView):
     model = CustomUser

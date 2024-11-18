@@ -16,6 +16,7 @@ button {
     display: none;
 }
 
+
 .container-fluid, body {
     padding: 0 !important;
     display: flex;
@@ -72,7 +73,6 @@ button {
     cursor: default !important; 
     box-shadow: none     !important;
 }
-
 
 .button:hover {
     background-color: #743b3b;
