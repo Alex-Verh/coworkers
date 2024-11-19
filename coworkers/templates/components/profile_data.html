@@ -3,9 +3,9 @@
 <div class="col-md-6">
     <div class="personal-field">
         <div class="personal-label">Full Name</div>
-        <div class="personal-value"><strong>{{ user.full_name }} </strong></div>
+        <div class="personal-value"><strong>{{ user.full_name }}</strong></div>
         {% if is_own_profile %}
-        <img class="personal-edit" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
+        <img class="personal-edit" id="fullname_form" data-modal="fullname_modal" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
         {% endif %}
     </div>
 </div>
@@ -25,7 +25,7 @@
         <div class="personal-value">No nationality has been indicated, yet.</div>
         {% endif %}
         {% if is_own_profile %}
-        <img class="personal-edit" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
+        <img class="personal-edit" id="nationality_form" data-modal="nationality_modal" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
         {% endif %}
     </div>
 </div>
@@ -52,7 +52,7 @@
         <div class="personal-value">No language knowledge has been indicated, yet.</div>
         {% endif %}
         {% if is_own_profile %}
-        <img class="personal-edit" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
+        <img class="personal-edit" id="language_form" data-modal="language_modal" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
         {% endif %}
         </div>
     </div>
@@ -63,7 +63,7 @@
         <div class="personal-label">Salary Expectations</div>
         <div class="personal-value"><strong>{{  formatted_salary_minimum }}</strong> - <strong>{{ formatted_salary_maximum }}</strong> Euro/year</div>
         {% if is_own_profile %}
-        <img class="personal-edit" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
+        <img class="personal-edit" id="salary_form" data-modal="salary_modal" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
         {% endif %}
     </div>
 </div>
@@ -79,7 +79,7 @@
             {% endif %}
         </div>
         {% if is_own_profile %}
-        <img class="personal-edit" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
+        <img class="personal-edit" id="location_form" data-modal="location_modal" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
         {% endif %}
     </div>
 </div>
@@ -101,10 +101,18 @@
             <div class="personal-value">No contact details provided.</div>
         {% endif %}
         {% if is_own_profile %}
-        <img class="personal-edit" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
+            <img class="personal-edit" id="links_form" data-modal="links_modal" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
         {% endif %}
         </div>
     </div>
 </div>
 
-</div>
+<!-- Upload all edit modals -->
+{% if is_own_profile %}
+    {% include 'modals/fullname_modal.html'%}
+    {% include 'modals/nationality_modal.html'%}
+    {% include 'modals/language_modal.html'%}
+    {% include 'modals/salary_modal.html'%}
+    {% include 'modals/location_modal.html'%}
+    {% include 'modals/links_modal.html'%}
+{% endif %}

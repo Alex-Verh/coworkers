@@ -21,7 +21,7 @@
 
 .profile-link {
     color: #757575;
-    z-index: 100000;
+    z-index: 1000;
     background-color: #fff;
     padding: 0 40px;
     cursor: pointer;
@@ -131,4 +131,17 @@
     font-style: italic;
     background-color: #D9D9D9;
     cursor: pointer;
+}
+
+
+.search_result {
+    margin-top: 20px;
+    height: 180px;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding: 0 10px;
+}
+
+.search_result::-webkit-scrollbar {
+    width: 3px;
 }

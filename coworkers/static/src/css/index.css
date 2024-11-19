@@ -68,19 +68,6 @@
   border-right: 1px solid #757575;
 }
 
-
-.search_result {
-  margin-top: 20px;
-  height: 180px;
-  overflow: scroll;
-  overflow-x: hidden;
-  padding: 0 10px;
-}
-
-.search_result::-webkit-scrollbar {
-  width: 3px;
-}
-
 .nationality {
   cursor: pointer;
 }

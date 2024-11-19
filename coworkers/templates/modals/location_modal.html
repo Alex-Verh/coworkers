@@ -1,0 +1,8 @@
+<div id="location_modal" class="overlay d-flex justify-content-center align-items-center none">
+    <div class="pmodal">
+      <img src="../static/public/icons/close.svg" alt="Close" class="pmodal_close">
+      <div class="pmodal_title">Enter your Location</div>
+      <input type="text" id="location" name="city_name" class="input" value="{{ user.location|default_if_none:'' }}" placeholder="City, Country">
+      <div class="pmodal_save">Save Changes</div>
+    </div>
+</div>

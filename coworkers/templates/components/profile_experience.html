@@ -3,7 +3,7 @@
 <div class="col-md-12">
     <div class="timeline">
       {% if is_own_profile %}
-      <div class="experience_add d-flex justify-content-center align-items-center">
+      <div class="experience_add d-flex justify-content-center align-items-center" id="experience_form" data-modal="experience_modal">
         <img src="{% static 'public/icons/add.png' %}" alt="Add">
       </div>
       {% endif %}
@@ -28,4 +28,9 @@
             <p>No experience has been indicated.</p>
         {% endif %}
 </div>
+
+<!-- Upload all edit modals -->
+{% if is_own_profile %}
+    {% include 'modals/experience_modal.html'%}
+{% endif %}
 

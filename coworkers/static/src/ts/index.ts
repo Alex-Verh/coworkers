@@ -1,7 +1,7 @@
 import "../css/index.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { enableModal } from "./functions";
 
 interface User {
     id: number;
@@ -17,6 +17,12 @@ interface FetchResponse {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+   
+    // enable all modals for this page
+    enableModal('contact-form');
+    
+
+    // loading more users button
     const loadBtn = document.getElementById('load-more') as HTMLButtonElement | null;
 
     if (loadBtn && !loadBtn.classList.contains("button_disabled")) {

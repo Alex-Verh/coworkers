@@ -41,9 +41,10 @@
         </div>
         <div class="terms">Terms and Conditions</div>
         <span>Have a question?</span>
-        <div class="message">Send Message</div>
+        <div class="message" id="contact-form" data-modal="contact_modal">Send Message</div>
       </footer>
     </div>
+    {% include 'modals/contact_modal.html'%}
     {% block typescript %}{% endblock %}
   </body>
 </html>
