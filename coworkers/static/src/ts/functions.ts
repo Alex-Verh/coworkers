@@ -1,7 +1,6 @@
 // opening modal
 export const enableModal = (buttonId: string) => {
     const openBtn = document.getElementById(buttonId) as HTMLElement | null;
-
     if (!openBtn) {
         console.warn(`Button with ID '${buttonId}' not found.`);
         return;
@@ -30,7 +29,6 @@ export const enableModal = (buttonId: string) => {
 // closing modal
 const enableClose = (modal: HTMLElement) => {
     const closeBtn = modal.querySelector('.pmodal_close') as HTMLElement | null;
-
     if (!closeBtn) {
         console.warn('Close button not found in modal.');
         return;

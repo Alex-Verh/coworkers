@@ -7,6 +7,8 @@ import { enableModal } from "./functions";
 document.addEventListener("DOMContentLoaded", () => {
     const url = new URL(window.location.href);
     const sectionName = url.searchParams.get("section") as string | null;
+    
+    enableModal('contact-form');
 
 
     // Working with personal data section
@@ -27,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Working with personal attributes section
     if (sectionName == "personal-attributes") {
+
+        // sliders info buttons
         document.querySelector(".profile")?.addEventListener("click", (event: Event) => {
             const target = event.target as HTMLElement;
 
@@ -40,6 +44,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 target.classList.toggle("none");
             }
         })
+
+        // sliders changes
+        document.querySelectorAll(".personal-slider").forEach((slider: Element) => {
+            const parentDiv = slider.parentElement as HTMLElement;
+            if (!parentDiv) return;
+
+            const saveBtn = parentDiv.querySelector(".slider-save") as HTMLElement;
+            if (!saveBtn) return;
+
+            let showSave = false;
+
+            slider.addEventListener("change", function onClick() {
+                if (!showSave) saveBtn.classList.remove("none");
+                showSave = true;
+            });
+
+            // add save functionality btn
+        });
     }
 
 });

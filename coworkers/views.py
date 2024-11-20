@@ -9,6 +9,7 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.shortcuts import redirect
 
 
 class IndexView(generic.ListView):
@@ -90,7 +91,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         context['section'] = section
 
         return context
-
+    
 
 class RegisterView(generic.FormView):
     template_name = "register.html"

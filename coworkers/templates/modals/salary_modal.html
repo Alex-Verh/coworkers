@@ -2,17 +2,15 @@
     <div class="pmodal">
       <img src="../static/public/icons/close.svg" alt="Close" class="pmodal_close">
       <div class="pmodal_title">Enter your Salary Expectations</div>
-      <div class="container-fluid">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <input type="text" id="full_name" name="full_name" class="input text-center" value="{{ formatted_salary_minimum |default_if_none:'' }}" placeholder="Minimum" >
-          </div>
-          <div class="col-md-1 d-flex justify-content-center align-items-center">-</div>
-          <div class="col-md-4">
-            <input type="text" id="full_name" name="full_name" class="input text-center" value="{{ formatted_salary_minimum |default_if_none:'' }}" placeholder="Maximum">
-          </div>
-          <div class="col-md-3 d-flex justify-content-center align-items-center">Euro / year</div>
+      <div class="row g-0">
+        <div class="col-md-4">
+          <input type="text" id="full_name" name="full_name" class="input text-center" value="{{ formatted_salary_minimum |default_if_none:'' }}" placeholder="Minimum" >
         </div>
+        <div class="col-md-1 d-flex justify-content-center align-items-center">-</div>
+        <div class="col-md-4">
+          <input type="text" id="full_name" name="full_name" class="input text-center" value="{{ formatted_salary_minimum |default_if_none:'' }}" placeholder="Maximum">
+        </div>
+        <div class="col-md-3 d-flex justify-content-center align-items-center">Euro / year</div>
       </div>
       <div class="pmodal_save">Save Changes</div>
     </div>

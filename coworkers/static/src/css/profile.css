@@ -95,6 +95,7 @@
     height: 1px;
     outline: none;
     cursor: pointer;
+    margin-bottom: 30px;
 }
 
 .personal-slider::-webkit-slider-thumb {
@@ -120,6 +121,7 @@
 }
 
 .slider-description {
+    z-index: 2000;
     position: absolute;
     top: 40px;
     right: 10px;
@@ -133,6 +135,14 @@
     cursor: pointer;
 }
 
+.slider-save {
+    position: absolute;
+    color: #622A2A;
+    text-decoration: underline;
+    cursor: pointer;
+    bottom: 5px;
+    right: 15px;
+}
 
 .search_result {
     margin-top: 20px;
