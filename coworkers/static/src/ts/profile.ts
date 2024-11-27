@@ -7,18 +7,26 @@ import { enableModal } from "./functions";
 document.addEventListener("DOMContentLoaded", () => {
     const url = new URL(window.location.href);
     const sectionName = url.searchParams.get("section") as string | null;
-    
+    const csrfTokenElem = document.querySelector('meta[name="csrf-token"]') as HTMLElement | null;
+    let csrfToken = "";
+    if (csrfTokenElem) {csrfToken = csrfTokenElem.getAttribute('content') as string | ""};
+
+
     enableModal('contact-form');
 
 
     // Working with personal data section
     if (sectionName == "personal-data" || sectionName == null) {
-        enableModal("fullname_form");
-        enableModal("nationality_form");
-        enableModal("language_form");
-        enableModal("salary_form");
-        enableModal("location_form");
-        enableModal("links_form");
+        const personalDataForms = [
+            "fullname_form",
+            "nationality_form",
+            "language_form",
+            "salary_form",
+            "location_form",
+            "links_form"
+        ];
+        
+        personalDataForms.forEach(id => enableModal(id));
     }
 
 
@@ -45,8 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })
 
+
         // sliders changes
         document.querySelectorAll(".personal-slider").forEach((slider: Element) => {
+            const rangeInput = slider as HTMLInputElement;
+            if (!rangeInput) return;
+
             const parentDiv = slider.parentElement as HTMLElement;
             if (!parentDiv) return;
 
@@ -55,13 +67,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
             let showSave = false;
 
-            slider.addEventListener("change", function onClick() {
-                if (!showSave) saveBtn.classList.remove("none");
+            slider.addEventListener("change", function onChange() {
+                // show the save button
+                if (showSave) return;
+                saveBtn.classList.remove("none");
+
+                // on button click send the new trait value
+                saveBtn.addEventListener("click", function onClick() {
+                    fetch(`profile`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            traitId: rangeInput.getAttribute("id"),
+                            userScore: rangeInput.value,
+                        }),
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRFToken": csrfToken,
+                        }
+                    })
+                    .then((response): Promise<String> => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(() => {
+                        showSave = false;
+                        saveBtn.classList.add("none");
+                        saveBtn.removeEventListener("click", onClick);
+                    })
+                    .catch((error) => {
+                        console.error('Error saving data:', error);
+                    });
+                });
+
                 showSave = true;
             });
-
-            // add save functionality btn
         });
+
+
     }
+
 
 });

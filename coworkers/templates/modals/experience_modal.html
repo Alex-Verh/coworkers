@@ -1,32 +1,38 @@
+{% load static %}
+
 <div id="experience_modal" class="overlay d-flex justify-content-center align-items-center none">
     <div class="pmodal">
+      <form method="post" id="experience_form" action="{% url 'experience' %}">
+      {% csrf_token %}
 
-      <img src="../static/public/icons/close.svg" alt="Close" class="pmodal_close" />
-      <div class="pmodal_title">Enter your Experience</div>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <input type="text" id="experience_position" name="experience_position" class="input" placeholder="Work Position">
-        </div>
-        <div class="col-md-6">
-          <input type="text" id="experience_company" name="experience_company" class="input" placeholder="Work Company">
-        </div>
-        <div class="col-md-12">
-          <textarea id="experience_description" name="experience_description" class="textarea" placeholder="Work Description" rows="5"></textarea>
-        </div>
-        <div class="col-12">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <input type="text" id="full_name" name="full_name" class="input text-center" placeholder="Start Year">
-            </div>
-            <div class="col-md-1 d-flex justify-content-center align-items-center">-</div>
-            <div class="col-md-4">
-              <input type="text" id="full_name" name="full_name" class="input text-center" placeholder="End Year*">
-            </div>
-            <div class="col-md-3 d-flex justify-content-center align-items-center">Year Period</div>
-            <div class="col-md-12 pmodal_hint text-start">*Leave the end year blank if you are currently employed on this position.</div>
+        <img src="{% static 'public/icons/close.svg' %}" alt="Close" class="pmodal_close" />
+        <div class="pmodal_title">Enter your Experience</div>
+        <input type="hidden" name="type" value="{{experience_type}}" />
+        <div class="row g-3">
+          <div class="col-md-6">
+            {{ form.position }}
           </div>
+          <div class="col-md-6">
+            {{ form.institution_name }}
+          </div>
+          <div class="col-md-12">
+            {{ form.description }}
+          </div>
+          <div class="col-12">
+            <div class="row g-0">
+              <div class="col-md-4">
+                {{ form.start_year }}
+              </div>
+              <div class="col-md-1 d-flex justify-content-center align-items-center">-</div>
+              <div class="col-md-4">
+                {{ form.end_year }}
+              </div>
+              <div class="col-md-3 d-flex justify-content-center align-items-center">Year Period</div>
+              <div class="col-md-12 pmodal_hint text-start">*Leave the end year blank if you are currently employed on this position.</div>
+            </div>
         </div>
-        <div class="pmodal_save">Save Changes</div>
+        <button type="submit" class="pmodal_save">Save Changes</button>
+    </form>
 
   </div>
 </div> 

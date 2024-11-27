@@ -56,7 +56,7 @@
             <hr class="line">
             <a href="?section=personal-data" class="profile-link {% if section == 'personal-data' %}profile-link_active{% endif %}">Personal Data</a>
             <a href="?section=work-timeline" class="profile-link {% if section == 'work-timeline' %}profile-link_active{% endif %}">Work Timeline</a>
-            <a href="?section=education" class="profile-link {% if section == 'education' %}profile-link_active{% endif %}">Education</a>
+            <a href="?section=education-timeline" class="profile-link {% if section == 'education-timeline' %}profile-link_active{% endif %}">Education</a>
             <a href="?section=personal-attributes" class="profile-link {% if section == 'personal-attributes' %}profile-link_active{% endif %}">Personal Attributes</a>
           </div>
           
@@ -65,7 +65,7 @@
             {% include "components/profile_data.html" %}
           {% elif section == "work-timeline" %}
             {% include "components/profile_experience.html" with experience_type="Work" %}
-          {% elif section == "education" %}
+          {% elif section == "education-timeline" %}
             {% include "components/profile_experience.html" with experience_type="Education" %}
           {% elif section == "personal-attributes" %}
             {% include "components/profile_attributes.html" %}

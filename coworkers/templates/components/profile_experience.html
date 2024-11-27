@@ -7,6 +7,7 @@
         <img src="{% static 'public/icons/add.png' %}" alt="Add">
       </div>
       {% endif %}
+      
       {% if experiences %}
         {% for experience in experiences %}
           {% if experience.type == experience_type %}

@@ -1,6 +1,8 @@
+{% load static %}
+
 <div id="salary_modal" class="overlay d-flex justify-content-center align-items-center none">
     <div class="pmodal">
-      <img src="../static/public/icons/close.svg" alt="Close" class="pmodal_close">
+      <img src="{% static 'public/icons/close.svg' %}" alt="Close" class="pmodal_close">
       <div class="pmodal_title">Enter your Salary Expectations</div>
       <div class="row g-0">
         <div class="col-md-4">

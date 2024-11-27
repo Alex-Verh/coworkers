@@ -1,6 +1,8 @@
+{% load static %}
+
 <div id="nationality_modal" class="overlay d-flex justify-content-center align-items-center none">
     <div class="pmodal">
-      <img src="../static/public/icons/close.svg" alt="Close" class="pmodal_close">
+      <img src="{% static 'public/icons/close.svg' %}" alt="Close" class="pmodal_close">
       <div class="pmodal_title">Select your Nationalities</div>
       <input type="text" id="search_nationality" name="search_nationality" class="input" placeholder="Search a nationality">
       <div class="search_result">

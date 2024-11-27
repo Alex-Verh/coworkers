@@ -1,15 +1,16 @@
 from django.views import generic
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from .models import CustomUser, WorkerLanguage, WorkerNationality, Trait, WorkerTrait
 from django.db.models import OuterRef, Subquery, IntegerField, Value
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ExperienceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import redirect
+from django.views.generic.edit import FormView
+from .mixins import ExperienceFormMixin
 
 
 class IndexView(generic.ListView):
@@ -22,8 +23,8 @@ class IndexView(generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['users_section'] = CustomUser.objects.all()[:6]  # first section
-        context['users_paginated'] = CustomUser.objects.all()  # second section
+        context['users_section'] = self.get_queryset()[:6]  # first section
+        context['users_paginated'] = self.get_queryset()   # second section
         return context
 
     def get(self, request, *args, **kwargs):
@@ -50,7 +51,7 @@ class IndexView(generic.ListView):
         return super().get(request, *args, **kwargs)
     
 
-class ProfileView(LoginRequiredMixin, generic.DetailView):
+class ProfileView(LoginRequiredMixin, ExperienceFormMixin, generic.DetailView):
     model = CustomUser
     template_name = "profile.html"
     context_object_name = 'user'
@@ -93,6 +94,22 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         return context
     
 
+class ExperienceView(LoginRequiredMixin, FormView):
+    form_class = ExperienceForm
+
+    def form_valid(self, form):
+        experience = form.save(commit=False)
+        experience.user = self.request.user
+        experience.save()
+        messages.success(self.request, f'Experience added successfully!!')
+        return redirect('profile')
+
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return redirect('profile')
+    
+
 class RegisterView(generic.FormView):
     template_name = "register.html"
     form_class = CustomUserCreationForm
@@ -105,7 +122,7 @@ class RegisterView(generic.FormView):
         country = form.cleaned_data.get('location_country')
         city = form.cleaned_data.get('location_city')
 
-        user.location = f"{city}, {country}" if city and country else city or country
+        user.location = ", ".join(filter(None, [city, country]))
         user.save()
 
         user_name = form.cleaned_data.get('full_name')

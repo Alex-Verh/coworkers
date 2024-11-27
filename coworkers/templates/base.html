@@ -4,6 +4,7 @@
     {% load static %} {% load django_vite %} {% vite_hmr_client %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>COWORKER - {% block title %}{% endblock %}</title>
   </head>
   <body>
