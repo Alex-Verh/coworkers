@@ -40,3 +40,37 @@ const enableClose = (modal: HTMLElement) => {
         closeBtn.removeEventListener('click', onClick);
     })
 }
+
+
+// Server messages alert closing
+export const closeAlert = () => {
+    document.body.addEventListener("click", function onClick(event: Event) {
+        const clickTarget = event.target as HTMLElement | null;
+
+        if (!clickTarget) return;
+
+        const closeBtn = clickTarget.closest(".palert_close") as HTMLElement | null;
+
+        if (!closeBtn) {
+            console.warn('Close button not found in modal.');
+            return;
+        }
+
+        const alert = closeBtn.parentElement as HTMLElement | null;
+        if (!alert) return;
+
+        closeBtn.addEventListener('click', function onClick() {
+            alert.classList.add('none');
+            closeBtn.removeEventListener('click', onClick);
+        })
+    })
+}
+
+export const showAlert = (message: string, type: string) => {
+    document.body.insertAdjacentHTML("afterbegin", `
+        <div class="palert palert_${type} d-flex align-items-center justify-content-center">
+            <img src="/static/public/icons/close_alert.svg" alt="Close" class="palert_close">
+            <div class="palert_text">${message}</div>
+        </div>    
+    `)
+}

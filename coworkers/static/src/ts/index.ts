@@ -1,7 +1,7 @@
 import "../css/index.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { enableModal } from "./functions";
+import { enableModal, closeAlert } from "./functions";
 
 interface User {
     id: number;
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
    
     // enable all modals for this page
     enableModal('contact-form');
-    
+    closeAlert();
 
     // loading more users button
     const loadBtn = document.getElementById('load-more') as HTMLButtonElement | null;

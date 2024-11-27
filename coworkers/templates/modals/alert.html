@@ -1,0 +1,6 @@
+{% load static %}
+
+<div class="palert palert_{{alert_type}} d-flex align-items-center justify-content-center">
+    <img src="{% static 'public/icons/close_alert.svg' %}" alt="Close" class="palert_close">
+    <div class="palert_text">{{alert_message}}</div>
+</div>

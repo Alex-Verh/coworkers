@@ -1,7 +1,7 @@
 import "../css/profile.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { enableModal } from "./functions";
+import { enableModal, closeAlert, showAlert } from "./functions";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     enableModal('contact-form');
-
+    closeAlert();
 
     // Working with personal data section
     if (sectionName == "personal-data" || sectionName == null) {
@@ -74,11 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // on button click send the new trait value
                 saveBtn.addEventListener("click", function onClick() {
-                    fetch(`profile`, {
+                    fetch(`/worker-trait/`, {
                         method: "POST",
                         body: JSON.stringify({
-                            traitId: rangeInput.getAttribute("id"),
-                            userScore: rangeInput.value,
+                            trait_id: rangeInput.getAttribute("id"),
+                            trait_score: rangeInput.value,
                         }),
                         headers: {
                             "X-Requested-With": "XMLHttpRequest",
@@ -91,21 +91,31 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         return response.json();
                     })
-                    .then(() => {
+                    .then((data: any) => {
                         showSave = false;
                         saveBtn.classList.add("none");
                         saveBtn.removeEventListener("click", onClick);
+
+                        if (data.messages && Array.isArray(data.messages)) {
+                            data.messages.forEach((msg: string) => {
+                                showAlert(msg, "success")
+                            });
+                        }
                     })
                     .catch((error) => {
                         console.error('Error saving data:', error);
+
+                        if (error.messages && Array.isArray(error.messages)) {
+                            error.messages.forEach((msg: string) => {
+                                showAlert(msg, "error")
+                            });
+                        }
                     });
                 });
 
                 showSave = true;
             });
         });
-
-
     }
 
 

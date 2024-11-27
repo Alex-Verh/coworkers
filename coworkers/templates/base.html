@@ -8,6 +8,12 @@
     <title>COWORKER - {% block title %}{% endblock %}</title>
   </head>
   <body>
+    {% if messages %}
+        {% for message in messages %}
+          {% include "modals/alert.html" with alert_message=message alert_type=message.tags %}
+        {% endfor %}
+    {% endif %}
+
     <div class="container-fluid">
       <header class="row header">
         <div class="col-md-2 d-flex justify-content-center align-items-center logo"><a href="{% url 'index' %}">Coworker</a></div>

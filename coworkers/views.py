@@ -9,8 +9,9 @@ from .forms import CustomUserCreationForm, ExperienceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, View
 from .mixins import ExperienceFormMixin
+import json
 
 
 class IndexView(generic.ListView):
@@ -101,13 +102,43 @@ class ExperienceView(LoginRequiredMixin, FormView):
         experience = form.save(commit=False)
         experience.user = self.request.user
         experience.save()
-        messages.success(self.request, f'Experience added successfully!!')
-        return redirect('profile')
+        messages.success(self.request, f'Experience added successfully!')
+        return redirect('my_profile')
 
 
     def form_invalid(self, form):
         messages.error(self.request, form.errors)
-        return redirect('profile')
+        return redirect('my_profile')
+    
+    
+class WorkerTraitView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+
+        data = json.loads(request.body)
+        trait_id = data.get('trait_id')
+        trait_score = data.get('trait_score')
+
+        if not trait_id or not trait_score:
+            return JsonResponse({'messages': ['Trait ID and score are required.']}, status=400)
+
+        try:
+            trait = Trait.objects.get(trait_id=trait_id) 
+        except Trait.DoesNotExist:
+            return JsonResponse({'messages': ['Trait not found.']}, status=404)
+
+        try:
+            _, created = WorkerTrait.objects.update_or_create(
+                user=user,
+                trait=trait,
+                defaults={'trait_measure': trait_score},
+            )
+            if created:
+                return JsonResponse({'messages': [f"Trait \"{trait.trait_name}\" added with score {trait_score}."]})
+            else:
+                return JsonResponse({'messages': [f"Trait \"{trait.trait_name}\" updated with score {trait_score}."]})
+        except Exception as e:
+            return JsonResponse({'messages': [f"An error occurred: {e}"]}, status=500)
     
 
 class RegisterView(generic.FormView):
