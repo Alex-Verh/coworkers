@@ -1,5 +1,5 @@
-from django.views.generic.edit import FormMixin
-from .forms import ExperienceForm
+from django.views.generic.edit import FormMixin, ContextMixin
+from .forms import ExperienceForm, ContactForm
 
 
 class ExperienceFormMixin(FormMixin):
@@ -11,4 +11,11 @@ class ExperienceFormMixin(FormMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['experience_form'] = self.get_form()
+        return context
+
+
+class ContactFormMixin(ContextMixin):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['contact_form'] = ContactForm()
         return context

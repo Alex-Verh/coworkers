@@ -2,9 +2,12 @@
 
 <div id="contact_modal" class="overlay d-flex justify-content-center align-items-center none">
     <div class="pmodal">
-      <img src="{% static 'public/icons/close.svg' %}" alt="Close" class="pmodal_close">
-      <div class="pmodal_title">Send Message to Us </div>
-      <textarea id="contact" name="contact" class="textarea" rows="5"></textarea>
-      <div class="pmodal_save">Save Changes</div>
+      <form method="post" id="contact-form" action="{% url 'contact-us' %}">
+        {% csrf_token %}
+        <img src="{% static 'public/icons/close.svg' %}" alt="Close" class="pmodal_close">
+        <div class="pmodal_title">Send Message to Us </div>
+        {{ contact_form.contact }}
+        <button type="submit" class="pmodal_save">Save Changes</button>
+      </form>
     </div>
 </div> 

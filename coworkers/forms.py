@@ -59,8 +59,8 @@ class ExperienceForm(forms.ModelForm):
         model = Experience
         fields = ['position', 'institution_name', 'description', 'start_year', 'end_year', 'type']
         widgets = {
-            'position': forms.TextInput(attrs={'class': 'input', 'placeholder': 'Experience Role'}),
-            'institution_name': forms.TextInput(attrs={'class': 'input', 'placeholder': 'Experience Institution'}),
+            'position': forms.TextInput(attrs={'class': 'input', 'placeholder': 'Role/Faculty'}),
+            'institution_name': forms.TextInput(attrs={'class': 'input', 'placeholder': 'Institution Name'}),
             'description': forms.Textarea(attrs={'class': 'input', 'rows': 5, 'placeholder': 'Experience Description'}),
             'start_year': forms.NumberInput(attrs={'class': 'input', 'placeholder': 'Start Year', 'min': 1900, 'max': 2100}),
             'end_year': forms.NumberInput(attrs={'class': 'input', 'placeholder': 'End Year*', 'min': 1900, 'max': 2100}),
@@ -81,3 +81,11 @@ class ExperienceForm(forms.ModelForm):
         if end_year and end_year < start_year:
             raise forms.ValidationError("End year cannot be earlier than start year.")
         return end_year
+    
+class ContactForm(forms.Form):
+    contact = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 5, 'class': 'textarea'}),
+        label="Message",
+        max_length=2000,
+        required=True
+    )

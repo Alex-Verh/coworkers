@@ -230,6 +230,7 @@ body, .container-fluid {
     text-decoration: underline;
     text-decoration-thickness: 2px;
     cursor: pointer;
+    margin: 0 auto;
 }
 
 .pmodal_remove, .pmodal_level, .pmodal_hint {

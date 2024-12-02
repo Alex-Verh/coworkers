@@ -5,16 +5,18 @@ from django.db.models import OuterRef, Subquery, IntegerField, Value
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, ExperienceForm
+from .forms import CustomUserCreationForm, ExperienceForm, ContactForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.generic.edit import FormView, View
-from .mixins import ExperienceFormMixin
+from .mixins import ExperienceFormMixin, ContactFormMixin
+from django.core.mail import EmailMessage
 import json
+from django.conf import settings
 
 
-class IndexView(generic.ListView):
+class IndexView(generic.ListView, ContactFormMixin):
     template_name = "index.html"
     context_object_name = 'users'
     paginate_by = 3
@@ -52,7 +54,7 @@ class IndexView(generic.ListView):
         return super().get(request, *args, **kwargs)
     
 
-class ProfileView(LoginRequiredMixin, ExperienceFormMixin, generic.DetailView):
+class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, generic.DetailView):
     model = CustomUser
     template_name = "profile.html"
     context_object_name = 'user'
@@ -93,6 +95,26 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, generic.DetailView):
         context['section'] = section
 
         return context
+    
+    
+class RegisterView(generic.FormView, ContactFormMixin):
+    template_name = "register.html"
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy('login')
+    
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+
+        country = form.cleaned_data.get('location_country')
+        city = form.cleaned_data.get('location_city')
+
+        user.location = ", ".join(filter(None, [city, country]))
+        user.save()
+
+        user_name = form.cleaned_data.get('full_name')
+        messages.success(self.request, f'Account has been created. Good luck, {user_name}!')
+        return super().form_valid(form)
     
 
 class ExperienceView(LoginRequiredMixin, FormView):
@@ -139,24 +161,26 @@ class WorkerTraitView(LoginRequiredMixin, View):
                 return JsonResponse({'messages': [f"Trait \"{trait.trait_name}\" updated with score {trait_score}."]})
         except Exception as e:
             return JsonResponse({'messages': [f"An error occurred: {e}"]}, status=500)
-    
 
-class RegisterView(generic.FormView):
-    template_name = "register.html"
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('login')
-    
+
+class ContactView(FormView):
+    template_name = "contact_form.html" 
+    form_class = ContactForm
+    success_url = reverse_lazy('index')  
 
     def form_valid(self, form):
-        user = form.save(commit=False)
-
-        country = form.cleaned_data.get('location_country')
-        city = form.cleaned_data.get('location_city')
-
-        user.location = ", ".join(filter(None, [city, country]))
-        user.save()
-
-        user_name = form.cleaned_data.get('full_name')
-        messages.success(self.request, f'Account has been created. Good luck, {user_name}!')
+        message = form.cleaned_data['contact']
+        
+        email = EmailMessage(
+            subject="Contact Form Submission",
+            body=message,
+            from_email="anonym@user.com",
+            to=[settings.EMAIL_HOST], 
+        )
+        try:
+            email.send() 
+            messages.success(self.request, "Your message has been sent successfully.")
+        except Exception as e:
+            messages.error(self.request, f"Failed to send the message: {e}")
+        
         return super().form_valid(form)
-

@@ -52,17 +52,15 @@ export const closeAlert = () => {
         const closeBtn = clickTarget.closest(".palert_close") as HTMLElement | null;
 
         if (!closeBtn) {
-            console.warn('Close button not found in modal.');
+            console.warn('Close button not found in alert.');
             return;
         }
 
         const alert = closeBtn.parentElement as HTMLElement | null;
         if (!alert) return;
 
-        closeBtn.addEventListener('click', function onClick() {
-            alert.classList.add('none');
-            closeBtn.removeEventListener('click', onClick);
-        })
+        alert.classList.add('none');
+        closeBtn.removeEventListener('click', onClick);
     })
 }
 
@@ -74,3 +72,55 @@ export const showAlert = (message: string, type: string) => {
         </div>    
     `)
 }
+
+
+const toggleResultsFilter = (resultsFilter: HTMLElement) => {
+    function onResultFilterClick(event: Event) {
+        const clickTarget = event.target as HTMLElement | null;
+
+        if (!clickTarget) return;
+
+        const searchResult = clickTarget.closest(".searchbar_result") as HTMLElement | null;
+
+        if (!searchResult) return;
+
+        searchResult.classList.toggle("searchbar_result_active");
+    }
+
+    if (resultsFilter.classList.contains("none")) {
+        resultsFilter.classList.remove("none");
+        console.log(resultsFilter.className);
+
+        resultsFilter.addEventListener("click", onResultFilterClick);
+    } else {
+        resultsFilter.classList.add("none");
+        resultsFilter.removeEventListener("click", onResultFilterClick);
+    }
+}
+
+const handleSearchbarClick = (event: Event) => {
+    const clickTarget = event.target as HTMLElement | null;
+
+    if (!clickTarget) return;
+
+    const filterBtn = clickTarget.closest(".searchbar_filter") as HTMLElement | null;
+
+    if (!filterBtn) return;
+
+    const resultsFilter = filterBtn.nextElementSibling as HTMLElement | null;
+
+    if (!resultsFilter) return;
+
+    toggleResultsFilter(resultsFilter);
+}
+
+export const initializeSearchbar = () => {
+    const searchBarHTML = document.querySelector(".searchbar") as HTMLElement | null;
+
+    if (!searchBarHTML) {
+        console.warn("Searchbar not found.");
+        return;
+    }
+    searchBarHTML.addEventListener("click", handleSearchbarClick);
+}
+
