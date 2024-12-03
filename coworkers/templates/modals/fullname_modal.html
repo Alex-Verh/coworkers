@@ -4,7 +4,10 @@
     <div class="pmodal">
       <img src="{% static 'public/icons/close.svg' %}" alt="Close" class="pmodal_close">
       <div class="pmodal_title">Enter your Full Name</div>
-      <input type="text" id="full_name" name="full_name" class="input" value="{{user.full_name}}" placeholder="Full Name">
-      <div class="pmodal_save">Save Changes</div>
+      <form method="post" action="{% url 'my_profile' %}">
+        {% csrf_token %}
+        {{ full_name_form.full_name }}
+        <button type="submit" name="full_name_form" class="pmodal_save">Save Changes</button>
+      </form>
     </div>
 </div>

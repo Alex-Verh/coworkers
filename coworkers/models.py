@@ -143,7 +143,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return "N/A"
         elif salary >= 1000:
             return f"{int(salary // 1000)}k"
-        return f"{salary:.0f}" if salary.is_integer() else f"{salary:.2f}"
+        if salary % 1 == 0:
+            return f"{int(salary)}"
+        return f"{salary:.2f}"
+
 
 
 class Experience(models.Model):

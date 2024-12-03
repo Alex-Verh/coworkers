@@ -269,6 +269,10 @@ body, .container-fluid {
     cursor: pointer;
 }
 
+.palert:first-of-type {
+    z-index: 3001;
+}
+
 .palert_close {
     position: absolute;
     top: 10px;

@@ -10,7 +10,9 @@
   <body>
     {% if messages %}
         {% for message in messages %}
-          {% include "modals/alert.html" with alert_message=message alert_type=message.tags %}
+          {% if forloop.last %}
+            {% include "modals/alert.html" with alert_message=message alert_type=message.tags %}
+          {% endif %}
         {% endfor %}
     {% endif %}
 

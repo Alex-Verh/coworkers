@@ -8,8 +8,8 @@ class CustomUserCreationForm(forms.ModelForm):
     full_name = forms.CharField(
         required=True,
         error_messages={
-            'invalid': "Enter a valid email address.",
-            'required': "Email is required.",
+            'invalid': "Enter a valid full name.",
+            'required': "Full name is required.",
         }
     )
 
@@ -82,6 +82,7 @@ class ExperienceForm(forms.ModelForm):
             raise forms.ValidationError("End year cannot be earlier than start year.")
         return end_year
     
+
 class ContactForm(forms.Form):
     contact = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 5, 'class': 'textarea'}),
@@ -89,3 +90,58 @@ class ContactForm(forms.Form):
         max_length=2000,
         required=True
     )
+
+
+class FullNameUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['full_name']
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class': 'input', 'placeholder': "Full Name"}),
+        }
+        labels = {
+            'full_name': 'Full Name',
+        }
+
+
+class LocationUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['location']
+        widgets = {
+            'location': forms.TextInput(attrs={'class': 'input', 'placeholder': "City, Country"}),
+        }
+        labels = {
+            'location': 'Current Location',
+        }
+
+
+class SalaryUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['salary_minimum', 'salary_maximum']
+        labels = {
+            'salary_minimum': 'Minimum Salary',
+            'salary_maximum': 'Maximum Salary',
+        }
+        widgets = {
+            'salary_minimum': forms.NumberInput(attrs={'class': 'input text-center', 'step': '0.01', 'placeholder': 'Minimum', 'min': 0, 'max': 10000000}),
+            'salary_maximum': forms.NumberInput(attrs={'class': 'input text-center', 'step': '0.01', 'placeholder': 'Maximum', 'min': 0, 'max': 10000000}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        salary_minimum = cleaned_data.get('salary_minimum')
+        salary_maximum = cleaned_data.get('salary_maximum')
+
+        if salary_minimum is not None and salary_maximum is not None:
+            if salary_minimum > salary_maximum:
+                raise forms.ValidationError(
+                    "Minimum salary cannot be greater than maximum salary."
+                )
+            elif salary_maximum < 0 or salary_minimum < 0:
+                raise forms.ValidationError(
+                    "Salary value cannot be less than 0."
+                )
+            
+        return cleaned_data

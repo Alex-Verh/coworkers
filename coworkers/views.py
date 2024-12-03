@@ -5,7 +5,7 @@ from django.db.models import OuterRef, Subquery, IntegerField, Value
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, ExperienceForm, ContactForm
+from .forms import CustomUserCreationForm, ExperienceForm, ContactForm, FullNameUpdateForm, SalaryUpdateForm, LocationUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -85,6 +85,13 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, gen
             user_score=Coalesce(Subquery(user_trait_measure, output_field=IntegerField()), Value(1))
         )
 
+        # forms
+        context['full_name_form'] = FullNameUpdateForm(instance=user)
+        context['salary_form'] = SalaryUpdateForm(instance=user)
+        context['location_form'] = LocationUpdateForm(instance=user)
+
+
+        # other context data
         context['is_own_profile'] = (user == self.request.user)
         context['formatted_salary_minimum'] = user.formatted_salary(user.salary_minimum)
         context['formatted_salary_maximum'] = user.formatted_salary(user.salary_maximum)
@@ -96,6 +103,34 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, gen
 
         return context
     
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        if 'full_name_form' in request.POST:
+            form = FullNameUpdateForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Full name updated successfully!")
+            else:
+                messages.error(request, "There was an error updating your full name.")
+
+        elif 'salary_form' in request.POST:
+            form = SalaryUpdateForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Salary preference updated successfully!")
+            else:
+                messages.error(request, "There was an error updating your salary preference.")
+
+        elif 'location_form' in request.POST:
+            form = LocationUpdateForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Current location updated successfully!")
+            else:
+                messages.error(request, "There was an error updating your current location.")
+
+        return redirect('my_profile')
+    
     
 class RegisterView(generic.FormView, ContactFormMixin):
     template_name = "register.html"
@@ -104,17 +139,31 @@ class RegisterView(generic.FormView, ContactFormMixin):
     
 
     def form_valid(self, form):
-        user = form.save(commit=False)
+        try:
+            user = form.save(commit=False)
 
-        country = form.cleaned_data.get('location_country')
-        city = form.cleaned_data.get('location_city')
+            country = form.cleaned_data.get('location_country')
+            city = form.cleaned_data.get('location_city')
+            user.location = ", ".join(filter(None, [city, country]))
 
-        user.location = ", ".join(filter(None, [city, country]))
-        user.save()
+            user.save()
 
-        user_name = form.cleaned_data.get('full_name')
-        messages.success(self.request, f'Account has been created. Good luck, {user_name}!')
+            user_name = form.cleaned_data.get('full_name')
+            messages.success(self.request, f'Account has been created. Good luck, {user_name}!')
+        except Exception as e:
+            messages.error(self.request, f"An error occurred while creating your account: {e}")
+            return self.form_invalid(form)
+        
         return super().form_valid(form)
+    
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                readable_field = field.capitalize().replace("_", " ")
+
+                messages.error(self.request, f"{readable_field}: {error}")
+        return super().form_invalid(form)
     
 
 class ExperienceView(LoginRequiredMixin, FormView):

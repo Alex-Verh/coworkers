@@ -15,14 +15,6 @@
         <input type="password" id="password" name="password" class="input logininput">
         <button type="submit" class="button login_btn">Enter Account</button>
     </form>
-
-    {% if messages %}
-    <div class="error-messages">
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    </div>
-    {% endif %}
 </main>
 {% endblock %}
 
