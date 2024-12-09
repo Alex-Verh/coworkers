@@ -1,16 +1,13 @@
 import "../css/profile.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { enableModal, closeAlert, showAlert } from "./functions";
+import { enableModal, closeAlert } from "./functions";
+import { fetchWorkerTrait, fetchLanguage } from "./api";
 
 
 document.addEventListener("DOMContentLoaded", () => {
     const url = new URL(window.location.href);
     const sectionName = url.searchParams.get("section") as string | null;
-    const csrfTokenElem = document.querySelector('meta[name="csrf-token"]') as HTMLElement | null;
-    let csrfToken = "";
-    if (csrfTokenElem) {csrfToken = csrfTokenElem.getAttribute('content') as string | ""};
-
 
     enableModal('contact-form');
     closeAlert();
@@ -27,6 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
         
         personalDataForms.forEach(id => enableModal(id));
+
+
+        fetchLanguage("dut");
     }
 
 
@@ -71,46 +71,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 // show the save button
                 if (showSave) return;
                 saveBtn.classList.remove("none");
+                
 
-                // on button click send the new trait value
+                // on button click save the new trait value
                 saveBtn.addEventListener("click", function onClick() {
-                    fetch(`/worker-trait/`, {
-                        method: "POST",
-                        body: JSON.stringify({
-                            trait_id: rangeInput.getAttribute("id"),
-                            trait_score: rangeInput.value,
-                        }),
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest",
-                            "X-CSRFToken": csrfToken,
-                        }
-                    })
-                    .then((response): Promise<String> => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then((data: any) => {
+                    const traitId = rangeInput.getAttribute("id") as string | "";
+                    const traitScore = rangeInput.value as string | "";
+
+                    function onSuccess() {
                         showSave = false;
                         saveBtn.classList.add("none");
                         saveBtn.removeEventListener("click", onClick);
+                    }
 
-                        if (data.messages && Array.isArray(data.messages)) {
-                            data.messages.forEach((msg: string) => {
-                                showAlert(msg, "success")
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error saving data:', error);
-
-                        if (error.messages && Array.isArray(error.messages)) {
-                            error.messages.forEach((msg: string) => {
-                                showAlert(msg, "error")
-                            });
-                        }
-                    });
+                    fetchWorkerTrait(traitId, traitScore, onSuccess);
                 });
 
                 showSave = true;

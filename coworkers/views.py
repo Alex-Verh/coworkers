@@ -1,6 +1,6 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
-from .models import CustomUser, WorkerLanguage, WorkerNationality, Trait, WorkerTrait
+from .models import CustomUser, WorkerLanguage, WorkerNationality, Trait, WorkerTrait, Language, Nationality
 from django.db.models import OuterRef, Subquery, IntegerField, Value
 from django.db.models.functions import Coalesce
 from django.contrib import messages
@@ -205,9 +205,9 @@ class WorkerTraitView(LoginRequiredMixin, View):
                 defaults={'trait_measure': trait_score},
             )
             if created:
-                return JsonResponse({'messages': [f"Trait \"{trait.trait_name}\" added with score {trait_score}."]})
+                return JsonResponse({'messages': [f"Trait \"{trait.trait_name.strip()}\" added with score {trait_score}."]})
             else:
-                return JsonResponse({'messages': [f"Trait \"{trait.trait_name}\" updated with score {trait_score}."]})
+                return JsonResponse({'messages': [f"Trait \"{trait.trait_name.strip()}\" updated with score {trait_score}."]})
         except Exception as e:
             return JsonResponse({'messages': [f"An error occurred: {e}"]}, status=500)
 
@@ -233,3 +233,104 @@ class ContactView(FormView):
             messages.error(self.request, f"Failed to send the message: {e}")
         
         return super().form_valid(form)
+    
+
+class LanguageView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('name', '').strip().lower()
+        results = Language.objects.filter(language_name__icontains=query)
+
+        results_data = [
+            {
+                'language_id': result.language_id,
+                'language_name': result.language_name,
+            }
+            for result in results
+        ]
+
+        if not results_data:
+            return JsonResponse({'message': f'No languages found for this query.'}, status=201)
+
+        return JsonResponse({'results': results_data})
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            language_id = data.get('language_id')
+
+            if not language_id:
+                return JsonResponse({'error': 'Language ID is required.'}, status=400)
+
+            language = Language.objects.get(id=language_id)
+            WorkerLanguage.objects.create(user=request.user, language=language)
+
+            return JsonResponse({'message': f'Language "{language.name}" added successfully.'}, status=201)
+        except Language.DoesNotExist:
+            return JsonResponse({'error': 'Language not found.'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            language_id = data.get('language_id')
+
+            if not language_id:
+                return JsonResponse({'error': 'Language ID is required.'}, status=400)
+
+            WorkerLanguage.objects.filter(user=request.user, language_id=language_id).delete()
+
+            return JsonResponse({'message': 'Language removed successfully.'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+
+class NationalityView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('name', '').strip().lower()
+        results = Nationality.objects.filter(nationality__name__icontains=query)
+
+        results_data = [
+            {
+                'nationality_id': result.nationality_id,
+                'nationality_name': result.nationality_name,
+            }
+            for result in results
+        ]
+
+        
+        if not results_data:
+            return JsonResponse({'message': f'No nationalities found for this query.'}, status=201)
+
+        return JsonResponse({'results': results_data})
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            nationality_id = data.get('nationality_id')
+
+            if not nationality_id:
+                return JsonResponse({'error': 'Nationality ID is required.'}, status=400)
+
+            nationality = Nationality.objects.get(nationality_id=nationality_id)
+            WorkerNationality.objects.create(user=request.user, nationality=nationality)
+
+            return JsonResponse({'message': f'Nationality "{nationality.name}" added successfully.'}, status=201)
+        except Nationality.DoesNotExist:
+            return JsonResponse({'error': 'Nationality not found.'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            nationality_id = data.get('nationality_id')
+
+            if not nationality_id:
+                return JsonResponse({'error': 'Nationality ID is required.'}, status=400)
+
+            WorkerNationality.objects.filter(user=request.user, nationality_id=nationality_id).delete()
+
+            return JsonResponse({'message': 'Nationality removed successfully.'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)

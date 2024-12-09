@@ -12,4 +12,6 @@ urlpatterns = [
     path('experience/', views.ExperienceView.as_view(), name='experience'),
     path('worker-trait/', views.WorkerTraitView.as_view(), name='worker-trait'),
     path('contact-us/', views.ContactView.as_view(), name='contact-us'),
+    path('language/', views.LanguageView.as_view(), name='language'),
+    path('nationality/', views.NationalityView.as_view(), name='nationality'),
 ]

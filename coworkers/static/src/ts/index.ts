@@ -2,18 +2,8 @@ import "../css/index.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { enableModal, closeAlert, initializeSearchbar } from "./functions";
+import { User, FetchResponse } from "./interfaces";
 
-interface User {
-    id: number;
-    full_name: string;
-    position: string;
-    experience: number;
-}
-
-interface FetchResponse {
-    users: User[];
-    has_next: boolean;
-}
 
 document.addEventListener("DOMContentLoaded", () => {
 

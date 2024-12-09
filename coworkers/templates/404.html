@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load django_vite %} 
+
+{% block title %}404{% endblock %}
+
+{% block content %}
+<main class="logout">
+<div class="logout_msgs">
+    <p class="logout_msg">This page does not exist.</p> 
+    <p class="logout_msg">Error 404.</p>
+</div>
+
+</main>
+{% endblock %}
+
+{% block typescript %}
+  {% vite_asset 'ts/logout.ts' %}
+{% endblock %}
