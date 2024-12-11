@@ -148,7 +148,7 @@
     right: 15px;
 }
 
-.search_result {
+.nationality_result, .language_result {
     margin-top: 20px;
     height: 180px;
     overflow: scroll;
@@ -156,6 +156,6 @@
     padding: 0 10px;
 }
 
-.search_result::-webkit-scrollbar {
+.nationality::-webkit-scrollbar, .language_result::-webkit-scrollbar {
     width: 3px;
 }

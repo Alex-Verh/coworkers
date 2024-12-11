@@ -1,8 +1,9 @@
 import "../css/profile.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { enableModal, closeAlert } from "./functions";
-import { fetchWorkerTrait, fetchLanguage } from "./api";
+import { enableModal, closeAlert, applySearchListener } from "./functions";
+import { fetchWorkerTrait, fetchLanguage, fetchNationality } from "./api";
+import { Language, Nationality } from "./interfaces";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,11 +23,59 @@ document.addEventListener("DOMContentLoaded", () => {
             "location_form",
             "links_form"
         ];
-        
+
         personalDataForms.forEach(id => enableModal(id));
 
 
-        fetchLanguage("dut");
+
+        const languageSearch = document.getElementById("search_language") as HTMLInputElement;
+        const nationalitySearch = document.getElementById("search_nationality") as HTMLInputElement;
+
+
+        if (languageSearch) {
+            const resultDiv = document.querySelector(".language_result") as HTMLElement;
+
+            if (!resultDiv) return;
+
+            applySearchListener(languageSearch, fetchLanguage, (results) => {
+                resultDiv.innerHTML = '';
+                
+                results.forEach((result: Language) => {
+                    resultDiv.insertAdjacentHTML("afterbegin", `
+                        <div class="row language d-flex align-items-center" data-id="${result.language_id}">
+                            <div class="col-md-4 d-flex justify-content-start">${result.language_name}</div>
+                            <div class="col-md-2 pmodal_level">Beginner</div>
+                            <div class="col-md-2 pmodal_level">Professional</div>
+                            <div class="col-md-2 pmodal_level pmodal_level_active">Native</div>
+                            <div class="col-md-2 pmodal_remove">Remove</div>
+                        </div>
+                    `);
+                });
+            });
+           
+        }
+
+
+        if (nationalitySearch) {
+            const parentDiv = document.querySelector(".nationality_result") as HTMLElement;
+            const resultDiv = parentDiv?.firstElementChild as HTMLElement;
+
+            if (!resultDiv) return;
+
+            applySearchListener(nationalitySearch, fetchNationality, (results) => {
+                resultDiv.innerHTML = '';
+                console.log(results);
+                results.forEach((result: Nationality) => {
+                    resultDiv.insertAdjacentHTML("afterbegin", `
+                        <div class="col-md-6 d-flex justify-content-between align-items-center" data-id="${result.nationality_id}">
+                            <span class="nationality" data-id="1">${result.nationality_name}</span>
+                            <span class="pmodal_remove">Remove</span>
+                        </div>
+                    `);
+                });
+            });
+        }
+
     }
 
 

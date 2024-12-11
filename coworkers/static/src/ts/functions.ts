@@ -64,9 +64,11 @@ export const closeAlert = () => {
     })
 }
 
-export const showAlert = (message: string, type: string) => {
+export const showAlert = (message: string, type: string, priority: boolean = false)  => {
+    const style = priority ? 'z-index: 10000;' : '';
+
     document.body.insertAdjacentHTML("afterbegin", `
-        <div class="palert palert_${type} d-flex align-items-center justify-content-center">
+        <div style="${style}" class="palert palert_${type} d-flex align-items-center justify-content-center">
             <img src="/static/public/icons/close_alert.svg" alt="Close" class="palert_close">
             <div class="palert_text">${message}</div>
         </div>    
@@ -123,4 +125,34 @@ export const initializeSearchbar = () => {
     }
     searchBarHTML.addEventListener("click", handleSearchbarClick);
 }
+
+
+export const applySearchListener = (
+    searchInput: HTMLInputElement, 
+    fetchFunction: (query: string) => Promise<any>,
+    onResults: (results: any) => void
+) => {
+    let typingTimer: number | null = null;
+
+    searchInput.addEventListener("input", () => {
+        if (typingTimer) {
+            clearTimeout(typingTimer);
+        }
+
+        typingTimer = setTimeout(() => {
+            const query = searchInput.value.trim();
+            if (query) {
+                fetchFunction(query)
+                    .then(results => {
+                        onResults(results);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching results:", error);
+                    });
+            } else {
+                onResults([]);
+            }
+        }, 1000); 
+    });
+};
 

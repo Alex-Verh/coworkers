@@ -249,9 +249,9 @@ class LanguageView(LoginRequiredMixin, View):
         ]
 
         if not results_data:
-            return JsonResponse({'message': f'No languages found for this query.'}, status=201)
+            return JsonResponse({'message': f'No languages found for this query.'}, status=200)
 
-        return JsonResponse({'results': results_data})
+        return JsonResponse({'results': results_data}, status=200)
     
     def post(self, request, *args, **kwargs):
         try:
@@ -288,7 +288,7 @@ class LanguageView(LoginRequiredMixin, View):
 class NationalityView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         query = request.GET.get('name', '').strip().lower()
-        results = Nationality.objects.filter(nationality__name__icontains=query)
+        results = Nationality.objects.filter(nationality_name__icontains=query)
 
         results_data = [
             {
@@ -300,9 +300,9 @@ class NationalityView(LoginRequiredMixin, View):
 
         
         if not results_data:
-            return JsonResponse({'message': f'No nationalities found for this query.'}, status=201)
+            return JsonResponse({'message': f'No nationalities found for this query.'}, status=200)
 
-        return JsonResponse({'results': results_data})
+        return JsonResponse({'results': results_data}, status=200)
     
     def post(self, request, *args, **kwargs):
         try:
