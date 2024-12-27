@@ -269,6 +269,12 @@ body, .container-fluid {
     cursor: pointer;
 }
 
+.palert.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+
 .palert:first-of-type {
     z-index: 3001;
 }

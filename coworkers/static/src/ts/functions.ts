@@ -1,3 +1,6 @@
+import { Language, Nationality } from "./interfaces";
+
+
 // opening modal
 export const enableModal = (buttonId: string) => {
     const openBtn = document.getElementById(buttonId) as HTMLElement | null;
@@ -64,17 +67,34 @@ export const closeAlert = () => {
     })
 }
 
-export const showAlert = (message: string, type: string, priority: boolean = false)  => {
+export const showAlert = (message: string, type: string, priority: boolean = false) => {
     const style = priority ? 'z-index: 10000;' : '';
 
-    document.body.insertAdjacentHTML("afterbegin", `
-        <div style="${style}" class="palert palert_${type} d-flex align-items-center justify-content-center">
-            <img src="/static/public/icons/close_alert.svg" alt="Close" class="palert_close">
-            <div class="palert_text">${message}</div>
-        </div>    
-    `)
-}
+    const alertElement = document.createElement("div");
+    alertElement.style.cssText = style;
+    alertElement.className = `palert palert_${type} d-flex align-items-center justify-content-center`;
+    alertElement.innerHTML = `
+        <img src="/static/public/icons/close_alert.svg" alt="Close" class="palert_close">
+        <div class="palert_text">${message}</div>
+    `;
+    
+    document.body.insertAdjacentElement("afterbegin", alertElement);
 
+    // Automatically remove the alert after 3 seconds
+    setTimeout(() => {
+        alertElement.classList.add("fade-out");
+        setTimeout(() => {
+            alertElement.remove();
+        }, 1500);
+    }, 3000); 
+
+    const closeButton = alertElement.querySelector(".palert_close");
+    if (closeButton) {
+        closeButton.addEventListener("click", () => {
+            alertElement.remove();
+        });
+    }
+};
 
 const toggleResultsFilter = (resultsFilter: HTMLElement) => {
     function onResultFilterClick(event: Event) {
@@ -155,4 +175,31 @@ export const applySearchListener = (
         }, 1000); 
     });
 };
+
+export const renderNationality = (nationality: Nationality, action: string, div: HTMLElement) => {
+    div.insertAdjacentHTML(
+        "afterbegin", 
+        `<div class="col-md-6 d-flex justify-content-between align-items-center"data-id="${nationality.nationality_id}" data-name="${nationality.nationality_name}">
+            <span class="nationality">${nationality.nationality_name}</span>
+            <span class="result_${action.toLowerCase()}">${action}</span>
+        </div>`
+    );
+};
+
+export const renderLanguage = (language: Language, action: string, div: HTMLElement) => {
+    div.insertAdjacentHTML(
+        "afterbegin",
+        `
+        <div class="row language d-flex align-items-center" data-id="${language.language_id}" data-name="${language.language_name}">
+            <div class="col-md-4 d-flex justify-content-start">${language.language_name}</div>
+            <div class="col-md-2 pmodal_level level_select">Beginner</div>
+            <div class="col-md-2 pmodal_level">Professional</div>
+            <div class="col-md-2 pmodal_level pmodal_level_active">Native</div>
+            <div class="col-md-2 result_${action.toLowerCase()}">${action}</div>
+        </div>
+        `
+    );
+};
+
+    
 

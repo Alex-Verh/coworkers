@@ -150,10 +150,33 @@
 
 .nationality_result, .language_result {
     margin-top: 20px;
-    height: 180px;
+    height: 280px;
     overflow: scroll;
     overflow-x: hidden;
-    padding: 0 10px;
+    padding: 15px 10px;
+    text-align: left;
+    font-size: 22px;
+}
+
+.nationality {
+    font-size: 24px;
+}
+
+.result_remove {
+    color: #A74848;
+}
+
+.result_add {
+    color: #005e11;
+}
+
+.result_add, .result_remove {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    cursor: pointer;
+    margin: 0 auto;
+    font-size: 16px;
+    margin: 0 !important;
 }
 
 .nationality::-webkit-scrollbar, .language_result::-webkit-scrollbar {

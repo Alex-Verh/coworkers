@@ -237,6 +237,12 @@ class ContactView(FormView):
 
 class LanguageView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        if request.path.endswith('own/'):
+            return self.get_own(request, *args, **kwargs)
+        else:
+            return self.search_languages(request, *args, **kwargs)
+
+    def search_languages(self, request, *args, **kwargs):
         query = request.GET.get('name', '').strip().lower()
         results = Language.objects.filter(language_name__icontains=query)
 
@@ -253,6 +259,25 @@ class LanguageView(LoginRequiredMixin, View):
 
         return JsonResponse({'results': results_data}, status=200)
     
+    def get_own(self, request, *args, **kwargs):
+        try:
+            results = WorkerLanguage.objects.filter(user=request.user)
+            
+            if not results.exists():
+                return JsonResponse({'results': []}, status=200)
+
+            results = [
+                {
+                    'language_id': result.language.language_id,
+                    'language_name': result.language.language_name,
+                }
+                for result in results
+            ]
+
+            return JsonResponse({'results': results}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body)
@@ -261,10 +286,10 @@ class LanguageView(LoginRequiredMixin, View):
             if not language_id:
                 return JsonResponse({'error': 'Language ID is required.'}, status=400)
 
-            language = Language.objects.get(id=language_id)
+            language = Language.objects.get(language_id=language_id)
             WorkerLanguage.objects.create(user=request.user, language=language)
 
-            return JsonResponse({'message': f'Language "{language.name}" added successfully.'}, status=201)
+            return JsonResponse({'message': f'Language "{language.language_name}" added successfully.'}, status=201)
         except Language.DoesNotExist:
             return JsonResponse({'error': 'Language not found.'}, status=404)
         except Exception as e:
@@ -278,15 +303,22 @@ class LanguageView(LoginRequiredMixin, View):
             if not language_id:
                 return JsonResponse({'error': 'Language ID is required.'}, status=400)
 
+            language = Language.objects.get(language_id=language_id)
             WorkerLanguage.objects.filter(user=request.user, language_id=language_id).delete()
 
-            return JsonResponse({'message': 'Language removed successfully.'}, status=200)
+            return JsonResponse({'message': f'Language "{language.language_name}" removed successfully.'}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     
 
 class NationalityView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        if request.path.endswith('own/'):
+            return self.get_own(request, *args, **kwargs)
+        else:
+            return self.search_nationalities(request, *args, **kwargs)
+
+    def search_nationalities(self, request, *args, **kwargs):
         query = request.GET.get('name', '').strip().lower()
         results = Nationality.objects.filter(nationality_name__icontains=query)
 
@@ -304,6 +336,26 @@ class NationalityView(LoginRequiredMixin, View):
 
         return JsonResponse({'results': results_data}, status=200)
     
+    def get_own(self, request, *args, **kwargs):
+        try:
+            results = WorkerNationality.objects.filter(user=request.user)
+            
+            if not results.exists():
+                return JsonResponse({'results': []}, status=200)
+
+
+            results = [
+                {
+                    'nationality_id': result.nationality.nationality_id,
+                    'nationality_name': result.nationality.nationality_name,
+                }
+                for result in results
+            ]
+
+            return JsonResponse({'results': results}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body)
@@ -313,9 +365,13 @@ class NationalityView(LoginRequiredMixin, View):
                 return JsonResponse({'error': 'Nationality ID is required.'}, status=400)
 
             nationality = Nationality.objects.get(nationality_id=nationality_id)
+
+            if WorkerNationality.objects.filter(user=request.user, nationality=nationality).exists():
+                return JsonResponse({'error': f'Nationality "{nationality.nationality_name}" is already added.'}, status=400)
+
             WorkerNationality.objects.create(user=request.user, nationality=nationality)
 
-            return JsonResponse({'message': f'Nationality "{nationality.name}" added successfully.'}, status=201)
+            return JsonResponse({'message': f'Nationality "{nationality.nationality_name}" added successfully.'}, status=201)
         except Nationality.DoesNotExist:
             return JsonResponse({'error': 'Nationality not found.'}, status=404)
         except Exception as e:
@@ -329,8 +385,9 @@ class NationalityView(LoginRequiredMixin, View):
             if not nationality_id:
                 return JsonResponse({'error': 'Nationality ID is required.'}, status=400)
 
+            nationality = Nationality.objects.get(nationality_id=nationality_id)
             WorkerNationality.objects.filter(user=request.user, nationality_id=nationality_id).delete()
 
-            return JsonResponse({'message': 'Nationality removed successfully.'}, status=200)
+            return JsonResponse({'message': f'Nationality "{nationality.nationality_name}" removed successfully.'}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
