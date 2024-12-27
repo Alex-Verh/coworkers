@@ -179,7 +179,7 @@ export const applySearchListener = (
 export const renderNationality = (nationality: Nationality, action: string, div: HTMLElement) => {
     div.insertAdjacentHTML(
         "afterbegin", 
-        `<div class="col-md-6 d-flex justify-content-between align-items-center"data-id="${nationality.nationality_id}" data-name="${nationality.nationality_name}">
+        `<div class="col-md-6 d-flex justify-content-between align-items-center" data-id="${nationality.nationality_id}" data-name="${nationality.nationality_name}">
             <span class="nationality">${nationality.nationality_name}</span>
             <span class="result_${action.toLowerCase()}">${action}</span>
         </div>`
@@ -200,6 +200,93 @@ export const renderLanguage = (language: Language, action: string, div: HTMLElem
         `
     );
 };
+
+const handleEntityClick = (
+    e: MouseEvent,
+    addedEntities: Set<number>,
+    addedDiv: HTMLElement,
+    fetchAddEntity: Function,
+    fetchDeleteEntity: Function,
+    renderEntity: Function,
+    addedClassName: string
+) => {
+    const target = e.target as HTMLElement;
+    const container = target.closest("[data-id]");
+    if (!container) return;
+
+    const entityId = Number(container?.getAttribute("data-id"));
+    const entityName = String(container?.getAttribute("data-name"));
+
+    if (target.classList.contains("result_remove")) {
+        addedEntities.delete(entityId);
+        container?.remove();
+        fetchDeleteEntity(entityId);
+    } else if (target.classList.contains("result_add")) {
+        if (addedEntities.size === 0) {
+            addedDiv.innerHTML = '';
+        }
+
+        addedEntities.add(entityId);
+        fetchAddEntity(entityId);
+        renderEntity({ [`${addedClassName}_id`]: entityId, [`${addedClassName}_name`]: entityName }, "Remove", addedDiv);
+        container?.remove();
+    }
+};
+
+type FetchNoParamEntitiesFunction = () => Promise<any[]>;
+type FetchEntitiesFunction = (query: string) => Promise<any[]>;
+type FetchEntityFunction = (entityId: number) => Promise<void>;
+type RenderEntityFunction = (entity: any, action: string, container: HTMLElement) => void;
+
+export const initializeEntityModal = (
+    searchElement: HTMLInputElement,
+    fetchOwnEntities: FetchNoParamEntitiesFunction,
+    fetchSearchEntities: FetchEntitiesFunction,
+    fetchAddEntity: FetchEntityFunction,
+    fetchDeleteEntity: FetchEntityFunction,
+    renderEntity: RenderEntityFunction,
+    addedClassName: string,
+    searchedClassName: string
+) => {
+    const parentDiv = document.querySelector(`.${addedClassName}_result`) as HTMLElement;
+    if (!parentDiv) return;
+
+    const addedDiv = parentDiv.querySelector(`.${addedClassName}_added`) as HTMLElement;
+    const searchedDiv = parentDiv.querySelector(`.${searchedClassName}_searched`) as HTMLElement;
+    const addedEntities = new Set<number>();
+
+    if (!addedDiv || !searchedDiv) return;
+
+    fetchOwnEntities()
+        .then((results: any) => {
+            if (results.length === 0) {
+                addedDiv.innerHTML = `No ${addedClassName} indicated at the moment.`;
+                return;
+            }
+
+            results.forEach((entity: any) => {
+                addedEntities.add(entity[`${addedClassName}_id`]);
+                renderEntity(entity, "Remove", addedDiv);
+            });
+        })
+        .catch((error: any) => {
+            console.error(`Error fetching initial ${addedClassName}s:`, error);
+        });
+
+    parentDiv.addEventListener("click", (e) =>
+        handleEntityClick(e, addedEntities, addedDiv, fetchAddEntity, fetchDeleteEntity, renderEntity, addedClassName)
+    );
+
+    applySearchListener(searchElement, fetchSearchEntities, (results) => {
+        searchedDiv.innerHTML = '';
+        results.forEach((result: any) => {
+            if (!addedEntities.has(result[`${addedClassName}_id`])) {
+                renderEntity(result, "Add", searchedDiv);
+            };
+        });
+    });
+};
+
 
     
 
