@@ -32,70 +32,71 @@
     <div class="searchbar">
       <div class="row g-3">
           <div class="col-md-6">
-              <input type="text" name="find_worker" placeholder="Search workers by job name" class="searchbar_field" />
+              <input 
+              type="text" 
+              name="find_job" 
+              placeholder="Search workers by job name" 
+              class="searchbar_field" 
+              data-search="job"
+              id="find_job"
+              />
           </div>
           <div class="col-md-6">
-              <input type="text" name="find_location" placeholder="Location" class="searchbar_field" />
+              <input 
+              type="text" 
+              name="find_location" 
+              placeholder="Location" 
+              class="searchbar_field" 
+              data-search="location"
+              id="find_location"
+              />
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="searchbar_div">
-              <div class="searchbar_filter">Experience</div>
-              <div class="searchbar_results none">
-                <div class="searchbar_result">No experience</div>
-                <div class="searchbar_result">≥1 year</div>
-                <div class="searchbar_result">≥2 years</div>
-                <div class="searchbar_result">≥5 years</div>
-                <div class="searchbar_result">≥7 years</div>
-                <div class="searchbar_result">≥10 years</div>
+              <div class="searchbar_filter" data-filter="experience">Experience</div>
+              <div class="searchbar_results none" data-dropdown="experience">
+                <div class="searchbar_result" data-value="0-0">No experience</div>
+                <div class="searchbar_result" data-value="1-2">1 - 2 years</div>
+                <div class="searchbar_result" data-value="3-5">3 - 5 years</div>
+                <div class="searchbar_result" data-value="7-10">7 - 10 years</div>
+                <div class="searchbar_result" data-value="10-inf">10 - ∞ years</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="searchbar_div">
+              <input
+              type="text"
+              name="find_language"
+              placeholder="Language"
+              class="searchbar_field searchbar_filter"
+              data-search="language"
+              id="find_language"
+              />
+              <div class="searchbar_results searchbar_languages none" data-dropdown="language">
               </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="searchbar_div">
-              <input type="text" name="find_language" placeholder="Language" class="searchbar_field" />
-              <div class="searchbar_results none">
-  
+              <div class="searchbar_filter" data-filter="salary">Salary Expectation</div>
+              <div class="searchbar_results none" data-dropdown="salary">
+                <div class="searchbar_result" data-value="0-5">0 - 5k €/year</div>
+                <div class="searchbar_result" data-value="5-10">5k - 10k €/year</div>
+                <div class="searchbar_result" data-value="10-15">10k - 15k €/year</div>
+                <div class="searchbar_result" data-value="15-20">15k - 20k €/year</div>
+                <div class="searchbar_result" data-value="20-30">20k - 30k €/year</div>
+                <div class="searchbar_result" data-value="30-50">30k - 50k €/year</div>
+                <div class="searchbar_result" data-value="50-100">50k - 100k €/year</div>
+                <div class="searchbar_result" data-value="100-inf">100k - ∞ €/year</div>  
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-              <div class="searchbar_div">
-                <div class="searchbar_filter">Salary Expectation</div>
-                <div class="searchbar_results none">
-                  <div class="searchbar_result">≤5000 €/year</div>
-                  <div class="searchbar_result">≤10000 €/year</div>
-                  <div class="searchbar_result">≤15000 €/year</div>
-                  <div class="searchbar_result">≤20000 €/year</div>
-                  <div class="searchbar_result">≤30000 €/year</div>
-                  <div class="searchbar_result">≤50000 €/year</div>
-                  <div class="searchbar_result">≤100000 €/year</div>
-                </div>
-              </div>
           </div>
       </div>
   </div>
 
   <div id="user-list">
-    {% for user in users %}
-    <a href="{% url 'user_profile' user.id %}">
-      <div class="search_profile">
-        <div class="row align-items-center">
-          <div class="col-md-3">
-            <div class="profile_information">
-              <div class="profile_name">{{ user.full_name }}</div>
-              <div class="profile_position">{{ user.position }}</div>
-              <div class="profile_experience">{{ user.experience }} year experience</div>
-            </div>
-          </div>
-          <div class="col-md-9">
-            <div class="profile_description">
-              Some additional details about {{ user.full_name }}.
-            </div>
-          </div>
-        </div>
-      </div>
-    </a>
-    {% endfor %}
+
   </div>
 
   <button id="load-more" class="button searchbar_btn" data-page="2">Show More</button>

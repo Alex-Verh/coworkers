@@ -1,7 +1,7 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
-from .models import CustomUser, WorkerLanguage, WorkerNationality, Trait, WorkerTrait, Language, Nationality
-from django.db.models import OuterRef, Subquery, IntegerField, Value
+from .models import CustomUser, WorkerLanguage, WorkerNationality, Trait, WorkerTrait, Language, Nationality, Experience
+from django.db.models import OuterRef, Subquery, IntegerField, Value, Q, F
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -14,6 +14,7 @@ from .mixins import ExperienceFormMixin, ContactFormMixin
 from django.core.mail import EmailMessage
 import json
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 
 class IndexView(generic.ListView, ContactFormMixin):
@@ -27,14 +28,82 @@ class IndexView(generic.ListView, ContactFormMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['users_section'] = self.get_queryset()[:6]  # first section
-        context['users_paginated'] = self.get_queryset()   # second section
         return context
 
     def get(self, request, *args, **kwargs):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            page_number = request.GET.get('page', 1)
-            paginator = Paginator(CustomUser.objects.all(), 3)
-            page_obj = paginator.get_page(page_number)
+            try:
+                page_number = int(request.GET.get('page', 1))
+            except ValueError:
+                return JsonResponse({"error": "Invalid page number."}, status=400)
+
+            worker_query = request.GET.get('worker', '').strip()
+            location_query = request.GET.get('location', '').strip()
+            experience_query = request.GET.get('experience', None)
+            language_query = request.GET.get('language', '').strip()
+            salary_query = request.GET.get('salary', None)
+
+            filters = Q()
+
+            if worker_query:
+                filters &= Q(experiences__type='Work') & Q(experiences__position__icontains=worker_query)
+
+            if location_query:
+                filters &= Q(location__icontains=location_query)
+
+            if language_query:
+                try:
+                    language_ids = [int(lang_id) for lang_id in language_query.split(",")]
+                    filters &= Q(workerlanguage__language_id__in=language_ids)
+                except ValueError:
+                    return JsonResponse({"error": "Invalid language filter format."}, status=400)
+
+            if experience_query:
+                try:
+                    experience_ranges = experience_query.split(",")
+                    experience_filters = Q()
+                    for experience_range in experience_ranges:
+                        min_experience, max_experience = experience_range.split("-")
+                        min_experience = int(min_experience)
+
+                        if max_experience == "inf":
+                            experience_filters |= Q(experience__gte=min_experience)
+                        else:
+                            max_experience = int(max_experience)
+                            experience_filters |= Q(experience__gte=min_experience, experience__lte=max_experience)
+
+                    filters &= experience_filters
+                except (ValueError, AttributeError):
+                    return JsonResponse({"error": "Invalid experience filter format."}, status=400)
+
+            if salary_query:
+                try:
+                    salary_ranges = salary_query.split(",")
+                    salary_filters = Q()
+                    for salary_range in salary_ranges:
+                        min_salary, max_salary = salary_range.split("-")
+                        min_salary = int(min_salary) * 1000
+
+                        if max_salary == "inf":
+                            salary_filters |= Q(salary_minimum__gte=min_salary)
+                        else:
+                            max_salary = int(max_salary) * 1000
+                            salary_filters |= Q(salary_minimum__gte=min_salary, salary_minimum__lte=max_salary)
+
+                    filters &= salary_filters
+                except (ValueError, AttributeError):
+                    return JsonResponse({"error": "Invalid salary filter format."}, status=400)
+
+            try:
+                queryset = CustomUser.objects.filter(filters).order_by('id').distinct()
+            except ValidationError as e:
+                return JsonResponse({"error": f"Invalid query: {e.message}"}, status=400)
+
+            paginator = Paginator(queryset, 3)
+            try:
+                page_obj = paginator.get_page(page_number)
+            except Exception as e:
+                return JsonResponse({"error": "Error in pagination."}, status=400)
 
             users_data = [
                 {

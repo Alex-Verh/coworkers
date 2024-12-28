@@ -1,4 +1,4 @@
-import { showAlert } from "./functions";
+import { showAlert, showLoading, hideLoading } from "./functions";
 import { Language, Nationality } from "./interfaces";
 
 
@@ -7,34 +7,81 @@ let csrfToken = "";
 if (csrfTokenElem) {csrfToken = csrfTokenElem.getAttribute('content') as string | ""};
 
 
-export const fetchWorkerTrait = (idValue : string, traitScore: string, onSuccess: Function) => {
-    fetch(`/worker-trait/`, {
-        method: "POST",
-        body: JSON.stringify({
-            trait_id: idValue,
-            trait_score: traitScore,
-        }),
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": csrfToken,
-        }
-    })
-    .then((response): Promise<String> => {
+export const fetchWorkers = async (params: URLSearchParams) => {
+    showLoading();
+
+    try {
+        const response = await fetch(`/?${params.toString()}`, {
+            method: "GET",
+            headers: {
+                "x-requested-with": "XMLHttpRequest",
+            },
+        });
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.error("Failed to fetch data:", response.statusText);
+            return [];
         }
-        return response.json();
-    })
-    .then((data: any) => {
-        onSuccess();
-    
-        if (data.messages && Array.isArray(data.messages)) {
-            data.messages.forEach((msg: string) => {
-                showAlert(msg, "success");
+
+        const data = await response.json();
+
+        if (data.users) {
+
+            return data;
+            
+        } else {
+            console.warn("No user data found.");
+            showAlert("No workers found for applied filters.", "error")
+            return [];
+        }
+
+        
+    } catch (error:any) {
+        console.error("An error occurred while fetching data:", error);
+
+        if (error.messages && Array.isArray(error.messages)) {
+            error.messages.forEach((msg: string) => {
+                showAlert(msg, "error");
             });
-        }
-    })
-    .catch((error) => {
+        };
+        return [];
+    } finally {
+        hideLoading();
+    }
+}
+
+
+export const fetchWorkerTrait = (idValue : string, traitScore: string, onSuccess: Function) => {
+    showLoading();
+
+    try{
+        fetch(`/worker-trait/`, {
+            method: "POST",
+            body: JSON.stringify({
+                trait_id: idValue,
+                trait_score: traitScore,
+            }),
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": csrfToken,
+            }
+        })
+        .then((response): Promise<String> => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data: any) => {
+            onSuccess();
+        
+            if (data.messages && Array.isArray(data.messages)) {
+                data.messages.forEach((msg: string) => {
+                    showAlert(msg, "success");
+                });
+            }
+        })
+    } catch(error: any) {
         console.error('Error saving data:', error);
     
         if (error.messages && Array.isArray(error.messages)) {
@@ -42,11 +89,15 @@ export const fetchWorkerTrait = (idValue : string, traitScore: string, onSuccess
                 showAlert(msg, "error");
             });
         };
-    });
+    } finally {
+        hideLoading();
+    }
 };
 
 
 export const fetchOwnLanguage = async (): Promise<Array<Language>> => {
+    showLoading();
+
     try {
         const response = await fetch(`/languages/own/`, {
             method: "GET",
@@ -80,11 +131,15 @@ export const fetchOwnLanguage = async (): Promise<Array<Language>> => {
         }
 
         return [];
+    } finally {
+        hideLoading();
     }
 };
 
 
 export const fetchSearchLanguage = async (language: string): Promise<Array<Language>> => {
+    showLoading();
+
     try {
         const response = await fetch(`/languages/?name=${encodeURIComponent(language)}`, {
             method: "GET",
@@ -120,11 +175,15 @@ export const fetchSearchLanguage = async (language: string): Promise<Array<Langu
         }
 
         return [];
+    } finally {
+        hideLoading();
     }
 };
 
 
 export const fetchAddLanguage = async (languageId: number): Promise<void> => {
+    showLoading();
+
     try {
         const response = await fetch('/languages/', {
             method: 'POST',
@@ -154,11 +213,15 @@ export const fetchAddLanguage = async (languageId: number): Promise<void> => {
         } else {
             showAlert(error.message || "An unexpected error occurred.", "error", true);
         }
+    } finally {
+        hideLoading();
     }
 };
 
 
 export const fetchDeleteLanguage= async (languageId: number): Promise<void> => {
+    showLoading();
+
     try {
         const response = await fetch('/languages/', {
             method: 'DELETE',
@@ -188,11 +251,15 @@ export const fetchDeleteLanguage= async (languageId: number): Promise<void> => {
         } else {
             showAlert(error.message || "An unexpected error occurred.", "error", true);
         }
+    } finally {
+        hideLoading();
     }
 };
 
 
 export const fetchOwnNationality = async (): Promise<Array<Nationality>> => {
+    showLoading();
+
     try {
         const response = await fetch(`/nationalities/own/`, {
             method: "GET",
@@ -226,10 +293,14 @@ export const fetchOwnNationality = async (): Promise<Array<Nationality>> => {
         }
 
         return [];
+    } finally {
+        hideLoading();
     }
 };
 
 export const fetchSearchNationality = async (nationality: string): Promise<Array<Nationality>> => {
+    showLoading();
+
     try {
         const response = await fetch(`/nationalities/?name=${encodeURIComponent(nationality)}`, {
             method: "GET",
@@ -264,11 +335,15 @@ export const fetchSearchNationality = async (nationality: string): Promise<Array
         }
 
         return [];
+    } finally {
+        hideLoading();
     }
 };
 
 
 export const fetchAddNationality = async (nationalityId: number): Promise<void> => {
+    showLoading();
+
     try {
         const response = await fetch('/nationalities/', {
             method: 'POST',
@@ -298,11 +373,15 @@ export const fetchAddNationality = async (nationalityId: number): Promise<void> 
         } else {
             showAlert(error.message || "An unexpected error occurred.", "error", true);
         }
+    } finally {
+        hideLoading();
     }
 };
 
 
 export const fetchDeleteNationality = async (nationalityId: number): Promise<void> => {
+    showLoading();
+
     try {
         const response = await fetch('/nationalities/', {
             method: 'DELETE',
@@ -332,5 +411,7 @@ export const fetchDeleteNationality = async (nationalityId: number): Promise<voi
         } else {
             showAlert(error.message || "An unexpected error occurred.", "error", true);
         }
+    } finally {
+        hideLoading();
     }
 };

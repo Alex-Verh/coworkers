@@ -5,7 +5,6 @@ import { enableModal, closeAlert, initializeEntityModal, renderNationality, rend
 import { fetchWorkerTrait, 
     fetchAddLanguage, fetchOwnLanguage, fetchDeleteLanguage, fetchSearchLanguage, 
     fetchSearchNationality, fetchAddNationality, fetchOwnNationality, fetchDeleteNationality } from "./api";
-import { Language, Nationality } from "./interfaces";
 
 
 document.addEventListener("DOMContentLoaded", () => {

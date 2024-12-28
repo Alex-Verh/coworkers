@@ -1,4 +1,4 @@
-import { Language, Nationality } from "./interfaces";
+import { User, Language, Nationality } from "./interfaces";
 
 
 // opening modal
@@ -55,7 +55,6 @@ export const closeAlert = () => {
         const closeBtn = clickTarget.closest(".palert_close") as HTMLElement | null;
 
         if (!closeBtn) {
-            console.warn('Close button not found in alert.');
             return;
         }
 
@@ -95,57 +94,6 @@ export const showAlert = (message: string, type: string, priority: boolean = fal
         });
     }
 };
-
-const toggleResultsFilter = (resultsFilter: HTMLElement) => {
-    function onResultFilterClick(event: Event) {
-        const clickTarget = event.target as HTMLElement | null;
-
-        if (!clickTarget) return;
-
-        const searchResult = clickTarget.closest(".searchbar_result") as HTMLElement | null;
-
-        if (!searchResult) return;
-
-        searchResult.classList.toggle("searchbar_result_active");
-    }
-
-    if (resultsFilter.classList.contains("none")) {
-        resultsFilter.classList.remove("none");
-        console.log(resultsFilter.className);
-
-        resultsFilter.addEventListener("click", onResultFilterClick);
-    } else {
-        resultsFilter.classList.add("none");
-        resultsFilter.removeEventListener("click", onResultFilterClick);
-    }
-}
-
-const handleSearchbarClick = (event: Event) => {
-    const clickTarget = event.target as HTMLElement | null;
-
-    if (!clickTarget) return;
-
-    const filterBtn = clickTarget.closest(".searchbar_filter") as HTMLElement | null;
-
-    if (!filterBtn) return;
-
-    const resultsFilter = filterBtn.nextElementSibling as HTMLElement | null;
-
-    if (!resultsFilter) return;
-
-    toggleResultsFilter(resultsFilter);
-}
-
-export const initializeSearchbar = () => {
-    const searchBarHTML = document.querySelector(".searchbar") as HTMLElement | null;
-
-    if (!searchBarHTML) {
-        console.warn("Searchbar not found.");
-        return;
-    }
-    searchBarHTML.addEventListener("click", handleSearchbarClick);
-}
-
 
 export const applySearchListener = (
     searchInput: HTMLInputElement, 
@@ -197,6 +145,41 @@ export const renderLanguage = (language: Language, action: string, div: HTMLElem
             <div class="col-md-2 pmodal_level pmodal_level_active">Native</div>
             <div class="col-md-2 result_${action.toLowerCase()}">${action}</div>
         </div>
+        `
+    );
+};
+
+export const renderFilterLanguage = (language: Language, div: HTMLElement) => {
+    div.insertAdjacentHTML(
+        "beforeend",
+        `
+        <div class="searchbar_result" data-value="${language.language_id}">${language.language_name}</div>
+        `
+    );
+};
+
+export const renderWorker = (worker: User, div: HTMLElement) => {
+    div.insertAdjacentHTML(
+        "beforeend",
+        `
+        <a href="/profile/${worker.id}">
+            <div class="search_profile">
+                <div class="row align-items-center">
+                <div class="col-md-3">
+                    <div class="profile_information">
+                    <div class="profile_name">${worker.full_name}</div>
+                    <div class="profile_position">${worker.position}</div>
+                    <div class="profile_experience">${worker.experience} year experience</div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="profile_description">
+                    Some additional details about this idiot.
+                    </div>
+                </div>
+                </div>
+            </div>
+            </a>
         `
     );
 };
@@ -287,6 +270,27 @@ export const initializeEntityModal = (
     });
 };
 
+export const showLoading = () => {
+    const loadingDiv = document.createElement('div');
+
+    loadingDiv.className = 'loading d-flex align-items-center justify-content-center';
+    loadingDiv.innerHTML = `
+      <img src="/static/public/icons/loading.svg" alt="Loading" class="loading-icon" />
+    `;
+
+    document.body.appendChild(loadingDiv);
+
+    document.body.style.overflow = 'hidden';
+};
+
+export const hideLoading = () => {
+    const loadingDiv = document.querySelector('.loading');
+    if (loadingDiv) {
+        loadingDiv.remove();
+    }
+
+    document.body.style.overflow = '';
+};
 
     
 

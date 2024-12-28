@@ -1,4 +1,3 @@
-# Create your models here.
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -84,6 +83,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     salary_maximum = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
+    experience = models.IntegerField(default=0)
     linkedin_link = models.URLField(null=True, blank=True)
     xing_link = models.URLField(null=True, blank=True)
     personal_link = models.URLField(null=True, blank=True)
@@ -123,21 +123,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
         return lastest_position
     
-    @property
-    def experience(self):
-        work_experiences = self.experiences.filter(type='Work').order_by('start_year')
-        
-        if not work_experiences.exists():
-            return 0
-
-        first_experience = work_experiences.first()
-        latest_experience = work_experiences.last()
-
-        end_year = latest_experience.end_year or date.today().year
-
-        total_experience = end_year - first_experience.start_year
-        return total_experience
-    
     def formatted_salary(self, salary):
         if salary is None:
             return "N/A"
@@ -146,7 +131,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         if salary % 1 == 0:
             return f"{int(salary)}"
         return f"{salary:.2f}"
-
 
 
 class Experience(models.Model):
