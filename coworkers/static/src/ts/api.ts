@@ -1,5 +1,5 @@
 import { showAlert, showLoading, hideLoading } from "./functions";
-import { Language, Nationality } from "./interfaces";
+import { Language, Nationality, Experience} from "./interfaces";
 
 
 const csrfTokenElem = document.querySelector('meta[name="csrf-token"]') as HTMLElement | null;
@@ -399,6 +399,116 @@ export const fetchDeleteNationality = async (nationalityId: number): Promise<voi
         }
 
         const data = await response.json();
+        showAlert(data.message, "success", true);
+
+
+    } catch (error: any) {
+        
+        if (error.messages && Array.isArray(error.messages)) {
+            error.messages.forEach((msg: string) => {
+                showAlert(msg, "error", true);
+            });
+        } else {
+            showAlert(error.message || "An unexpected error occurred.", "error", true);
+        }
+    } finally {
+        hideLoading();
+    }
+};
+
+export async function fetchExperience(experienceId: number): Promise<Experience | null> {
+    showLoading();
+
+    try {
+        const response = await fetch(`/experience/${experienceId}/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching experience with ID ${experienceId}: ${response.statusText}`);
+        }
+
+        const data: Experience = await response.json();
+        return data;
+
+    } catch (error: any) {
+        console.error(error);
+
+        if (error.messages && Array.isArray(error.messages)) {
+            error.messages.forEach((msg: string) => {
+                showAlert(msg, "error", true);
+            });
+        } else {
+            showAlert(error.message || "An unexpected error occurred.", "error", true);
+        }
+
+        return null;
+    } finally {
+        hideLoading();
+    }
+}
+
+export async function fetchUpdateExperience(experience: Experience) {
+    showLoading();
+
+    try {
+        const response = await fetch(`/experience/${experience.experience_id}/`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify(experience),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error updating experience with ID ${experience.experience_id}: ${response.statusText}`);
+        }
+
+        window.location.reload();
+        const data = await response.json();
+        showAlert(data.message, "success", true);
+
+    } catch (error: any) {
+        console.error(error);
+
+        if (error.messages && Array.isArray(error.messages)) {
+            error.messages.forEach((msg: string) => {
+                showAlert(msg, "error", true);
+            });
+        } else {
+            showAlert(error.message || "An unexpected error occurred.", "error", true);
+        }
+
+    } finally {
+        hideLoading();
+    }
+}
+
+
+export const fetchDeleteExperience = async (experienceId: number): Promise<void> => {
+    showLoading();
+
+    try {
+        const response = await fetch(`/experience/${experienceId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to delete language.");
+
+        }
+
+        const data = await response.json();
+        window.location.reload();
         showAlert(data.message, "success", true);
 
 

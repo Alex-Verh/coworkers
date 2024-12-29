@@ -3,7 +3,7 @@
 <div class="col-md-12">
     <div class="timeline">
       {% if is_own_profile %}
-      <div class="experience_add d-flex justify-content-center align-items-center" id="experience_form" data-modal="experience_modal">
+      <div class="experience_add d-flex justify-content-center align-items-center" id="experience_add" data-modal="experience_modal">
         <img src="{% static 'public/icons/add.png' %}" alt="Add">
       </div>
       {% endif %}
@@ -12,6 +12,10 @@
         {% for experience in experiences %}
           {% if experience.type == experience_type %}
             <div class="experience">
+              {% if is_own_profile %}
+              <div class="experience_edit experience_btn" data-id="{{ experience.experience_id }}"><img src="{% static 'public/icons/edit.svg' %}" alt="Edit"></div>
+              <div class="experience_delete experience_btn" data-id="{{ experience.experience_id }}"><img src="{% static 'public/icons/delete.svg' %}" alt="Delete"></div>
+              {% endif %}
               <div class="experience_time">
                   {% if experience.end_year %}
                   {{ experience.start_year }} - {{ experience.end_year }}

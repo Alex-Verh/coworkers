@@ -51,6 +51,21 @@
     padding: 10px 30px;
     word-wrap: break-word;  /* Ensures long words break and wrap to the next line */
     overflow-wrap: break-word;  /* Alternative to word-wrap */
+    position: relative;
+}
+
+.experience_btn {
+    position: absolute;
+    left: -10px;
+    cursor: pointer;
+}
+
+.experience_edit {
+    top: 20%;
+}
+
+.experience_delete {
+    top: 50%;
 }
 
 .experience_time {

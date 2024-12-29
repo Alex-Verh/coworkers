@@ -17,9 +17,21 @@ def calculate_total_experience(user):
     if not work_experiences.exists():
         return 0
 
-    first_experience = work_experiences.first()
-    latest_experience = work_experiences.last()
+    total_experience = 0
+    
+    current_start_year = work_experiences.first().start_year
+    current_end_year = work_experiences.first().end_year or date.today().year
 
-    end_year = latest_experience.end_year or date.today().year
-    total_experience = end_year - first_experience.start_year
+    for experience in work_experiences[1:]:
+        end_year = experience.end_year if experience.end_year else date.today().year
+
+        if experience.start_year <= current_end_year:
+            current_end_year = max(current_end_year, end_year)
+        else:
+            total_experience += current_end_year - current_start_year
+            current_start_year = experience.start_year
+            current_end_year = end_year
+
+    total_experience += current_end_year - current_start_year
+
     return total_experience

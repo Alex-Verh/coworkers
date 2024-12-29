@@ -1,10 +1,14 @@
 import "../css/profile.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { enableModal, closeAlert, initializeEntityModal, renderNationality, renderLanguage } from "./functions";
+import { enableModal, closeAlert, initializeEntityModal, renderNationality, renderLanguage, enableClose } from "./functions";
 import { fetchWorkerTrait, 
     fetchAddLanguage, fetchOwnLanguage, fetchDeleteLanguage, fetchSearchLanguage, 
-    fetchSearchNationality, fetchAddNationality, fetchOwnNationality, fetchDeleteNationality } from "./api";
+    fetchSearchNationality, fetchAddNationality, fetchOwnNationality, fetchDeleteNationality, 
+    fetchExperience,
+    fetchUpdateExperience,
+    fetchDeleteExperience} from "./api";
+import { Experience } from "./interfaces";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -60,7 +64,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Working with experience timeline
     if (sectionName == "work-timeline" || sectionName == "education-timeline") {
-        enableModal("experience_form");
+        enableModal("experience_add");
+
+        const timelineDiv = document.querySelector(".timeline") as HTMLElement;
+
+        if (!timelineDiv) return;
+
+        timelineDiv.addEventListener("click", async function onClick(event: Event ) {
+            const target = event.target as HTMLElement;
+
+            const editExperience = target.closest(".experience_edit") as HTMLElement | null;
+
+            if (editExperience) {
+                const experienceId = Number(editExperience.getAttribute("data-id")) as number;
+                const experienceModal = document.querySelector("#experience_modal") as HTMLElement;
+                const experienceForm = document.querySelector("#experience_form") as HTMLFormElement;
+    
+                const experience = await fetchExperience(experienceId) as Experience;
+    
+                if (!experience && !experienceModal && !experienceForm) return;
+    
+                experienceForm.action = `/experience/${experienceId}/`;
+                experienceForm.method = "PATCH";
+    
+                (experienceForm.querySelector('input[name="position"]') as HTMLInputElement).value = experience.position;
+                (experienceForm.querySelector('input[name="institution_name"]') as HTMLInputElement).value = experience.institution_name;
+                (experienceForm.querySelector('textarea[name="description"]') as HTMLTextAreaElement).value = experience.description;
+                (experienceForm.querySelector('input[name="start_year"]') as HTMLInputElement).value = experience.start_year.toString();
+                (experienceForm.querySelector('input[name="end_year"]') as HTMLInputElement).value = experience.end_year ? experience.end_year.toString() : "";
+                experienceModal.classList.remove("none");   
+                enableClose(experienceModal);         
+            
+                experienceForm.addEventListener("submit", async (event) => {
+                    event.preventDefault();
+            
+                    const experience: Experience = {
+                        experience_id: Number(experienceForm.action.split("/").slice(-2, -1)[0]),
+                        position: (experienceForm.querySelector('input[name="position"]') as HTMLInputElement).value,
+                        institution_name: (experienceForm.querySelector('input[name="institution_name"]') as HTMLInputElement).value,
+                        description: (experienceForm.querySelector('textarea[name="description"]') as HTMLTextAreaElement).value,
+                        start_year: Number((experienceForm.querySelector('input[name="start_year"]') as HTMLInputElement).value),
+                        end_year: Number((experienceForm.querySelector('input[name="end_year"]') as HTMLInputElement).value) || null,
+                        type: (experienceForm.querySelector('input[name="type"]') as HTMLInputElement).value as "Work" | "Education",
+                    };
+            
+                    await fetchUpdateExperience(experience);
+    
+                });
+            };
+
+            const deleteExperience = target.closest(".experience_delete") as HTMLElement | null;
+
+            if (deleteExperience) {
+                const experienceId = Number(deleteExperience.getAttribute("data-id")) as number;
+                await fetchDeleteExperience(experienceId);
+            }
+        });
+
     }
 
     // Working with personal attributes section

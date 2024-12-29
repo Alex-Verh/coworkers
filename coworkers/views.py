@@ -4,7 +4,7 @@ from .models import CustomUser, WorkerLanguage, WorkerNationality, Trait, Worker
 from django.db.models import OuterRef, Subquery, IntegerField, Value, Q, F
 from django.db.models.functions import Coalesce
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .forms import CustomUserCreationForm, ExperienceForm, ContactForm, FullNameUpdateForm, SalaryUpdateForm, LocationUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -164,7 +164,13 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, gen
         context['is_own_profile'] = (user == self.request.user)
         context['formatted_salary_minimum'] = user.formatted_salary(user.salary_minimum)
         context['formatted_salary_maximum'] = user.formatted_salary(user.salary_maximum)
-        context['experiences'] = user.experiences.all()
+
+        experiences = sorted(
+            user.experiences.all(),
+            key=lambda x: (x.end_year is not None, -x.end_year if x.end_year is not None else float('inf'))
+        )        
+        context['experiences'] = experiences
+
         context['languages'] = user_languages
         context['nationalities'] = user_nationalities
         context['traits'] = personal_attributes
@@ -238,17 +244,71 @@ class RegisterView(generic.FormView, ContactFormMixin):
 class ExperienceView(LoginRequiredMixin, FormView):
     form_class = ExperienceForm
 
-    def form_valid(self, form):
-        experience = form.save(commit=False)
-        experience.user = self.request.user
-        experience.save()
-        messages.success(self.request, f'Experience added successfully!')
-        return redirect('my_profile')
+class ExperienceView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        experience_id = kwargs.get("experience_id")
+        experience = get_object_or_404(Experience, experience_id=experience_id, user=request.user)
+        data = {
+            "experience_id": experience.experience_id,
+            "position": experience.position,
+            "institution_name": experience.institution_name,
+            "description": experience.description,
+            "start_year": experience.start_year,
+            "end_year": experience.end_year,
+            "type": experience.type,
+        }
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        form = ExperienceForm(request.POST)
+        if form.is_valid():
+            experience = form.save(commit=False)
+            experience.user = request.user
+            experience_type = experience.type.lower()
+            experience.save()
+            messages.success(self.request, f'Experience added successfully!')
+            return redirect(f'{reverse("my_profile")}?section={experience_type}-timeline')
+        else:
+            return JsonResponse({"errors": form.errors}, status=400)
 
 
-    def form_invalid(self, form):
-        messages.error(self.request, form.errors)
-        return redirect('my_profile')
+    def patch(self, request, *args, **kwargs):
+        experience_id = kwargs.get("experience_id")
+        experience = get_object_or_404(Experience, experience_id=experience_id, user=request.user)
+
+        if request.content_type == "application/json":
+            try:
+                data = json.loads(request.body)
+            except json.JSONDecodeError:
+                return JsonResponse({"errors": "Invalid JSON data.", "status": "error"}, status=400)
+        else:
+            data = request.POST
+
+        form = ExperienceForm(data, instance=experience)
+        if form.is_valid():
+            form.save()
+            experience_position = experience.position
+            return JsonResponse({'message' : f'Experience "{experience_position}" has been updated successfully.'}, status=200)
+        
+        print(form.errors)
+        return JsonResponse({"errors": form.errors, "status": "error"}, status=400)
+    
+    def delete(self, request, *args, **kwargs):
+        try:
+            experience_id = kwargs.get("experience_id")
+
+            if not experience_id:
+                return JsonResponse({'error': 'Experience ID is required.'}, status=400)
+
+            experience = Experience.objects.get(experience_id=experience_id)
+            experience_position = experience.position
+
+            experience.delete()
+
+            return JsonResponse({'message' : f'Experience "{experience_position}" has been updated successfully.'}, status=200)
+
+        except Exception:
+            return JsonResponse({'error': 'Couldn\'t delete the experience record.'}, status=404)
     
     
 class WorkerTraitView(LoginRequiredMixin, View):
