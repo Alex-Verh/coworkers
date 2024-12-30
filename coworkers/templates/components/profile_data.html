@@ -3,7 +3,7 @@
 <div class="col-md-6">
     <div class="personal-field">
         <div class="personal-label">Full Name</div>
-        <div class="personal-value"><strong>{{ user.full_name }}</strong></div>
+        <div class="personal-value"><strong>{{ worker.full_name }}</strong></div>
         {% if is_own_profile %}
         <img class="personal-edit" id="fullname_form" data-modal="fullname_modal" src="{% static 'public/icons/settings.png' %}" alt="Edit"/>
         {% endif %}
@@ -72,8 +72,8 @@
     <div class="personal-field">
         <div class="personal-label">Current Location</div>
         <div class="personal-value"> 
-            {% if user.location %}
-            <strong>{{user.location}}</strong>
+            {% if worker.location %}
+            <strong>{{worker.location}}</strong>
             {% else %} 
             Not indicated.
             {% endif %}
@@ -88,16 +88,16 @@
     <div class="personal-field">
         <div class="personal-label">Contact Details</div>
         <div class="personal-list">
-        {% if user.linkedin_link %}
-            <div class="personal-value"><strong>LinkedIn</strong> - {{ user.linkedin_link }}</div>
+        {% if worker.linkedin_link %}
+            <div class="personal-value"><strong>LinkedIn</strong> - {{ worker.linkedin_link }}</div>
         {% endif %}
-        {% if user.xing_link %}
-            <div class="personal-value"><strong>XING</strong> - {{ user.xing_link }}</div>
+        {% if worker.xing_link %}
+            <div class="personal-value"><strong>XING</strong> - {{ worker.xing_link }}</div>
         {% endif %}
-        {% if user.personal_link %}
-            <div class="personal-value"><strong>Personal URL</strong> - {{ user.personal_link }}</div>
+        {% if worker.personal_link %}
+            <div class="personal-value"><strong>Personal URL</strong> - {{ worker.personal_link }}</div>
         {% endif %}
-        {% if not user.linkedin_link and not user.xing_link and not user.personal_link %}
+        {% if not worker.linkedin_link and not worker.xing_link and not worker.personal_link %}
             <div class="personal-value">No contact details provided.</div>
         {% endif %}
         {% if is_own_profile %}

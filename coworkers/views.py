@@ -111,6 +111,7 @@ class IndexView(generic.ListView, ContactFormMixin):
                     "full_name": user.full_name,
                     "position": user.position,
                     "experience": user.experience,
+                    "description": user.description,
                 }
                 for user in page_obj
             ]
@@ -126,7 +127,7 @@ class IndexView(generic.ListView, ContactFormMixin):
 class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, generic.DetailView):
     model = CustomUser
     template_name = "profile.html"
-    context_object_name = 'user'
+    context_object_name = 'worker'
 
     def get_object(self, queryset=None):
         """Retrieve the user object based on the URL or the logged-in user."""

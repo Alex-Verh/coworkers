@@ -3,6 +3,7 @@ export interface User {
     full_name: string;
     position: string;
     experience: number;
+    description: string;
 }
 
 export interface FetchResponse {

@@ -10,11 +10,14 @@
         max="100" 
         value="{{trait.user_score}}" 
         name="{{trait.trait_name}}" 
-        id="{{trait.trait_id}}" />
+        id="{{trait.trait_id}}" 
+        disabled="{{is_own_profile}}"/>
         
         <div class="slider-info d-flex align-items-center justify-content-center">i</div>
         <div class="slider-description none">{{trait.trait_description}}</div>
+        {% if is_own_profile %}
         <div class="slider-save none">Save Changes</div>
+        {% endif %}
     </div>
 </div>
 {% endfor %}

@@ -91,6 +91,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     rank = models.ForeignKey(Rank, on_delete=models.CASCADE, null=True, blank=True)
     nationalities = models.ManyToManyField(Nationality, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
+    description = models.TextField(default="This person is a eager talented worker that is seeking for a position at multiple potential companies. He has not indicated any work experience records, but still can successfully do his job.")
     traits = models.ManyToManyField(Trait, through="WorkerTrait", blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

@@ -468,7 +468,7 @@ export async function fetchUpdateExperience(experience: Experience) {
             throw new Error(`Error updating experience with ID ${experience.experience_id}: ${response.statusText}`);
         }
 
-        window.location.reload();
+        await window.location.reload();
         const data = await response.json();
         showAlert(data.message, "success", true);
 
@@ -508,7 +508,7 @@ export const fetchDeleteExperience = async (experienceId: number): Promise<void>
         }
 
         const data = await response.json();
-        window.location.reload();
+        await window.location.reload();
         showAlert(data.message, "success", true);
 
 

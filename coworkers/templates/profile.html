@@ -14,24 +14,24 @@
 
           <div class="col-md-6">
             <div class="personal-info">
-              <h1 class="personal-name">{{ user.full_name }}</h1>
+              <h1 class="personal-name">{{ worker.full_name }}</h1>
               <p class="personal-age">Born in <span>
-                {% if user.birth_date %}
-                {{ user.birth_date | date:"j F Y" }} ({{ user.age }} </span> years).
+                {% if worker.birth_date %}
+                {{ worker.birth_date | date:"j F Y" }} ({{ worker.age }} </span> years).
                 {% else %}
                 N/A. </span> 
                 {% endif %}
               </p>
               <p class="personal-location">Based in <span>
-                {% if user.location %}
-                <strong>{{user.location}}.</strong>
+                {% if worker.location %}
+                <strong>{{worker.location}}.</strong>
                 {% else %} 
                 N/A.
                 {% endif %}
               </span></p>
               <p class="personal-age">
-                {% if user.experience %}
-                {{user.experience}} years of experience in total.
+                {% if worker.experience %}
+                {{worker.experience}} years of experience in total.
                 {% else %}
                 No experience has been indicated.
                 {% endif %}

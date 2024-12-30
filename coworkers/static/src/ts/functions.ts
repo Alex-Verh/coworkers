@@ -174,7 +174,7 @@ export const renderWorker = (worker: User, div: HTMLElement) => {
                 </div>
                 <div class="col-md-9">
                     <div class="profile_description">
-                    Some additional details about this idiot.
+                    ${worker.description}
                     </div>
                 </div>
                 </div>
