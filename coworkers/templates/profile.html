@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load django_vite %} 
+{% load static %}
 
 {% block title %}Home{% endblock %}
 
@@ -9,7 +10,30 @@
         <div class="row g-5">
 
           <div class="col-md-4">
-            <img src="https://placehold.co/315x315" alt="Profile Image" class="profile-image">
+            
+            {% if is_own_profile %}
+            <form id="profile-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="profile_image_container">
+                    {% if worker.profile_picture %}
+                        <img src="{{ worker.profile_picture.url }}" alt="Profile Image" class="profile_image profile_image_own" id="profile-image">
+                    {% else %}
+                        <img src="{% static 'public/assets/anonym.jpg' %}" alt="Profile Image" class="profile_image profile_image_own" id="profile-image">
+                    {% endif %}
+                    <img src="{% static 'public/icons/upload.svg' %}" class="profile_image_icon" alt="Upload"/>
+                </div>
+                <input type="file" name="profile_picture" id="profile-picture-input" accept=".jpg,.jpeg,.png" style="display: none;">
+            </form>
+            {% else %}
+                <div class="profile_image_container">
+                    {% if worker.profile_picture %}
+                        <img src="{{ worker.profile_picture.url }}" alt="Profile Image" class="profile_image">
+                    {% else %}
+                        <img src="{% static 'public/assets/anonym.jpg' %}" alt="Profile Image" class="profile_image">
+                    {% endif %}
+                </div>
+            {% endif %}
+        
           </div>
 
           <div class="col-md-6">
@@ -43,9 +67,7 @@
                 <button class="button">Send Email</button>
                 {% endif %}
                 {% if is_own_profile %}
-                <button class="button">Upload Portfolio</button>
-                {% else %}
-                <button class="button_disabled">See Portfolio</button>
+                <button class="button">Reset Password</button>
                 {% endif %}
               </div>
             </div>

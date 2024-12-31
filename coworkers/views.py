@@ -5,7 +5,7 @@ from django.db.models import OuterRef, Subquery, IntegerField, Value, Q, F
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.urls import reverse_lazy, reverse
-from .forms import CustomUserCreationForm, ExperienceForm, ContactForm, FullNameUpdateForm, SalaryUpdateForm, LocationUpdateForm
+from .forms import CustomUserCreationForm, ExperienceForm, ContactForm, FullNameUpdateForm, SalaryUpdateForm, LocationUpdateForm, PfpForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -124,7 +124,7 @@ class IndexView(generic.ListView, ContactFormMixin):
         return super().get(request, *args, **kwargs)
     
 
-class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, generic.DetailView):
+class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin,  generic.DetailView):
     model = CustomUser
     template_name = "profile.html"
     context_object_name = 'worker'
@@ -159,7 +159,7 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, gen
         context['full_name_form'] = FullNameUpdateForm(instance=user)
         context['salary_form'] = SalaryUpdateForm(instance=user)
         context['location_form'] = LocationUpdateForm(instance=user)
-
+        context['pfp_form'] = PfpForm(instance=user)
 
         # other context data
         context['is_own_profile'] = (user == self.request.user)
@@ -204,6 +204,14 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin, gen
                 messages.success(request, "Current location updated successfully!")
             else:
                 messages.error(request, "There was an error updating your current location.")
+
+        elif 'pfp_form' in request.POST:
+            form = PfpForm(request.POST, request.FILES, instance=user)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'message' : f'Profile picture has been updated successfully.', 'url': user.profile_picture.url})
+            else:
+                return JsonResponse({"errors": "Problem while updating the profile picture.", "status": "error"}, status=400)
 
         return redirect('my_profile')
     

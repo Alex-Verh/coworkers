@@ -7,6 +7,40 @@
     font-size: 20px;
 }
 
+.profile_image_container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 300px;
+    overflow: hidden;
+    height: 300px;
+}
+
+.profile_image {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile_image:hover {
+    transform: scale(1.05);
+    opacity: 80%;
+}
+
+.profile_image_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    padding: 5px;
+    pointer-events: none;
+}
+
+.profile_image_container:hover .profile_image_icon {
+    display: block;
+}
+
 .personal-info {
     p {
         color: #757575;

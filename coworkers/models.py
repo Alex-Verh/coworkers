@@ -74,7 +74,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=200)
     birth_date = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(
-        upload_to="profile_pictures/", null=True, blank=True
+        upload_to="profile_pictures/", null=True, blank=True,
     )
     location = models.CharField(max_length=255, null=True, blank=True)
     salary_minimum = models.DecimalField(

@@ -8,6 +8,11 @@
   margin-inline: 25px;
 }
 
+.profile_image {
+  width: 100px;
+  height: 100px;
+}
+
 .profile_name {
   font-size: 20px;
   margin-bottom: 5px;

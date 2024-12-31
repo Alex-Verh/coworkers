@@ -1,13 +1,13 @@
 import "../css/profile.css";
 import "../css/base.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { enableModal, closeAlert, initializeEntityModal, renderNationality, renderLanguage, enableClose } from "./functions";
+import { enableModal, closeAlert, initializeEntityModal, renderNationality, renderLanguage, enableClose, showAlert } from "./functions";
 import { fetchWorkerTrait, 
     fetchAddLanguage, fetchOwnLanguage, fetchDeleteLanguage, fetchSearchLanguage, 
     fetchSearchNationality, fetchAddNationality, fetchOwnNationality, fetchDeleteNationality, 
     fetchExperience,
     fetchUpdateExperience,
-    fetchDeleteExperience} from "./api";
+    fetchDeleteExperience, fetchPfp} from "./api";
 import { Experience } from "./interfaces";
 
 
@@ -31,6 +31,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         personalDataForms.forEach(id => enableModal(id));
 
+        const profileImage = document.getElementById('profile-image') as HTMLImageElement;
+        const fileInput = document.getElementById('profile-picture-input') as HTMLInputElement;
+
+        if (profileImage && fileInput) {
+            profileImage.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', async () => {
+                const file = fileInput.files?.[0];
+                if (!file) return;
+        
+                const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+                const fileExtension = file.name.split('.').pop()?.toLowerCase();
+                if (!fileExtension || !allowedExtensions.includes(`.${fileExtension}`)) {
+                    showAlert('Only JPG, JPEG, and PNG formats are accepted.', 'error');
+                    return;
+                }
+        
+                const formData = new FormData();
+                formData.append('profile_picture', file);
+                formData.append('pfp_form', 'true');
+
+                await fetchPfp(formData, profileImage);
+                
+            });
+        }
 
 
         const languageSearch = document.getElementById("search_language") as HTMLInputElement;

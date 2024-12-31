@@ -7,6 +7,56 @@ let csrfToken = "";
 if (csrfTokenElem) {csrfToken = csrfTokenElem.getAttribute('content') as string | ""};
 
 
+
+
+    export const fetchPfp = async (formData: FormData, profileImage: HTMLImageElement) => {
+        showLoading();
+
+        try {
+            const response = await fetch('/profile', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": csrfToken,
+                }
+            });
+
+            if (response.ok) {
+                const contentType = response.headers.get('Content-Type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+
+                    if (data.url) {
+                        profileImage.src = data.url;
+                    } else {
+                        showAlert('Failed to update the profile picture.', 'error');
+                    }
+
+                    if (data.message) {
+                        showAlert(data.message, "success");
+                    }
+                } else {
+                    showAlert('Unexpected server response, expected JSON but received HTML.', 'error');
+                }
+        } else {
+            showAlert('Failed to upload the profile picture.', 'error');
+        }
+        } catch (error:any) {
+            console.error("An error occurred while fetching data:", error);
+
+            if (error.messages && Array.isArray(error.messages)) {
+                error.messages.forEach((msg: string) => {
+                    showAlert(msg, "error");
+                });
+            };
+            return [];
+        } finally {
+            hideLoading();
+        }
+    }      
+
+
 export const fetchWorkers = async (params: URLSearchParams) => {
     showLoading();
 

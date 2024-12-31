@@ -53,6 +53,16 @@ class CustomUserCreationForm(forms.ModelForm):
         model = CustomUser
         fields = ("full_name", "email", "password", "full_name", "location_country", "location_city", "birth_day", "birth_month", "birth_year", "findus")
 
+class PfpForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['profile_picture']
+
+    def clean_profile_picture(self):
+        picture = self.cleaned_data.get('profile_picture')
+        if picture and not picture.name.endswith(('.jpg', '.jpeg', '.png')):
+            raise forms.ValidationError('Only JPG, JPEG, and PNG formats are accepted.')
+        return picture
 
 class ExperienceForm(forms.ModelForm):
     class Meta:

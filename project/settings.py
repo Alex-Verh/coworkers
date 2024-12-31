@@ -162,7 +162,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_USER') 
 EMAIL_HOST_PASSWORD = env('EMAIL_PASS')
 
-OPENAI_KEY= env('OPENAI_API_KEY')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGGING = {
     'version': 1,
