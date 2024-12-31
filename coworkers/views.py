@@ -13,6 +13,7 @@ from django.views.generic.edit import FormView, View
 from .mixins import ExperienceFormMixin, ContactFormMixin
 from django.core.mail import EmailMessage
 import json
+import os
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
@@ -208,6 +209,11 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin,  ge
         elif 'pfp_form' in request.POST:
             form = PfpForm(request.POST, request.FILES, instance=user)
             if form.is_valid():
+                if user.profile_picture:
+                    old_picture_path = user.profile_picture.path
+                    if os.path.exists(old_picture_path):
+                        os.remove(old_picture_path)
+
                 form.save()
                 return JsonResponse({'message' : f'Profile picture has been updated successfully.', 'url': user.profile_picture.url})
             else:
