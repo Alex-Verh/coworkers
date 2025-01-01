@@ -35,15 +35,6 @@ class CustomUserManager(BaseUserManager):
         )
 
 
-class Rank(models.Model):
-    rank_id = models.AutoField(primary_key=True)
-    rank_symbol = models.CharField(max_length=50)
-    rank_name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.rank_name
-
-
 class Nationality(models.Model):
     nationality_id = models.AutoField(primary_key=True)
     nationality_name = models.CharField(max_length=100)
@@ -87,8 +78,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     linkedin_link = models.URLField(null=True, blank=True)
     xing_link = models.URLField(null=True, blank=True)
     personal_link = models.URLField(null=True, blank=True)
-    portfolio_link = models.URLField(null=True, blank=True)
-    rank = models.ForeignKey(Rank, on_delete=models.CASCADE, null=True, blank=True)
     nationalities = models.ManyToManyField(Nationality, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
     description = models.TextField(default="This person is a eager talented worker that is seeking for a position at multiple potential companies. He has not indicated any work experience records, but still can successfully do his job.")

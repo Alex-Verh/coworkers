@@ -10,7 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 django.setup()
 
 # Import your models after setting up Django
-from coworkers.models import CustomUser, Rank, Nationality, Language, Trait, Experience, WorkerTrait
+from coworkers.models import CustomUser, Nationality, Language, Trait, Experience, WorkerTrait, WorkerLanguage, WorkerNationality
 from faker import Faker
 import random
 
@@ -25,16 +25,12 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.SUCCESS("Starting the populate_db command..."))
 
-            # Generate Ranks
-            ranks = [Rank.objects.create(rank_symbol=f"R{n}", rank_name=f"Rank {n}") for n in range(1, 4)]
-            self.stdout.write(self.style.SUCCESS("Ranks created"))
-
             # Generate Nationalities
-            nationalities = [Nationality.objects.create(nationality_name=fake.country()) for _ in range(5)]
+            nationalities = [Nationality.objects.create(nationality_name=fake.country()) for _ in range(50)]
             self.stdout.write(self.style.SUCCESS("Nationalities created"))
 
             # Generate Languages
-            languages = [Language.objects.create(language_name=fake.language_name()) for _ in range(5)]
+            languages = [Language.objects.create(language_name=fake.language_name()) for _ in range(50)]
             self.stdout.write(self.style.SUCCESS("Languages created"))
 
             # Generate Traits
@@ -45,23 +41,21 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Traits created"))
 
             # Generate Users
-            for _ in range(20):
+            for _ in range(120):
                 user = CustomUser.objects.create_user(
                     email=fake.email(),
                     full_name=fake.first_name() + " " + fake.last_name(),
                     password="password123",
                     birth_date=fake.date_of_birth(minimum_age=20, maximum_age=60),
                     profile_picture=None,
-                    location=fake.city(),
-                    salary_minimum=random.uniform(30000, 50000),
+                    location=fake.city() + ", " + fake.country(),
+                    salary_minimum=random.uniform(0, 50000),
                     salary_maximum=random.uniform(60000, 120000),
                     linkedin_link=fake.url(),
                     xing_link=fake.url(),
                     personal_link=fake.url(),
-                    portfolio_link=fake.url(),
-                    rank=random.choice(ranks),
                 )
-                self.stdout.write(self.style.SUCCESS(f"Created user: {user.first_name} {user.last_name}"))
+                self.stdout.write(self.style.SUCCESS(f"Created user: {user.full_name}"))
 
                 user.nationalities.set(random.sample(nationalities, k=2))
                 user.languages.set(random.sample(languages, k=2))
@@ -86,9 +80,27 @@ class Command(BaseCommand):
                     WorkerTrait.objects.create(
                         user=user,
                         trait=trait,
-                        trait_measure=random.randint(1, 10),
+                        trait_measure=random.randint(1, 100),
                     )
                     self.stdout.write(self.style.SUCCESS("WorkerTrait created"))
+
+
+                # Generate WorkerLanguage for each user
+                for language in random.sample(languages, k=3):
+                    WorkerLanguage.objects.create(
+                        user=user,
+                        language=language,
+                        language_knowledge=random.choice(["Beginner", "Professional", "Native"]),
+                    )
+                    self.stdout.write(self.style.SUCCESS("WorkerLanguage created"))
+
+                # Generate WorkerNationality for each user
+                for nationality in random.sample(nationalities, k=3):
+                    WorkerNationality.objects.create(
+                        user=user,
+                        nationality=nationality,
+                    )
+                    self.stdout.write(self.style.SUCCESS("WorkerNationality created"))
 
             self.stdout.write(self.style.SUCCESS("Successfully populated the database with fake data"))
             

@@ -5,7 +5,6 @@ from .models import (
     Experience,
     Language,
     Nationality,
-    Rank,
     Trait,
     WorkerTrait,
 )
@@ -13,7 +12,6 @@ from .models import (
 # Register your models here.
 admin.site.register(
     (
-        Rank,
         Nationality,
         Language,
         Trait,
