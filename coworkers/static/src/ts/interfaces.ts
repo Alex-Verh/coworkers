@@ -14,6 +14,7 @@ export interface FetchResponse {
 export interface Language {
     language_id: number;
     language_name: string;
+    language_knowledge: "Beginner" | "Professional" | "Native";
 }
 
 export interface Nationality {

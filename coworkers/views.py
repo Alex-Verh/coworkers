@@ -414,6 +414,7 @@ class LanguageView(LoginRequiredMixin, View):
                 {
                     'language_id': result.language.language_id,
                     'language_name': result.language.language_name,
+                    'language_knowledge': result.language_knowledge
                 }
                 for result in results
             ]
@@ -426,12 +427,13 @@ class LanguageView(LoginRequiredMixin, View):
         try:
             data = json.loads(request.body)
             language_id = data.get('language_id')
+            language_knowledge = data.get('language_knowledge')
 
             if not language_id:
                 return JsonResponse({'error': 'Language ID is required.'}, status=400)
 
             language = Language.objects.get(language_id=language_id)
-            WorkerLanguage.objects.create(user=request.user, language=language)
+            WorkerLanguage.objects.create(user=request.user, language=language, language_knowledge=language_knowledge)
 
             return JsonResponse({'message': f'Language "{language.language_name}" added successfully.'}, status=201)
         except Language.DoesNotExist:

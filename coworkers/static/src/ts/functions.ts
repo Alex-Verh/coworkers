@@ -135,19 +135,22 @@ export const renderNationality = (nationality: Nationality, action: string, div:
 };
 
 export const renderLanguage = (language: Language, action: string, div: HTMLElement) => {
+    const knowledgeOptions = ['Beginner', 'Professional', 'Native']
+        .map(level => `<div class="col-md-2 pmodal_level ${level === language.language_knowledge ? 'pmodal_level_active' : ''}">${level}</div>`)
+        .join('');
+
     div.insertAdjacentHTML(
         "afterbegin",
         `
         <div class="row language d-flex align-items-center" data-id="${language.language_id}" data-name="${language.language_name}">
             <div class="col-md-4 d-flex justify-content-start">${language.language_name}</div>
-            <div class="col-md-2 pmodal_level level_select">Beginner</div>
-            <div class="col-md-2 pmodal_level">Professional</div>
-            <div class="col-md-2 pmodal_level pmodal_level_active">Native</div>
+            ${knowledgeOptions}
             <div class="col-md-2 result_${action.toLowerCase()}">${action}</div>
         </div>
         `
     );
 };
+
 
 export const renderFilterLanguage = (language: Language, div: HTMLElement) => {
     div.insertAdjacentHTML(
@@ -209,16 +212,40 @@ const handleEntityClick = (
             addedDiv.innerHTML = '';
         }
 
+        const knowledge = addedClassName === "language" 
+        ? container.getAttribute("data-knowledge") || "Beginner"
+        : undefined;
+
         addedEntities.add(entityId);
-        fetchAddEntity(entityId);
-        renderEntity({ [`${addedClassName}_id`]: entityId, [`${addedClassName}_name`]: entityName }, "Remove", addedDiv);
+        fetchAddEntity(entityId, knowledge);
+        renderEntity({ [`${addedClassName}_id`]: entityId, [`${addedClassName}_name`]: entityName, [`${addedClassName}_knowledge`]:knowledge}, 
+                    "Remove", 
+                    addedDiv);
         container?.remove();
     }
 };
 
+const handleKnowledgeClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.classList.contains("pmodal_level")) return;
+
+    const container = target.closest("[data-id]") as HTMLElement;
+    if (!container) return;
+
+    const knowledgeLevels = Array.from(container.querySelectorAll(".pmodal_level")) as HTMLElement[];
+
+    knowledgeLevels.forEach(level => level.classList.remove("pmodal_level_active"));
+    target.classList.add("pmodal_level_active");
+
+    const selectedKnowledge = target.textContent?.trim() || "Beginner";
+
+    container.setAttribute("data-knowledge", selectedKnowledge);
+};
+
+
 type FetchNoParamEntitiesFunction = () => Promise<any[]>;
 type FetchEntitiesFunction = (query: string) => Promise<any[]>;
-type FetchEntityFunction = (entityId: number) => Promise<void>;
+type FetchEntityFunction = (entityId: number, knowledge: string) => Promise<void>;
 type RenderEntityFunction = (entity: any, action: string, container: HTMLElement) => void;
 
 export const initializeEntityModal = (
@@ -259,6 +286,8 @@ export const initializeEntityModal = (
     parentDiv.addEventListener("click", (e) =>
         handleEntityClick(e, addedEntities, addedDiv, fetchAddEntity, fetchDeleteEntity, renderEntity, addedClassName)
     );
+
+    if (searchedClassName == "language") searchedDiv.addEventListener("click", (e) => handleKnowledgeClick(e));
 
     applySearchListener(searchElement, fetchSearchEntities, (results) => {
         searchedDiv.innerHTML = '';

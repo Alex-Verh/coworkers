@@ -244,6 +244,7 @@ body, .container-fluid {
 .pmodal_level {
     margin-top: 20px;
     font-weight: 400;
+    cursor: pointer;
 }
 
 .pmodal_level_active {

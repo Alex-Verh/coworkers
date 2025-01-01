@@ -231,7 +231,7 @@ export const fetchSearchLanguage = async (language: string): Promise<Array<Langu
 };
 
 
-export const fetchAddLanguage = async (languageId: number): Promise<void> => {
+export const fetchAddLanguage = async (entityId: number, knowledge: string): Promise<void> => {
     showLoading();
 
     try {
@@ -241,7 +241,10 @@ export const fetchAddLanguage = async (languageId: number): Promise<void> => {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken,
             },
-            body: JSON.stringify({ language_id: languageId }),
+            body: JSON.stringify({
+                language_id: entityId,
+                language_knowledge: knowledge,
+            }),
         });
 
         if (!response.ok) {
