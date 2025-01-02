@@ -26,6 +26,8 @@ body, .container-fluid {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 
@@ -54,6 +56,11 @@ body, .container-fluid {
     text-align: center;
     color: #622A2A;
     text-decoration: underline;
+
+    @media screen and (max-width: 470px) {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
 }
 
 .button, .button_disabled {
@@ -71,6 +78,15 @@ body, .container-fluid {
     cursor: pointer;
     transition: .3s all;
     user-select: none;
+
+    @media screen and (max-width: 500px) {
+        width: 150px;
+        font-size: 16px;
+    }
+    @media screen and (max-width: 300px) {
+        width: 100px;
+        font-size: 10px;
+    }
 }
 
 .button_disabled {
@@ -148,6 +164,12 @@ body, .container-fluid {
     width: 100%;
     font-size: 28px;
     font-family: JosefinSlab, sans-serif;
+    @media screen and (max-width: 500px) {
+        font-size: 20px;
+    }
+    @media screen and (max-width: 400px) {
+        font-size: 16px;
+    }
 }
 
 .logininput:first-of-type {
@@ -172,15 +194,43 @@ body, .container-fluid {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     padding: 20px 50px;
     position: relative;
+    @media screen and (max-width: 500px) {
+        padding: 15px 30px;
+    }
+    @media screen and (max-width: 350px) {
+        padding: 10px 20px;
+    }
 }
 
 .personal-label {
     margin-bottom: 15px;
     color: #757575;
+    @media screen and (max-width: 1000px) {
+        font-size: 16px;
+    }
+    @media screen and (max-width: 500px) {
+        font-size: 14px;
+    }
 }
 
 .personal-value {
     font-size: 24px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
+    @media screen and (max-width: 1400px) {
+        font-size: 18px;
+    }
+    @media screen and (max-width: 768px) {
+        font-size: 16px;
+    }
+    @media screen and (max-width: 500px) {
+        font-size: 13px;
+    }
+}
+
+.personal-value .button {
+    margin: 0 auto;
 }
 
 .personal-a {
@@ -192,6 +242,10 @@ body, .container-fluid {
     top:8px;
     right: 8px;
     cursor: pointer;
+    @media screen and (max-width: 500px) {
+        width: 15px;
+        height: 15px;
+    }
 }
 
 .overlay {
@@ -272,6 +326,16 @@ body, .container-fluid {
     font-family: JosefinSlab, sans-serif;
     z-index: 3000;
     cursor: pointer;
+
+    @media screen and (max-width: 600px) {
+        width: 350px;
+        font-size: 14px;
+    }
+
+    @media screen and (max-width: 400px) {
+        width: 250px;
+        font-size: 12px;
+    }
 }
 
 .palert.fade-out {
@@ -289,6 +353,10 @@ body, .container-fluid {
     top: 10px;
     right: 10px;
     cursor: pointer;
+    @media screen and (max-width: 600px) {
+        width: 10px;
+        height: 10px;
+    }
 }
 
 .palert_success {

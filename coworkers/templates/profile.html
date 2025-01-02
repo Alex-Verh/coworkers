@@ -9,7 +9,7 @@
       <main class="profile">
         <div class="row g-5">
 
-          <div class="col-md-4">
+          <div class="col-md-4 d-flex justify-content-center align-items-center">
             
             {% if is_own_profile %}
             <form id="profile-form" method="post" enctype="multipart/form-data">
@@ -36,7 +36,7 @@
         
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="personal-info">
               <h1 class="personal-name">{{ worker.full_name }}</h1>
               <p class="personal-age">Born in <span>
@@ -60,16 +60,9 @@
                 No experience has been indicated.
                 {% endif %}
               </p>
-              <div class="personal-buttons d-flex justify-content-between">
-                {% if is_own_profile %}
-                <button class="button">Change Email</button>
-                {% else %}
-                <button class="button">Send Email</button>
-                {% endif %}
-                {% if is_own_profile %}
-                <button class="button">Reset Password</button>
-                {% endif %}
-              </div>
+              {% if not is_own_profile %}
+              <button class="button">Send Email</button>
+              {% endif %}
             </div>
           </div>
 

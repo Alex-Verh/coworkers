@@ -6,13 +6,28 @@
     font-size: 20px;
     margin: 0 auto 25px auto;
     width: 450px;
+    @media screen and (max-width: 500px) {
+        width: 350px;
+    }
+    @media screen and (max-width: 400px) {
+        width: 250px;
+        padding: 20px;
+        padding-top: 20px !important;
+        margin: 0 auto 5px auto;
+    }
 }
 
 .personal-label {
     margin-top: 40px;
+    @media screen and (max-width: 400px) {
+        margin-top: 20px;
+    }
 }
 
 .login_btn {
     margin: 70px auto;
+    @media screen and (max-width: 400px) {
+        margin: 20px auto;
+    }
 }
   

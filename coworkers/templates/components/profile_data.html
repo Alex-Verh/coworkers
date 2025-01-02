@@ -107,6 +107,26 @@
     </div>
 </div>
 
+{% if is_own_profile %}
+<div class="col-md-6">
+    <div class="personal-field">
+        <div class="personal-label">Email Address</div>
+        <div class="personal-value"> 
+            <button class="button">Change Email</button>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="personal-field">
+        <div class="personal-label">Password Management</div>
+        <div class="personal-value"> 
+            <button class="button">Reset Password</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <!-- Upload all edit modals -->
 {% if is_own_profile %}
     {% include 'modals/fullname_modal.html'%}

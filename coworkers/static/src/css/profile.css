@@ -5,6 +5,11 @@
     padding-top: 60px !important;
     font-family: Jost, sans-serif;
     font-size: 20px;
+
+    @media screen and (max-width: 500px) {
+        font-size: 15px;
+        padding: 30px;
+    }
 }
 
 .profile_image_container {
@@ -14,6 +19,21 @@
     width: 300px;
     overflow: hidden;
     height: 300px;
+
+    @media screen and (max-width: 1200px) {
+        width: 200px;
+        height: 200px;
+    }
+
+    @media screen and (max-width: 768px) {
+        width: 300px;
+        height: 300px;
+    }
+
+    @media screen and (max-width: 500px) {
+        width: 200px;
+        height: 200px;
+    }
 }
 
 .profile_image {
@@ -45,6 +65,10 @@
     p {
         color: #757575;
         margin: 30px 0 !important;
+
+        @media screen and (max-width: 500px) {
+            margin: 10px 0 !important;
+        }
     }
 }
 
@@ -59,6 +83,17 @@
     background-color: #fff;
     padding: 0 40px;
     cursor: pointer;
+
+    @media screen and (max-width: 768px) {
+        padding: 0 5px;
+        font-size: 14px;
+    }
+
+    @media screen and (max-width: 500px) {
+        padding: 0 5px;
+        font-size: 10px;
+        text-align: center;
+    }
 }
 
 .profile-link_active {
@@ -78,6 +113,10 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     padding: 20px 50px;
     color: #757575;
+    @media screen and (max-width: 500px) {
+        font-size: 15px;
+        padding: 30px;
+    }
 }
 
 .experience {
@@ -86,12 +125,27 @@
     word-wrap: break-word;  /* Ensures long words break and wrap to the next line */
     overflow-wrap: break-word;  /* Alternative to word-wrap */
     position: relative;
+
+    @media screen and (max-width: 768px) {
+        font-size: 12px !important;
+    }
+
+    @media screen and (max-width: 500px) {
+        font-size: 10px !important;
+    }
 }
 
 .experience_btn {
     position: absolute;
     left: -10px;
     cursor: pointer;
+}
+
+.experience_btn img {
+    @media screen and (max-width: 500px) {
+        width: 12px;
+        height: 12px;
+    }
 }
 
 .experience_edit {
@@ -110,6 +164,7 @@
 .experience_location {
     font-weight: 700;
     margin-bottom: 15px;
+
 }
 
 .experience_description {
@@ -125,6 +180,10 @@
     transition: 0.1s all ease-in-out;
     cursor: pointer;
     user-select: none;
+
+    @media screen and (max-width: 500px) {
+        margin: 20px 30px;
+    }
 }
 
 .experience_add:hover {
@@ -139,6 +198,13 @@
 .experience_add:active img {
     margin-top: -5px;
 }
+
+.personal-name{
+    @media screen and (max-width: 500px) {
+        font-size: 20px;
+    }
+}
+
 
 .personal-slider {
     width: 100%;
