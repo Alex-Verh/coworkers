@@ -271,10 +271,25 @@
     padding: 15px 10px;
     text-align: left;
     font-size: 22px;
+
+    @media screen and (max-width: 768px) {
+        font-size: 16px;
+        margin-top: 0px;
+    }
+    @media screen and (max-width: 550px) {
+        font-size: 14px;
+    }
+    @media screen and (max-width: 350px) {
+        font-size: 10px;
+    }
 }
 
 .nationality {
     font-size: 24px;
+
+    @media screen and (max-width: 500px) {
+        font-size: 16px;
+    }
 }
 
 .result_remove {
@@ -292,6 +307,14 @@
     margin: 0 auto;
     font-size: 16px;
     margin: 0 !important;
+
+    @media screen and (max-width: 768px) {
+        font-size: 12px;
+        text-decoration-thickness: 1px;
+    }
+    @media screen and (max-width: 550px) {
+        font-size: 8px;
+    }
 }
 
 .nationality::-webkit-scrollbar, .language_result::-webkit-scrollbar {

@@ -269,11 +269,39 @@ body, .container-fluid {
     font-weight: 300;
     font-size: 32px;
     text-align: center;
+
+    
+    @media screen and (max-width: 1000px) {
+        width: 600px;
+        padding: 15px 35px 35px 35px;
+        font-size: 24px;
+    }
+
+    @media screen and (max-width: 700px) {
+        width: 500px;
+        padding: 15px 35px 35px 35px;
+        font-size: 20px;
+    }
+
+    @media screen and (max-width: 550px) {
+        width: 300px;
+        padding: 10px 30px 30px 30px;
+        font-size: 16px;
+    }
+
+    @media screen and (max-width: 350px) {
+        width: 250px;
+        font-size: 16px;
+    }
 }
 
 .pmodal_title {
     color: #622A2A;
     margin-bottom: 50px;
+
+    @media screen and (max-width: 550px) {
+        margin-bottom: 20px;
+    }
 }
 
 .pmodal_close {
@@ -281,6 +309,12 @@ body, .container-fluid {
     top: 20px;
     right: 20px;
     cursor: pointer;
+
+    
+    @media screen and (max-width: 550px) {
+        width: 15px;
+        height: 15px;
+    }
 }
 
 .pmodal_save, .pmodal_remove {
@@ -293,6 +327,16 @@ body, .container-fluid {
 
 .pmodal_remove, .pmodal_level, .pmodal_hint {
     font-size: 16px;
+    @media screen and (max-width: 768px) {
+        font-size: 10px;
+        text-decoration-thickness: 1px;
+    }
+    @media screen and (max-width: 550px) {
+        font-size: 8px;
+    }
+    @media screen and (max-width: 350px) {
+        font-size: 6px;
+    }
 }
 
 .pmodal_hint {
@@ -312,6 +356,10 @@ body, .container-fluid {
 
 .pmodal_save {
     margin-top: 50px;
+
+    @media screen and (max-width: 550px) {
+        margin-top: 20px;
+    }
 }
   
 .palert {

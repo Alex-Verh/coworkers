@@ -136,16 +136,16 @@ export const renderNationality = (nationality: Nationality, action: string, div:
 
 export const renderLanguage = (language: Language, action: string, div: HTMLElement) => {
     const knowledgeOptions = ['Beginner', 'Professional', 'Native']
-        .map(level => `<div class="col-md-2 pmodal_level ${level === language.language_knowledge ? 'pmodal_level_active' : ''}">${level}</div>`)
+        .map(level => `<div class="col-2 pmodal_level ${level === language.language_knowledge ? 'pmodal_level_active' : ''}">${level}</div>`)
         .join('');
 
     div.insertAdjacentHTML(
         "afterbegin",
         `
         <div class="row language d-flex align-items-center" data-id="${language.language_id}" data-name="${language.language_name}">
-            <div class="col-md-4 d-flex justify-content-start">${language.language_name}</div>
+            <div class="col-4 d-flex justify-content-start">${language.language_name}</div>
             ${knowledgeOptions}
-            <div class="col-md-2 result_${action.toLowerCase()}">${action}</div>
+            <div class="col-2 result_${action.toLowerCase()}">${action}</div>
         </div>
         `
     );
