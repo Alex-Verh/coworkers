@@ -89,13 +89,13 @@
         <div class="personal-label">Contact Details</div>
         <div class="personal-list">
         {% if worker.linkedin_link %}
-            <div class="personal-value"><strong>LinkedIn</strong> - {{ worker.linkedin_link }}</div>
+            <div class="personal-value"><strong>LinkedIn</strong> - <a class="personal-a" href="{{ worker.linkedin_link }}">{{ worker.linkedin_link }}</a></div>
         {% endif %}
         {% if worker.xing_link %}
-            <div class="personal-value"><strong>XING</strong> - {{ worker.xing_link }}</div>
+            <div class="personal-value"><strong>XING</strong> - <a class="personal-a"  href="{{ worker.xing_link }}">{{ worker.xing_link }}</a></div>
         {% endif %}
         {% if worker.personal_link %}
-            <div class="personal-value"><strong>Personal URL</strong> - {{ worker.personal_link }}</div>
+            <div class="personal-value"><strong>Personal URL</strong> - <a class="personal-a"  href="{{ worker.personal_link }}">{{ worker.personal_link }}</a></div>
         {% endif %}
         {% if not worker.linkedin_link and not worker.xing_link and not worker.personal_link %}
             <div class="personal-value">No contact details provided.</div>

@@ -137,7 +137,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [BASE_DIR / "coworkers/static/public", BASE_DIR / "profile_pictures"]
+STATICFILES_DIRS = [BASE_DIR / "coworkers/static/public"]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 

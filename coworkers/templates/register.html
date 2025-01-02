@@ -1,19 +1,25 @@
 {% extends "base.html" %}
 
 {% load django_vite %} 
+{% load static %}
 
 {% block title %}Register{% endblock %}
 
 {% block content %}
 
-<form method="post" action="{% url 'register' %}" class="col-md-12">
+<form method="post" action="{% url 'register' %}" class="col-md-12" enctype="multipart/form-data">
 {% csrf_token %}
 
 <main class="register">
   <div class="row g-5">
 
     <div class="col-md-5">
-      <img src="https://placehold.co/415x415" alt="Profile Image" class="profile-image">
+      <div class="profile_image_container">
+        <img src="{% static 'public/assets/gray.jpg' %}" class="profile_image"  id="profile-image" alt="Upload"/>
+        <img src="{% static 'public/icons/upload.svg' %}" class="profile_image_icon" alt="Upload"/>
+      </div>
+
+      <input type="file" name="profile_picture" id="profile_picture" accept=".jpg,.jpeg,.png" style="display: none;">
     </div>
 
     <div class="col-md-7">

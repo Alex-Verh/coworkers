@@ -183,6 +183,10 @@ body, .container-fluid {
     font-size: 24px;
 }
 
+.personal-a {
+    color: #622A2A !important;
+}
+
 .personal-edit {
     position: absolute;
     top:8px;

@@ -16,9 +16,9 @@
                 {% csrf_token %}
                 <div class="profile_image_container">
                     {% if worker.profile_picture %}
-                        <img src="{{ worker.profile_picture.url }}" alt="Profile Image" class="profile_image profile_image_own" id="profile-image">
+                        <img src="{{ worker.profile_picture.url }}" alt="Profile Image" class="profile_image" id="profile-image">
                     {% else %}
-                        <img src="{% static 'public/assets/anonym.jpg' %}" alt="Profile Image" class="profile_image profile_image_own" id="profile-image">
+                        <img src="{% static 'public/assets/anonym.jpg' %}" alt="Profile Image" class="profile_image" id="profile-image">
                     {% endif %}
                     <img src="{% static 'public/icons/upload.svg' %}" class="profile_image_icon" alt="Upload"/>
                 </div>

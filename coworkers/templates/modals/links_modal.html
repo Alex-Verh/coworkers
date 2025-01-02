@@ -1,0 +1,20 @@
+{% load static %}
+
+<div id="links_modal" class="overlay d-flex justify-content-center align-items-center none">
+    <div class="pmodal">
+      <img src="{% static 'public/icons/close.svg' %}" alt="Close" class="pmodal_close">
+      <div class="pmodal_title">Enter your Links</div>
+      <form method="post" action="{% url 'my_profile' %}">
+        {% csrf_token %}
+        <label for="{{ links_form.linkedin_link.id_for_label }}" class="personal-label"></label>
+        {{ links_form.linkedin_link }}
+
+        <label for="{{ links_form.xing_link.id_for_label }}" class="personal-label"></label>
+        {{ links_form.xing_link }}
+
+        <label for="{{ links_form.personal_link.id_for_label }}" class="personal-label"></label>
+        {{ links_form.personal_link }}
+        <button type="submit" name="links_form" class="pmodal_save">Save Changes</button>
+      </form>
+    </div>
+</div>

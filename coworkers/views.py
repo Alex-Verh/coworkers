@@ -5,7 +5,7 @@ from django.db.models import OuterRef, Subquery, IntegerField, Value, Q, F
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.urls import reverse_lazy, reverse
-from .forms import CustomUserCreationForm, ExperienceForm, ContactForm, FullNameUpdateForm, SalaryUpdateForm, LocationUpdateForm, PfpForm
+from .forms import CustomUserCreationForm, ExperienceForm, LinksUpdateForm, ContactForm, FullNameUpdateForm, SalaryUpdateForm, LocationUpdateForm, PfpForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -160,7 +160,7 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin,  ge
         context['full_name_form'] = FullNameUpdateForm(instance=user)
         context['salary_form'] = SalaryUpdateForm(instance=user)
         context['location_form'] = LocationUpdateForm(instance=user)
-        context['pfp_form'] = PfpForm(instance=user)
+        context['links_form'] = LinksUpdateForm(instance=user)
 
         # other context data
         context['is_own_profile'] = (user == self.request.user)
@@ -206,6 +206,14 @@ class ProfileView(LoginRequiredMixin, ExperienceFormMixin, ContactFormMixin,  ge
             else:
                 messages.error(request, "There was an error updating your current location.")
 
+        elif 'links_form' in request.POST:
+            form = LinksUpdateForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Contact links updated successfully!")
+            else:
+                messages.error(request, "There was an error updating your contact links.")
+
         elif 'pfp_form' in request.POST:
             form = PfpForm(request.POST, request.FILES, instance=user)
             if form.is_valid():
@@ -227,15 +235,9 @@ class RegisterView(generic.FormView, ContactFormMixin):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     
-
     def form_valid(self, form):
         try:
             user = form.save(commit=False)
-
-            country = form.cleaned_data.get('location_country')
-            city = form.cleaned_data.get('location_city')
-            user.location = ", ".join(filter(None, [city, country]))
-
             user.save()
 
             user_name = form.cleaned_data.get('full_name')
@@ -246,18 +248,13 @@ class RegisterView(generic.FormView, ContactFormMixin):
         
         return super().form_valid(form)
     
-
     def form_invalid(self, form):
         for field, errors in form.errors.items():
             for error in errors:
                 readable_field = field.capitalize().replace("_", " ")
-
                 messages.error(self.request, f"{readable_field}: {error}")
         return super().form_invalid(form)
     
-
-class ExperienceView(LoginRequiredMixin, FormView):
-    form_class = ExperienceForm
 
 class ExperienceView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
