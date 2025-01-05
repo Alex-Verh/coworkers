@@ -5,6 +5,7 @@ from .models import CustomUser, Experience
 from datetime import date
 import re
 from urllib.parse import urlparse
+from PIL import Image
 
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -60,10 +61,11 @@ class CustomUserCreationForm(forms.ModelForm):
             try:
                 self.birth_date = date(birth_year, birth_month, birth_day)
             except ValueError:
-                raise ValidationError("Invalid birth date. Please check the day, month, and year.")
+                raise ValidationError({"birth_day": "Invalid birth date. Please check the day, month, and year."})
         else:
-            raise ValidationError("Birth day, month, and year are required to compute the birth date.")
-        
+            raise forms.ValidationError({"birth_day": "Birth day, month, and year are required to compute the birth date."})
+
+                
         country = cleaned_data.get('location_country')
         city = cleaned_data.get('location_city')
 
@@ -71,9 +73,9 @@ class CustomUserCreationForm(forms.ModelForm):
             try:
                 self.location = ", ".join(filter(None, [city, country]))
             except ValueError:
-                raise ValidationError("Invalid location or city address.")
+                raise ValidationError({"location": "Invalid location or city address."})
         else:
-            raise ValidationError("City and country locations are required to compute your location")
+            raise ValidationError({"location": "City and country locations are required to compute your location"})
     
 
         return cleaned_data
@@ -84,10 +86,36 @@ class CustomUserCreationForm(forms.ModelForm):
             raise ValidationError("A user with that email address already exists.")
         return email
     
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        
+        if len(password) < 6:
+            raise forms.ValidationError("Password must be at least 6 characters long.")
+        
+        if not any(char.isupper() for char in password):
+            raise forms.ValidationError("Password must contain at least one uppercase letter.")
+        
+        if not any(char.islower() for char in password):
+            raise forms.ValidationError("Password must contain at least one lowercase letter.")
+        
+        if not any(char.isdigit() for char in password):
+            raise forms.ValidationError("Password must contain at least one digit.")
+        
+        return password
+    
     def clean_profile_picture(self):
         picture = self.cleaned_data.get('profile_picture')
         if picture and not picture.name.endswith(('.jpg', '.jpeg', '.png')):
             raise forms.ValidationError('Only JPG, JPEG, and PNG formats are accepted.')
+        
+        # Validate image content using Pillow
+        if picture:
+            try:
+                img = Image.open(picture)
+                img.verify()  # Validate the file is a valid image
+            except Exception as e:
+                raise forms.ValidationError("Uploaded file is not a valid image.")
+            
         if picture and picture.size > 10 * 1024 * 1024:
             raise forms.ValidationError('File size must not exceed 10MB.')
         return picture
@@ -113,8 +141,18 @@ class PfpForm(forms.ModelForm):
 
     def clean_profile_picture(self):
         picture = self.cleaned_data.get('profile_picture')
+        # Validate image content using Pillow
+        try:
+            img = Image.open(picture)
+            img.verify()  # Validate the file is a valid image
+        except Exception as e:
+            raise forms.ValidationError("Uploaded file is not a valid image.")
+
         if picture and not picture.name.endswith(('.jpg', '.jpeg', '.png')):
             raise forms.ValidationError('Only JPG, JPEG, and PNG formats are accepted.')
+        
+        if picture and picture.size > 10 * 1024 * 1024:
+            raise forms.ValidationError('File size must not exceed 10MB.')
         return picture
 
 class ExperienceForm(forms.ModelForm):
